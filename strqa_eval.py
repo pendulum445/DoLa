@@ -6,14 +6,13 @@ import os
 import random
 import re
 import ssl
-import sys
 import urllib.request
 import zipfile
 
 import numpy as np
 import torch
 import transformers
-from tqdm import tqdm, trange
+from tqdm import tqdm
 
 from dola import DoLa
 

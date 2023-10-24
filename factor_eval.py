@@ -71,21 +71,18 @@ def download_url(url: str, folder='folder'):
     Returns:
         string: File path of downloaded files.
     """
-
     file = url.rpartition('/')[2]
     file = file if file[0] == '?' else file.split('?')[0]
     path = os.path.join(folder, file)
     if os.path.exists(path):
         print(f'File {file} exists, use existing file.')
         return path
-
     print(f'Downloading {url}')
     os.makedirs(folder, exist_ok=True)
     ctx = ssl._create_unverified_context()
     data = urllib.request.urlopen(url, context=ctx)
     with open(path, 'wb') as f:
         f.write(data.read())
-
     return path
 
 
@@ -115,24 +112,19 @@ def clean_answer(model_pred):
     else:
         # Pick last number without flag
         pred = preds[-1]
-
     pred = pred.replace(",", "")
     pred = [s for s in re.findall(r'-?\d+\.?\d*', pred)]
-
     if len(pred) == 0:
         return INVALID_ANS
-
     if answer_flag:
         # choose the first element in list
         pred = pred[0]
     else:
         # choose the last element in list
         pred = pred[-1]
-
     # (For arithmetic tasks) if a word ends with period, it will be omitted ...
     if pred[-1] == ".":
         pred = pred[:-1]
-
     return pred
 
 
@@ -177,23 +169,18 @@ if __name__ == "__main__":
     model_name = args.model_name
     num_gpus = args.num_gpus
     device = args.device
-
     # Get test file
     fp = args.data_path
     if not os.path.exists(fp):
         raise ValueError(f"Test file {fp} does not exist.")
-
     list_data_dict = load_csv(fp)
-
     if args.parallel:
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
                                         chunk_size]
-
     if args.debug:
         list_data_dict = list_data_dict[:10]
-
     llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
     llm.set_stop_words(["Q:", "\end{code}"])
     early_exit_layers = [int(x) for x in args.early_exit_layers.split(',')]
@@ -273,18 +260,16 @@ if __name__ == "__main__":
         result_dict['is_correct'].append(is_cor)
         result_dict['model_completion'].append([answer_true_log_prob] +
                                                answer_false_log_probs)
-
         print(f'Num of total question: {len(answers)}, '
               f'correct num: {sum(answers)}, '
               f'correct rate: {float(sum(answers))/len(answers)}.')
-
     if mode == "dola" and args.debug:
         total_tokens = sum(premature_layer_dist.values())
         if total_tokens > 0:
-            for l in candidate_premature_layers:
+            for it in candidate_premature_layers:
                 print('Premature layer {0} was used {1} times, {2}%'.format(
-                    l, premature_layer_dist[l],
-                    round(premature_layer_dist[l] / total_tokens * 100, 2)))
+                    it, premature_layer_dist[it],
+                    round(premature_layer_dist[it] / total_tokens * 100, 2)))
     # save results to a json file
     model_tag = model_name.split(
         '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
