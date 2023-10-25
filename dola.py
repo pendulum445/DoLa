@@ -194,7 +194,7 @@ class DoLa:
             outputs = outputs.log_softmax(-1)  # logits to log probs
             # skip tokens in the prompt -- we only care about the answer
             outputs = outputs[prefix_ids.shape[-1] - 1:-1, :]
-            # get logprobs for each token in the answer
+            # get log probs for each token in the answer
             log_probs = outputs[range(outputs.shape[0]),
                                 continue_ids].sum().item()
         elif mode == 'dola-static':

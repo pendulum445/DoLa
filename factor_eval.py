@@ -1,12 +1,12 @@
 # Ref: https://github.com/kojima-takeshi188/zero_shot_cot
 
-import argparse
 import json
 import os
 import random
 import re
 import ssl
 import urllib.request
+from argparse import ArgumentParser
 
 import numpy as np
 import pandas as pd
@@ -136,7 +136,7 @@ def set_seed(seed):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
                         default="huggyllama/llama-7b")
@@ -206,7 +206,7 @@ if __name__ == "__main__":
         mature_layer = early_exit_layers[-1]
         premature_layer = None
         candidate_premature_layers = early_exit_layers[:-1]
-        premature_layer_dist = {l: 0 for l in candidate_premature_layers}
+        premature_layer_dist = {it: 0 for it in candidate_premature_layers}
     answers = []
     result_dict = {
         'is_correct': [],
