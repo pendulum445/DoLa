@@ -18,10 +18,8 @@ import unittest
 
 import numpy as np
 import pytest
-
 from transformers import is_speech_available, is_vision_available
 from transformers.testing_utils import require_torch
-
 
 if is_vision_available():
     from transformers import TvltImageProcessor

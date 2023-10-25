@@ -9,17 +9,11 @@ import torch
 from modeling_bertabs import BertAbs, build_predictor
 from torch.utils.data import DataLoader, SequentialSampler
 from tqdm import tqdm
-
 from transformers import BertTokenizer
 
-from .utils_summarization import (
-    CNNDMDataset,
-    build_mask,
-    compute_token_type_ids,
-    encode_for_summarization,
-    truncate_or_pad,
-)
-
+from .utils_summarization import (CNNDMDataset, build_mask,
+                                  compute_token_type_ids,
+                                  encode_for_summarization, truncate_or_pad)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)

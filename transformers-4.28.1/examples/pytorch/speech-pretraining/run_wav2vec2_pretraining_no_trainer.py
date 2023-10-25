@@ -24,27 +24,19 @@ from typing import Dict, List, Optional, Union
 
 import datasets
 import torch
+import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from datasets import DatasetDict, concatenate_datasets, load_dataset
 from huggingface_hub import Repository, create_repo
 from torch.utils.data.dataloader import DataLoader
 from tqdm.auto import tqdm
-
-import transformers
-from transformers import (
-    AdamW,
-    SchedulerType,
-    Wav2Vec2Config,
-    Wav2Vec2FeatureExtractor,
-    Wav2Vec2ForPreTraining,
-    get_scheduler,
-    is_wandb_available,
-    set_seed,
-)
-from transformers.models.wav2vec2.modeling_wav2vec2 import _compute_mask_indices, _sample_negative_indices
+from transformers import (AdamW, SchedulerType, Wav2Vec2Config,
+                          Wav2Vec2FeatureExtractor, Wav2Vec2ForPreTraining,
+                          get_scheduler, is_wandb_available, set_seed)
+from transformers.models.wav2vec2.modeling_wav2vec2 import (
+    _compute_mask_indices, _sample_negative_indices)
 from transformers.utils import get_full_repo_name, send_example_telemetry
-
 
 logger = get_logger(__name__)
 

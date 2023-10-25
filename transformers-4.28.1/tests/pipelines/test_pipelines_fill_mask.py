@@ -14,16 +14,13 @@
 
 import unittest
 
-from transformers import MODEL_FOR_MASKED_LM_MAPPING, TF_MODEL_FOR_MASKED_LM_MAPPING, FillMaskPipeline, pipeline
+from transformers import (MODEL_FOR_MASKED_LM_MAPPING,
+                          TF_MODEL_FOR_MASKED_LM_MAPPING, FillMaskPipeline,
+                          pipeline)
 from transformers.pipelines import PipelineException
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_tf,
-    require_torch,
-    require_torch_gpu,
-    slow,
-)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_tf, require_torch,
+                                        require_torch_gpu, slow)
 
 from .test_pipelines_common import ANY
 

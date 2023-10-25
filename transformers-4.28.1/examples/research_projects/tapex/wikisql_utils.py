@@ -18,11 +18,9 @@ import enum
 import functools
 import math
 import re
-
 # The following script is adapted from the script of TaPas.
 # Original: https://github.com/google-research/tapas/master/wikisql_utils.py
 from typing import Any, List, Text
-
 
 EMPTY_ANSWER = "none"
 EMPTY_ANSWER_AGG = "none"

@@ -21,17 +21,12 @@ from transformers.testing_utils import require_torch, torch_device
 
 from ..test_modeling_common import ids_tensor
 
-
 if is_torch_available():
     import torch
-
-    from transformers.generation import (
-        MaxLengthCriteria,
-        MaxNewTokensCriteria,
-        MaxTimeCriteria,
-        StoppingCriteriaList,
-        validate_stopping_criteria,
-    )
+    from transformers.generation import (MaxLengthCriteria,
+                                         MaxNewTokensCriteria, MaxTimeCriteria,
+                                         StoppingCriteriaList,
+                                         validate_stopping_criteria)
 
 
 @require_torch

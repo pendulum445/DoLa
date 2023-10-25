@@ -17,15 +17,15 @@ import unittest
 from queue import Empty
 from threading import Thread
 
-from transformers import AutoTokenizer, TextIteratorStreamer, TextStreamer, is_torch_available
-from transformers.testing_utils import CaptureStdout, require_torch, torch_device
+from transformers import (AutoTokenizer, TextIteratorStreamer, TextStreamer,
+                          is_torch_available)
+from transformers.testing_utils import (CaptureStdout, require_torch,
+                                        torch_device)
 
 from ..test_modeling_common import ids_tensor
 
-
 if is_torch_available():
     import torch
-
     from transformers import AutoModelForCausalLM
 
 

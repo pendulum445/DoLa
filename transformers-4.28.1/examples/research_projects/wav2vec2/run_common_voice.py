@@ -11,23 +11,14 @@ import datasets
 import numpy as np
 import torch
 import torchaudio
+import transformers
 from packaging import version
 from torch import nn
-
-import transformers
-from transformers import (
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    Wav2Vec2CTCTokenizer,
-    Wav2Vec2FeatureExtractor,
-    Wav2Vec2ForCTC,
-    Wav2Vec2Processor,
-    is_apex_available,
-    set_seed,
-)
+from transformers import (HfArgumentParser, Trainer, TrainingArguments,
+                          Wav2Vec2CTCTokenizer, Wav2Vec2FeatureExtractor,
+                          Wav2Vec2ForCTC, Wav2Vec2Processor, is_apex_available,
+                          set_seed)
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
-
 
 if is_apex_available():
     from apex import amp

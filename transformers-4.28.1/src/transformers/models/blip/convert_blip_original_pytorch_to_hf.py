@@ -18,7 +18,6 @@ import re
 
 import requests
 import torch
-
 # git clone https://github.com/salesforce/BLIP.git
 from models.blip import blip_decoder
 from models.blip_itm import blip_itm
@@ -26,14 +25,9 @@ from models.blip_vqa import blip_vqa
 from PIL import Image
 from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
-
-from transformers import (
-    BertTokenizer,
-    BlipConfig,
-    BlipForConditionalGeneration,
-    BlipForImageTextRetrieval,
-    BlipForQuestionAnswering,
-)
+from transformers import (BertTokenizer, BlipConfig,
+                          BlipForConditionalGeneration,
+                          BlipForImageTextRetrieval, BlipForQuestionAnswering)
 
 
 def load_demo_image(image_size, device):

@@ -21,13 +21,12 @@ import jax.numpy as jnp
 import numpy as np
 from jax.random import PRNGKey
 from modeling_flax_performer_utils import make_fast_softmax_attention
-
 from transformers.file_utils import add_start_docstrings
 from transformers.modeling_flax_utils import ACT2FN
 from transformers.models.bert.configuration_bert import BertConfig
-from transformers.models.bert.modeling_flax_bert import FlaxBertOnlyMLMHead, FlaxBertPreTrainedModel
+from transformers.models.bert.modeling_flax_bert import (
+    FlaxBertOnlyMLMHead, FlaxBertPreTrainedModel)
 from transformers.utils import logging
-
 
 logger = logging.get_logger(__name__)
 

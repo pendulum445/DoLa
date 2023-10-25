@@ -28,23 +28,15 @@ from typing import Optional, Union
 import datasets
 import numpy as np
 import torch
-from datasets import load_dataset
-
 import transformers
-from transformers import (
-    AutoConfig,
-    AutoModelForMultipleChoice,
-    AutoTokenizer,
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    default_data_collator,
-    set_seed,
-)
+from datasets import load_dataset
+from transformers import (AutoConfig, AutoModelForMultipleChoice,
+                          AutoTokenizer, HfArgumentParser, Trainer,
+                          TrainingArguments, default_data_collator, set_seed)
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
 from transformers.trainer_utils import get_last_checkpoint
-from transformers.utils import PaddingStrategy, check_min_version, send_example_telemetry
-
+from transformers.utils import (PaddingStrategy, check_min_version,
+                                send_example_telemetry)
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

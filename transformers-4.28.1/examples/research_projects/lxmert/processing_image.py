@@ -22,7 +22,6 @@ import numpy as np
 import torch
 from PIL import Image
 from torch import nn
-
 from transformers.image_utils import PILImageResampling
 from utils import img_tensorize
 

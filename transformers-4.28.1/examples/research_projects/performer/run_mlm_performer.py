@@ -23,7 +23,6 @@ import logging
 import os
 import sys
 from dataclasses import dataclass, field
-
 # You can also adapt this script on your own masked language modeling task. Pointers for this are left as comments.
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -39,20 +38,11 @@ from flax.training.common_utils import get_metrics
 from jax.nn import log_softmax
 from modeling_flax_performer import FlaxPerformerForMaskedLM
 from tqdm import tqdm
-
-from transformers import (
-    MODEL_FOR_MASKED_LM_MAPPING,
-    AutoTokenizer,
-    BertConfig,
-    FlaxBertForMaskedLM,
-    HfArgumentParser,
-    PreTrainedTokenizerBase,
-    TensorType,
-    TrainingArguments,
-    is_tensorboard_available,
-    set_seed,
-)
-
+from transformers import (MODEL_FOR_MASKED_LM_MAPPING, AutoTokenizer,
+                          BertConfig, FlaxBertForMaskedLM, HfArgumentParser,
+                          PreTrainedTokenizerBase, TensorType,
+                          TrainingArguments, is_tensorboard_available,
+                          set_seed)
 
 # Cache the result
 has_tensorboard = is_tensorboard_available()

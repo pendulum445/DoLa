@@ -7,10 +7,8 @@ import time
 import tensorflow as tf
 from datasets import load_dataset
 from tqdm import tqdm
-
 from transformers import AutoTokenizer, TFAutoModelForSequenceClassification
 from transformers.utils import is_sagemaker_dp_enabled
-
 
 if os.environ.get("SDP_ENABLED") or is_sagemaker_dp_enabled():
     SDP_ENABLED = True

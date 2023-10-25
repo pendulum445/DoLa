@@ -24,24 +24,17 @@ from pathlib import Path
 
 from huggingface_hub import HfFolder, delete_repo
 from requests.exceptions import HTTPError
-
 from transformers import AutoImageProcessor, ViTImageProcessor
-from transformers.testing_utils import (
-    TOKEN,
-    USER,
-    check_json_file_has_correct_format,
-    get_tests_dir,
-    is_staging_test,
-    require_torch,
-    require_vision,
-)
+from transformers.testing_utils import (TOKEN, USER,
+                                        check_json_file_has_correct_format,
+                                        get_tests_dir, is_staging_test,
+                                        require_torch, require_vision)
 from transformers.utils import is_torch_available, is_vision_available
-
 
 sys.path.append(str(Path(__file__).parent.parent / "utils"))
 
-from test_module.custom_image_processing import CustomImageProcessor  # noqa E402
-
+from test_module.custom_image_processing import \
+    CustomImageProcessor  # noqa E402
 
 if is_torch_available():
     import numpy as np

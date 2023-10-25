@@ -17,7 +17,6 @@ import argparse
 import os
 import re
 
-
 PATH_TO_AUTO_MODULE = "src/transformers/models/auto"
 
 

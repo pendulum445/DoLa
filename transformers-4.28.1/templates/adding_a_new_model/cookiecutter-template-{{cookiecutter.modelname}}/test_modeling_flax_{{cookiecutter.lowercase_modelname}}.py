@@ -17,7 +17,8 @@
 
 import unittest
 
-from transformers import is_flax_available, {{cookiecutter.camelcase_modelname}}Config
+from transformers import (is_flax_available,
+                          {{cookiecutter.camelcase_modelname}}Config)
 from transformers.testing_utils import require_flax, slow
 
 from ...test_configuration_common import ConfigTester
@@ -32,8 +33,7 @@ if is_flax_available():
         Flax{{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
         Flax{{cookiecutter.camelcase_modelname}}ForSequenceClassification,
         Flax{{cookiecutter.camelcase_modelname}}ForTokenClassification,
-        Flax{{cookiecutter.camelcase_modelname}}Model,
-    )
+        Flax{{cookiecutter.camelcase_modelname}}Model)
 
 
 class Flax{{cookiecutter.camelcase_modelname}}ModelTester:
@@ -338,26 +338,23 @@ class Flax{{cookiecutter.camelcase_modelname}}ModelIntegrationTest(unittest.Test
 {% else %}
 import unittest
 
-from transformers import (
-    is_flax_available,
-    {{cookiecutter.camelcase_modelname}}Config,
-    {{cookiecutter.camelcase_modelname}}Tokenizer,
-)
-from transformers.testing_utils import require_sentencepiece, require_flax, require_tokenizers, slow
+from transformers import (is_flax_available,
+                          {{cookiecutter.camelcase_modelname}}Config,
+                          {{cookiecutter.camelcase_modelname}}Tokenizer)
+from transformers.testing_utils import (require_flax, require_sentencepiece,
+                                        require_tokenizers, slow)
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_flax_common import FlaxModelTesterMixin, ids_tensor
 
-
 if is_flax_available():
-    import numpy as np
     import jax.numpy as jnp
+    import numpy as np
     from transformers import (
         Flax{{cookiecutter.camelcase_modelname}}ForConditionalGeneration,
         Flax{{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
         Flax{{cookiecutter.camelcase_modelname}}ForSequenceClassification,
-        Flax{{cookiecutter.camelcase_modelname}}Model,
-    )
+        Flax{{cookiecutter.camelcase_modelname}}Model)
 
 
 @require_flax

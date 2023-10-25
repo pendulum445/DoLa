@@ -16,33 +16,28 @@
 
 import unittest
 
-from tests.test_modeling_common import floats_tensor, ids_tensor, random_attention_mask
+from tests.test_modeling_common import (floats_tensor, ids_tensor,
+                                        random_attention_mask)
 from transformers import Data2VecTextConfig, is_torch_available
-from transformers.testing_utils import TestCasePlus, require_torch, slow, torch_device
+from transformers.testing_utils import (TestCasePlus, require_torch, slow,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        Data2VecTextForCausalLM,
-        Data2VecTextForMaskedLM,
-        Data2VecTextForMultipleChoice,
-        Data2VecTextForQuestionAnswering,
-        Data2VecTextForSequenceClassification,
-        Data2VecTextForTokenClassification,
-        Data2VecTextModel,
-    )
+    from transformers import (Data2VecTextForCausalLM, Data2VecTextForMaskedLM,
+                              Data2VecTextForMultipleChoice,
+                              Data2VecTextForQuestionAnswering,
+                              Data2VecTextForSequenceClassification,
+                              Data2VecTextForTokenClassification,
+                              Data2VecTextModel)
     from transformers.models.data2vec.modeling_data2vec_text import (
         DATA2VEC_TEXT_PRETRAINED_MODEL_ARCHIVE_LIST,
-        Data2VecTextForTextEmbeddings,
-        create_position_ids_from_input_ids,
-    )
+        Data2VecTextForTextEmbeddings, create_position_ids_from_input_ids)
 
 
 class Data2VecTextModelTester:

@@ -22,36 +22,26 @@ from copy import deepcopy
 from functools import partial
 
 import datasets
-from parameterized import parameterized
-
 import tests.trainer.test_trainer
+from parameterized import parameterized
 from tests.trainer.test_trainer import TrainerIntegrationCommon  # noqa
-from transformers import AutoModel, TrainingArguments, is_torch_available, logging
-from transformers.deepspeed import HfDeepSpeedConfig, is_deepspeed_available, unset_hf_deepspeed_config
-from transformers.testing_utils import (
-    CaptureLogger,
-    CaptureStd,
-    CaptureStderr,
-    LoggingLevel,
-    TestCasePlus,
-    execute_subprocess_async,
-    get_gpu_count,
-    mockenv_context,
-    require_deepspeed,
-    require_optuna,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-    slow,
-)
+from transformers import (AutoModel, TrainingArguments, is_torch_available,
+                          logging)
+from transformers.deepspeed import (HfDeepSpeedConfig, is_deepspeed_available,
+                                    unset_hf_deepspeed_config)
+from transformers.testing_utils import (CaptureLogger, CaptureStd,
+                                        CaptureStderr, LoggingLevel,
+                                        TestCasePlus, execute_subprocess_async,
+                                        get_gpu_count, mockenv_context,
+                                        require_deepspeed, require_optuna,
+                                        require_torch_gpu,
+                                        require_torch_multi_gpu, slow)
 from transformers.trainer_utils import get_last_checkpoint, set_seed
 from transformers.utils import WEIGHTS_NAME, is_torch_bf16_gpu_available
 
-
 if is_torch_available():
-    from tests.trainer.test_trainer import (  # noqa
-        RegressionModelConfig,
-        RegressionPreTrainedModel,
-    )
+    from tests.trainer.test_trainer import (RegressionModelConfig,  # noqa
+                                            RegressionPreTrainedModel)
 
     # hack to restore original logging level pre #21700
     get_regression_trainer = partial(tests.trainer.test_trainer.get_regression_trainer, log_level="info")
@@ -112,8 +102,10 @@ def require_deepspeed_aio(test_case):
 
 if is_deepspeed_available():
     from deepspeed.utils import logger as deepspeed_logger  # noqa
-    from deepspeed.utils.zero_to_fp32 import load_state_dict_from_zero_checkpoint
-    from transformers.deepspeed import deepspeed_config, is_deepspeed_zero3_enabled  # noqa
+    from deepspeed.utils.zero_to_fp32 import \
+        load_state_dict_from_zero_checkpoint
+    from transformers.deepspeed import (deepspeed_config,  # noqa
+                                        is_deepspeed_zero3_enabled)
 
 
 def get_launcher(distributed=False):
@@ -770,7 +762,8 @@ class TrainerIntegrationDeepSpeed(TrainerIntegrationDeepSpeedWithCustomConfig, T
         # deepspeed doesn't fallback to AdamW, which would prevent the optimizer states from loading
         # correctly
 
-        from transformers import T5ForConditionalGeneration, T5Tokenizer, Trainer  # noqa
+        from transformers import (T5ForConditionalGeneration,  # noqa
+                                  T5Tokenizer, Trainer)
 
         output_dir = self.get_auto_remove_tmp_dir()  # "./xxx", after=False, before=False)
 

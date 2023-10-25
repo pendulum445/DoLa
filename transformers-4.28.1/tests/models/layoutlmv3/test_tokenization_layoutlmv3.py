@@ -22,26 +22,18 @@ import tempfile
 import unittest
 from typing import List
 
-from transformers import (
-    AddedToken,
-    LayoutLMv3TokenizerFast,
-    SpecialTokensMixin,
-    is_tf_available,
-    is_torch_available,
-    logging,
-)
-from transformers.models.layoutlmv3.tokenization_layoutlmv3 import VOCAB_FILES_NAMES, LayoutLMv3Tokenizer
-from transformers.testing_utils import (
-    is_pt_tf_cross_test,
-    require_pandas,
-    require_tf,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+from transformers import (AddedToken, LayoutLMv3TokenizerFast,
+                          SpecialTokensMixin, is_tf_available,
+                          is_torch_available, logging)
+from transformers.models.layoutlmv3.tokenization_layoutlmv3 import (
+    VOCAB_FILES_NAMES, LayoutLMv3Tokenizer)
+from transformers.testing_utils import (is_pt_tf_cross_test, require_pandas,
+                                        require_tf, require_tokenizers,
+                                        require_torch, slow)
 
-from ...test_tokenization_common import SMALL_TRAINING_CORPUS, TokenizerTesterMixin, merge_model_tokenizer_mappings
-
+from ...test_tokenization_common import (SMALL_TRAINING_CORPUS,
+                                         TokenizerTesterMixin,
+                                         merge_model_tokenizer_mappings)
 
 logger = logging.get_logger(__name__)
 
@@ -1150,7 +1142,6 @@ class LayoutLMv3TokenizationTest(TokenizerTesterMixin, unittest.TestCase):
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import MODEL_MAPPING, TOKENIZER_MAPPING
 
         MODEL_TOKENIZER_MAPPING = merge_model_tokenizer_mappings(MODEL_MAPPING, TOKENIZER_MAPPING)

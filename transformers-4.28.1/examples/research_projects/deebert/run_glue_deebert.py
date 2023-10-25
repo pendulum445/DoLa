@@ -9,29 +9,23 @@ import time
 
 import numpy as np
 import torch
-from torch import nn
-from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
-from torch.utils.data.distributed import DistributedSampler
-from tqdm import tqdm, trange
-
 import transformers
 from src.modeling_highway_bert import DeeBertForSequenceClassification
 from src.modeling_highway_roberta import DeeRobertaForSequenceClassification
-from transformers import (
-    WEIGHTS_NAME,
-    AdamW,
-    BertConfig,
-    BertTokenizer,
-    RobertaConfig,
-    RobertaTokenizer,
-    get_linear_schedule_with_warmup,
-)
+from torch import nn
+from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
+                              TensorDataset)
+from torch.utils.data.distributed import DistributedSampler
+from tqdm import tqdm, trange
+from transformers import (WEIGHTS_NAME, AdamW, BertConfig, BertTokenizer,
+                          RobertaConfig, RobertaTokenizer,
+                          get_linear_schedule_with_warmup)
 from transformers import glue_compute_metrics as compute_metrics
-from transformers import glue_convert_examples_to_features as convert_examples_to_features
+from transformers import \
+    glue_convert_examples_to_features as convert_examples_to_features
 from transformers import glue_output_modes as output_modes
 from transformers import glue_processors as processors
 from transformers.trainer_utils import is_main_process
-
 
 try:
     from torch.utils.tensorboard import SummaryWriter

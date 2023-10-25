@@ -15,16 +15,13 @@
 import sys
 from typing import Dict
 
-from transformers import EvalPrediction, HfArgumentParser, TrainingArguments, is_torch_available
-from transformers.testing_utils import (
-    TestCasePlus,
-    execute_subprocess_async,
-    get_torch_dist_unique_port,
-    require_torch_multi_gpu,
-    require_torch_neuroncore,
-)
+from transformers import (EvalPrediction, HfArgumentParser, TrainingArguments,
+                          is_torch_available)
+from transformers.testing_utils import (TestCasePlus, execute_subprocess_async,
+                                        get_torch_dist_unique_port,
+                                        require_torch_multi_gpu,
+                                        require_torch_neuroncore)
 from transformers.utils import logging
-
 
 logger = logging.get_logger(__name__)
 
@@ -33,7 +30,6 @@ if is_torch_available():
     import torch
     from torch import nn
     from torch.utils.data import Dataset
-
     from transformers import Trainer
 
     class DummyDataset(Dataset):

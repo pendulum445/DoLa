@@ -24,15 +24,15 @@ from pathlib import Path
 
 from huggingface_hub import HfFolder, delete_repo
 from requests.exceptions import HTTPError
-
 from transformers import AutoFeatureExtractor, Wav2Vec2FeatureExtractor
-from transformers.testing_utils import TOKEN, USER, check_json_file_has_correct_format, get_tests_dir, is_staging_test
-
+from transformers.testing_utils import (TOKEN, USER,
+                                        check_json_file_has_correct_format,
+                                        get_tests_dir, is_staging_test)
 
 sys.path.append(str(Path(__file__).parent.parent / "utils"))
 
-from test_module.custom_feature_extraction import CustomFeatureExtractor  # noqa E402
-
+from test_module.custom_feature_extraction import \
+    CustomFeatureExtractor  # noqa E402
 
 SAMPLE_FEATURE_EXTRACTION_CONFIG_DIR = get_tests_dir("fixtures")
 

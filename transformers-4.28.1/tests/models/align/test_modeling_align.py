@@ -21,37 +21,23 @@ import tempfile
 import unittest
 
 import requests
-
-from transformers import AlignConfig, AlignProcessor, AlignTextConfig, AlignVisionConfig
-from transformers.testing_utils import (
-    is_flax_available,
-    require_torch,
-    require_vision,
-    slow,
-    torch_device,
-)
+from transformers import (AlignConfig, AlignProcessor, AlignTextConfig,
+                          AlignVisionConfig)
+from transformers.testing_utils import (is_flax_available, require_torch,
+                                        require_vision, slow, torch_device)
 from transformers.utils import is_torch_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        AlignModel,
-        AlignTextModel,
-        AlignVisionModel,
-    )
-    from transformers.models.align.modeling_align import ALIGN_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import AlignModel, AlignTextModel, AlignVisionModel
+    from transformers.models.align.modeling_align import \
+        ALIGN_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():

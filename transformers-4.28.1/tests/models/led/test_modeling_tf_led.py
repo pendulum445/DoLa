@@ -23,10 +23,8 @@ from ...test_configuration_common import ConfigTester
 from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import TFLEDForConditionalGeneration, TFLEDModel
 
 

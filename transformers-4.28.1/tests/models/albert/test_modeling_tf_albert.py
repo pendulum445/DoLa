@@ -21,24 +21,18 @@ from transformers.models.auto import get_values
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import TF_MODEL_FOR_PRETRAINING_MAPPING
     from transformers.models.albert.modeling_tf_albert import (
-        TF_ALBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
-        TFAlbertForMaskedLM,
-        TFAlbertForMultipleChoice,
-        TFAlbertForPreTraining,
-        TFAlbertForQuestionAnswering,
-        TFAlbertForSequenceClassification,
-        TFAlbertForTokenClassification,
-        TFAlbertModel,
-    )
+        TF_ALBERT_PRETRAINED_MODEL_ARCHIVE_LIST, TFAlbertForMaskedLM,
+        TFAlbertForMultipleChoice, TFAlbertForPreTraining,
+        TFAlbertForQuestionAnswering, TFAlbertForSequenceClassification,
+        TFAlbertForTokenClassification, TFAlbertModel)
 
 
 class TFAlbertModelTester:

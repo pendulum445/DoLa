@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Optional, Union
 
 import numpy as np
-
 from transformers.data.data_collator import DataCollatorMixin
 from transformers.file_utils import PaddingStrategy
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase

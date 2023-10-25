@@ -9,10 +9,9 @@ import sys
 import pandas as pd
 import torch
 from tqdm import tqdm
-
-from transformers import BartForConditionalGeneration, RagRetriever, RagSequenceForGeneration, RagTokenForGeneration
+from transformers import (BartForConditionalGeneration, RagRetriever,
+                          RagSequenceForGeneration, RagTokenForGeneration)
 from transformers import logging as transformers_logging
-
 
 sys.path.append(os.path.join(os.getcwd()))  # noqa: E402 # isort:skip
 from utils_rag import exact_match_score, f1_score  # noqa: E402 # isort:skip

@@ -34,53 +34,33 @@ from huggingface_hub import HfFolder, delete_repo
 from huggingface_hub.file_download import http_get
 from parameterized import parameterized
 from requests.exceptions import HTTPError
-
-from transformers import (
-    AlbertTokenizer,
-    AlbertTokenizerFast,
-    AutoTokenizer,
-    BertTokenizer,
-    BertTokenizerFast,
-    GPT2TokenizerFast,
-    PreTrainedTokenizer,
-    PreTrainedTokenizerBase,
-    PreTrainedTokenizerFast,
-    SpecialTokensMixin,
-    Trainer,
-    TrainingArguments,
-    is_flax_available,
-    is_tf_available,
-    is_tokenizers_available,
-    is_torch_available,
-    logging,
-)
-from transformers.testing_utils import (
-    TOKEN,
-    USER,
-    check_json_file_has_correct_format,
-    get_tests_dir,
-    is_pt_tf_cross_test,
-    is_staging_test,
-    require_tf,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+from transformers import (AlbertTokenizer, AlbertTokenizerFast, AutoTokenizer,
+                          BertTokenizer, BertTokenizerFast, GPT2TokenizerFast,
+                          PreTrainedTokenizer, PreTrainedTokenizerBase,
+                          PreTrainedTokenizerFast, SpecialTokensMixin, Trainer,
+                          TrainingArguments, is_flax_available,
+                          is_tf_available, is_tokenizers_available,
+                          is_torch_available, logging)
+from transformers.testing_utils import (TOKEN, USER,
+                                        check_json_file_has_correct_format,
+                                        get_tests_dir, is_pt_tf_cross_test,
+                                        is_staging_test, require_tf,
+                                        require_tokenizers, require_torch,
+                                        slow)
 from transformers.tokenization_utils import AddedToken, Trie
-
 
 if is_torch_available():
     import torch.nn as nn
 
 
 if TYPE_CHECKING:
-    from transformers import PretrainedConfig, PreTrainedModel, TFPreTrainedModel
+    from transformers import (PretrainedConfig, PreTrainedModel,
+                              TFPreTrainedModel)
 
 
 sys.path.append(str(Path(__file__).parent.parent / "utils"))
 
 from test_module.custom_tokenization import CustomTokenizer  # noqa E402
-
 
 if is_tokenizers_available():
     from test_module.custom_tokenization_fast import CustomTokenizerFast
@@ -2361,7 +2341,6 @@ class TokenizerTesterMixin:
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import MODEL_MAPPING, TOKENIZER_MAPPING
 
         MODEL_TOKENIZER_MAPPING = merge_model_tokenizer_mappings(MODEL_MAPPING, TOKENIZER_MAPPING)

@@ -4,7 +4,6 @@ import jsonlines
 import numpy as np
 from tqdm import tqdm
 
-
 DOC_STRIDE = 2048
 MAX_LENGTH = 4096
 SEED = 42
@@ -306,7 +305,6 @@ def save_to_disk(hf_data, file_name):
 if __name__ == "__main__":
     """Running area"""
     from datasets import load_dataset
-
     from transformers import BigBirdTokenizer
 
     data = load_dataset("natural_questions")

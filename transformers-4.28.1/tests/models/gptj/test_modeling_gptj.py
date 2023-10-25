@@ -18,25 +18,21 @@ import datetime
 import unittest
 
 from transformers import GPTJConfig, is_torch_available
-from transformers.testing_utils import require_torch, slow, tooslow, torch_device
+from transformers.testing_utils import (require_torch, slow, tooslow,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        GPTJ_PRETRAINED_MODEL_ARCHIVE_LIST,
-        AutoTokenizer,
-        GPTJForCausalLM,
-        GPTJForQuestionAnswering,
-        GPTJForSequenceClassification,
-        GPTJModel,
-    )
+    from transformers import (GPTJ_PRETRAINED_MODEL_ARCHIVE_LIST,
+                              AutoTokenizer, GPTJForCausalLM,
+                              GPTJForQuestionAnswering,
+                              GPTJForSequenceClassification, GPTJModel)
 
 
 class GPTJModelTester:

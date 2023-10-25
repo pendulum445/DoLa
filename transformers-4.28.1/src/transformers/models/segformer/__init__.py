@@ -13,14 +13,8 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_tf_available,
-    is_torch_available,
-    is_vision_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_tf_available, is_torch_available, is_vision_available)
 
 _import_structure = {
     "configuration_segformer": ["SEGFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP", "SegformerConfig", "SegformerOnnxConfig"]
@@ -68,7 +62,9 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_segformer import SEGFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, SegformerConfig, SegformerOnnxConfig
+    from .configuration_segformer import (
+        SEGFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, SegformerConfig,
+        SegformerOnnxConfig)
 
     try:
         if not is_vision_available():
@@ -86,14 +82,9 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_segformer import (
-            SEGFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
-            SegformerDecodeHead,
-            SegformerForImageClassification,
-            SegformerForSemanticSegmentation,
-            SegformerLayer,
-            SegformerModel,
-            SegformerPreTrainedModel,
-        )
+            SEGFORMER_PRETRAINED_MODEL_ARCHIVE_LIST, SegformerDecodeHead,
+            SegformerForImageClassification, SegformerForSemanticSegmentation,
+            SegformerLayer, SegformerModel, SegformerPreTrainedModel)
     try:
         if not is_tf_available():
             raise OptionalDependencyNotAvailable()
@@ -101,13 +92,10 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_tf_segformer import (
-            TF_SEGFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
-            TFSegformerDecodeHead,
+            TF_SEGFORMER_PRETRAINED_MODEL_ARCHIVE_LIST, TFSegformerDecodeHead,
             TFSegformerForImageClassification,
-            TFSegformerForSemanticSegmentation,
-            TFSegformerModel,
-            TFSegformerPreTrainedModel,
-        )
+            TFSegformerForSemanticSegmentation, TFSegformerModel,
+            TFSegformerPreTrainedModel)
 
 else:
     import sys

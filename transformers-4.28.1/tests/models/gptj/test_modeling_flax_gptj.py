@@ -17,24 +17,23 @@ import tempfile
 import unittest
 
 import numpy as np
-
 import transformers
-from transformers import GPT2Tokenizer, GPTJConfig, is_flax_available, is_torch_available
-from transformers.testing_utils import is_pt_flax_cross_test, require_flax, tooslow
+from transformers import (GPT2Tokenizer, GPTJConfig, is_flax_available,
+                          is_torch_available)
+from transformers.testing_utils import (is_pt_flax_cross_test, require_flax,
+                                        tooslow)
 
 from ...generation.test_flax_utils import FlaxGenerationTesterMixin
-from ...test_modeling_flax_common import FlaxModelTesterMixin, ids_tensor, random_attention_mask
-
+from ...test_modeling_flax_common import (FlaxModelTesterMixin, ids_tensor,
+                                          random_attention_mask)
 
 if is_flax_available():
     import jax
     import jax.numpy as jnp
-
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
-    from transformers.models.gptj.modeling_flax_gptj import FlaxGPTJForCausalLM, FlaxGPTJModel
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
+    from transformers.models.gptj.modeling_flax_gptj import (
+        FlaxGPTJForCausalLM, FlaxGPTJModel)
 
 if is_torch_available():
     import torch

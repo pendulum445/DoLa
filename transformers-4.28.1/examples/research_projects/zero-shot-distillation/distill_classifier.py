@@ -8,18 +8,10 @@ import torch
 from datasets import Dataset
 from torch import nn
 from tqdm.auto import tqdm
-
-from transformers import (
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    set_seed,
-    utils,
-)
+from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
+                          HfArgumentParser, Trainer, TrainingArguments,
+                          set_seed, utils)
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
-
 
 DESCRIPTION = """
 Distills an NLI-based zero-shot classifier to a smaller, more efficient model with a fixed set of candidate class

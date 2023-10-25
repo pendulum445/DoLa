@@ -15,11 +15,10 @@
 Script to close stale issue. Taken in part from the AllenNLP repository.
 https://github.com/allenai/allennlp.
 """
-from datetime import datetime as dt
 import os
+from datetime import datetime as dt
 
 from github import Github
-
 
 LABELS_TO_EXEMPT = [
     "good first issue",

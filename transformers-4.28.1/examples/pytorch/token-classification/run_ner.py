@@ -28,25 +28,16 @@ from typing import Optional
 import datasets
 import evaluate
 import numpy as np
-from datasets import ClassLabel, load_dataset
-
 import transformers
-from transformers import (
-    AutoConfig,
-    AutoModelForTokenClassification,
-    AutoTokenizer,
-    DataCollatorForTokenClassification,
-    HfArgumentParser,
-    PretrainedConfig,
-    PreTrainedTokenizerFast,
-    Trainer,
-    TrainingArguments,
-    set_seed,
-)
+from datasets import ClassLabel, load_dataset
+from transformers import (AutoConfig, AutoModelForTokenClassification,
+                          AutoTokenizer, DataCollatorForTokenClassification,
+                          HfArgumentParser, PretrainedConfig,
+                          PreTrainedTokenizerFast, Trainer, TrainingArguments,
+                          set_seed)
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
-
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

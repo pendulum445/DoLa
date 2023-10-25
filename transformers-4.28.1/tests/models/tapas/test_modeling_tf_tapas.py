@@ -18,49 +18,37 @@ import unittest
 
 import numpy as np
 import pandas as pd
-
-from transformers import (
-    TF_MODEL_FOR_CAUSAL_LM_MAPPING,
-    TF_MODEL_FOR_MASKED_LM_MAPPING,
-    TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING,
-    TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING,
-    TF_MODEL_FOR_PRETRAINING_MAPPING,
-    TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
-    TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
-    TF_MODEL_FOR_TABLE_QUESTION_ANSWERING_MAPPING,
-    TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
-    TapasConfig,
-    TapasTokenizer,
-    is_tf_available,
-)
+from transformers import (TF_MODEL_FOR_CAUSAL_LM_MAPPING,
+                          TF_MODEL_FOR_MASKED_LM_MAPPING,
+                          TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING,
+                          TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING,
+                          TF_MODEL_FOR_PRETRAINING_MAPPING,
+                          TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
+                          TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
+                          TF_MODEL_FOR_TABLE_QUESTION_ANSWERING_MAPPING,
+                          TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
+                          TapasConfig, TapasTokenizer, is_tf_available)
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_tensorflow_probability, require_tf, slow
+from transformers.testing_utils import (require_tensorflow_probability,
+                                        require_tf, slow)
 from transformers.utils import cached_property
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        TFTapasForMaskedLM,
-        TFTapasForQuestionAnswering,
-        TFTapasForSequenceClassification,
-        TFTapasModel,
-    )
-    from transformers.models.tapas.modeling_tf_tapas import (
-        IndexMap,
-        ProductIndexMap,
-        flatten,
-        gather,
-        range_index_map,
-        reduce_max,
-        reduce_mean,
-        reduce_sum,
-    )
+    from transformers import (TFTapasForMaskedLM, TFTapasForQuestionAnswering,
+                              TFTapasForSequenceClassification, TFTapasModel)
+    from transformers.models.tapas.modeling_tf_tapas import (IndexMap,
+                                                             ProductIndexMap,
+                                                             flatten, gather,
+                                                             range_index_map,
+                                                             reduce_max,
+                                                             reduce_mean,
+                                                             reduce_sum)
 
 
 class TFTapasModelTester:

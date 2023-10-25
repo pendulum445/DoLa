@@ -25,7 +25,6 @@ from PIL import Image
 from torch import nn
 from torch.utils.data import Dataset
 
-
 POOLING_BREAKDOWN = {1: (1, 1), 2: (2, 1), 3: (3, 1), 4: (2, 2), 5: (5, 1), 6: (3, 2), 7: (7, 1), 8: (4, 2), 9: (3, 3)}
 
 

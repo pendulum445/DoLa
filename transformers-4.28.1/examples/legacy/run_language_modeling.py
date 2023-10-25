@@ -28,29 +28,17 @@ from dataclasses import dataclass, field
 from glob import glob
 from typing import Optional
 
-from torch.utils.data import ConcatDataset
-
 import transformers
-from transformers import (
-    CONFIG_MAPPING,
-    MODEL_WITH_LM_HEAD_MAPPING,
-    AutoConfig,
-    AutoModelWithLMHead,
-    AutoTokenizer,
-    DataCollatorForLanguageModeling,
-    DataCollatorForPermutationLanguageModeling,
-    DataCollatorForWholeWordMask,
-    HfArgumentParser,
-    LineByLineTextDataset,
-    LineByLineWithRefDataset,
-    PreTrainedTokenizer,
-    TextDataset,
-    Trainer,
-    TrainingArguments,
-    set_seed,
-)
+from torch.utils.data import ConcatDataset
+from transformers import (CONFIG_MAPPING, MODEL_WITH_LM_HEAD_MAPPING,
+                          AutoConfig, AutoModelWithLMHead, AutoTokenizer,
+                          DataCollatorForLanguageModeling,
+                          DataCollatorForPermutationLanguageModeling,
+                          DataCollatorForWholeWordMask, HfArgumentParser,
+                          LineByLineTextDataset, LineByLineWithRefDataset,
+                          PreTrainedTokenizer, TextDataset, Trainer,
+                          TrainingArguments, set_seed)
 from transformers.trainer_utils import is_main_process
-
 
 logger = logging.getLogger(__name__)
 

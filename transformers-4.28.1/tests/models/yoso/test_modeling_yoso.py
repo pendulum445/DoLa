@@ -21,22 +21,18 @@ from transformers import YosoConfig, is_torch_available
 from transformers.testing_utils import require_torch, slow, torch_device
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        YosoForMaskedLM,
-        YosoForMultipleChoice,
-        YosoForQuestionAnswering,
-        YosoForSequenceClassification,
-        YosoForTokenClassification,
-        YosoModel,
-    )
-    from transformers.models.yoso.modeling_yoso import YOSO_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (YosoForMaskedLM, YosoForMultipleChoice,
+                              YosoForQuestionAnswering,
+                              YosoForSequenceClassification,
+                              YosoForTokenClassification, YosoModel)
+    from transformers.models.yoso.modeling_yoso import \
+        YOSO_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class YosoModelTester:

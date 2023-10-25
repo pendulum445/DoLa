@@ -15,11 +15,11 @@
 import unittest
 
 from transformers.models.whisper import WhisperTokenizer, WhisperTokenizerFast
-from transformers.models.whisper.tokenization_whisper import _find_longest_common_sequence
+from transformers.models.whisper.tokenization_whisper import \
+    _find_longest_common_sequence
 from transformers.testing_utils import slow
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 ES_CODE = 50262
 EN_CODE = 50259

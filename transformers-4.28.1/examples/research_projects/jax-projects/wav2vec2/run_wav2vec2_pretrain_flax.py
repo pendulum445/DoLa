@@ -17,17 +17,11 @@ from flax import jax_utils, traverse_util
 from flax.training import train_state
 from flax.training.common_utils import get_metrics, onehot, shard
 from tqdm import tqdm
-
-from transformers import (
-    FlaxWav2Vec2ForPreTraining,
-    HfArgumentParser,
-    TrainingArguments,
-    Wav2Vec2Config,
-    Wav2Vec2FeatureExtractor,
-    is_tensorboard_available,
-)
-from transformers.models.wav2vec2.modeling_flax_wav2vec2 import _compute_mask_indices, _sample_negative_indices
-
+from transformers import (FlaxWav2Vec2ForPreTraining, HfArgumentParser,
+                          TrainingArguments, Wav2Vec2Config,
+                          Wav2Vec2FeatureExtractor, is_tensorboard_available)
+from transformers.models.wav2vec2.modeling_flax_wav2vec2 import (
+    _compute_mask_indices, _sample_negative_indices)
 
 logger = logging.getLogger(__name__)
 

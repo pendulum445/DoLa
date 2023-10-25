@@ -17,21 +17,14 @@ import unittest
 
 import numpy as np
 import pytest
-
 from transformers.testing_utils import require_torch, require_vision
 from transformers.utils import is_vision_available
 
-
 if is_vision_available():
     from PIL import Image
-
-    from transformers import (
-        AutoProcessor,
-        Pix2StructImageProcessor,
-        Pix2StructProcessor,
-        PreTrainedTokenizerFast,
-        T5Tokenizer,
-    )
+    from transformers import (AutoProcessor, Pix2StructImageProcessor,
+                              Pix2StructProcessor, PreTrainedTokenizerFast,
+                              T5Tokenizer)
 
 
 @require_vision

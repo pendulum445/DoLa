@@ -22,33 +22,19 @@ from typing import Optional
 import evaluate
 import numpy as np
 import torch
+import transformers
 from datasets import load_dataset
 from PIL import Image
-from torchvision.transforms import (
-    CenterCrop,
-    Compose,
-    Normalize,
-    RandomHorizontalFlip,
-    RandomResizedCrop,
-    Resize,
-    ToTensor,
-)
-
-import transformers
-from transformers import (
-    MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
-    AutoConfig,
-    AutoImageProcessor,
-    AutoModelForImageClassification,
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    set_seed,
-)
+from torchvision.transforms import (CenterCrop, Compose, Normalize,
+                                    RandomHorizontalFlip, RandomResizedCrop,
+                                    Resize, ToTensor)
+from transformers import (MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING, AutoConfig,
+                          AutoImageProcessor, AutoModelForImageClassification,
+                          HfArgumentParser, Trainer, TrainingArguments,
+                          set_seed)
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
-
 
 """ Fine-tuning a 🤗 Transformers model for image classification"""
 

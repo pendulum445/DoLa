@@ -24,24 +24,12 @@ from typing import Tuple
 
 import numpy as np
 import torch
-
-from transformers import (
-    CTRLLMHeadModel,
-    CTRLTokenizer,
-    GenerationMixin,
-    GPT2LMHeadModel,
-    GPT2Tokenizer,
-    OpenAIGPTLMHeadModel,
-    OpenAIGPTTokenizer,
-    TransfoXLLMHeadModel,
-    TransfoXLTokenizer,
-    XLMTokenizer,
-    XLMWithLMHeadModel,
-    XLNetLMHeadModel,
-    XLNetTokenizer,
-)
+from transformers import (CTRLLMHeadModel, CTRLTokenizer, GenerationMixin,
+                          GPT2LMHeadModel, GPT2Tokenizer, OpenAIGPTLMHeadModel,
+                          OpenAIGPTTokenizer, TransfoXLLMHeadModel,
+                          TransfoXLTokenizer, XLMTokenizer, XLMWithLMHeadModel,
+                          XLNetLMHeadModel, XLNetTokenizer)
 from transformers.modeling_outputs import CausalLMOutputWithPast
-
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",

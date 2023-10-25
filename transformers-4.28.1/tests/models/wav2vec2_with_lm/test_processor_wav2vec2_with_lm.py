@@ -25,22 +25,24 @@ import numpy as np
 from datasets import load_dataset
 from packaging import version
 from parameterized import parameterized
-
 from transformers import AutoProcessor
-from transformers.models.wav2vec2 import Wav2Vec2CTCTokenizer, Wav2Vec2FeatureExtractor
-from transformers.models.wav2vec2.tokenization_wav2vec2 import VOCAB_FILES_NAMES
-from transformers.testing_utils import require_pyctcdecode, require_torch, require_torchaudio, slow
-from transformers.utils import FEATURE_EXTRACTOR_NAME, is_pyctcdecode_available, is_torch_available
+from transformers.models.wav2vec2 import (Wav2Vec2CTCTokenizer,
+                                          Wav2Vec2FeatureExtractor)
+from transformers.models.wav2vec2.tokenization_wav2vec2 import \
+    VOCAB_FILES_NAMES
+from transformers.testing_utils import (require_pyctcdecode, require_torch,
+                                        require_torchaudio, slow)
+from transformers.utils import (FEATURE_EXTRACTOR_NAME,
+                                is_pyctcdecode_available, is_torch_available)
 
 from ..wav2vec2.test_feature_extraction_wav2vec2 import floats_list
-
 
 if is_pyctcdecode_available():
     from huggingface_hub import snapshot_download
     from pyctcdecode import BeamSearchDecoderCTC
-
     from transformers.models.wav2vec2_with_lm import Wav2Vec2ProcessorWithLM
-    from transformers.models.wav2vec2_with_lm.processing_wav2vec2_with_lm import Wav2Vec2DecoderWithLMOutput
+    from transformers.models.wav2vec2_with_lm.processing_wav2vec2_with_lm import \
+        Wav2Vec2DecoderWithLMOutput
 
 if is_torch_available():
     from transformers import Wav2Vec2ForCTC

@@ -23,21 +23,22 @@ from transformers.file_utils import is_tf_available, is_vision_available
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import numpy as np
     import tensorflow as tf
-
-    from transformers import TFMobileViTForImageClassification, TFMobileViTForSemanticSegmentation, TFMobileViTModel
-    from transformers.models.mobilevit.modeling_tf_mobilevit import TF_MOBILEVIT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (TFMobileViTForImageClassification,
+                              TFMobileViTForSemanticSegmentation,
+                              TFMobileViTModel)
+    from transformers.models.mobilevit.modeling_tf_mobilevit import \
+        TF_MOBILEVIT_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import MobileViTFeatureExtractor
 
 

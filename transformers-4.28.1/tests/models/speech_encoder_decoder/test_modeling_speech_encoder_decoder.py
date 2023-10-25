@@ -20,26 +20,24 @@ import unittest
 from transformers import is_torch_available
 from transformers.testing_utils import require_torch, slow, torch_device
 
-from ...test_modeling_common import floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ..bert.test_modeling_bert import BertModelTester
-from ..speech_to_text.test_modeling_speech_to_text import Speech2TextModelTester
-from ..speech_to_text_2.test_modeling_speech_to_text_2 import Speech2Text2StandaloneDecoderModelTester
+from ..speech_to_text.test_modeling_speech_to_text import \
+    Speech2TextModelTester
+from ..speech_to_text_2.test_modeling_speech_to_text_2 import \
+    Speech2Text2StandaloneDecoderModelTester
 from ..wav2vec2.test_modeling_wav2vec2 import Wav2Vec2ModelTester
-
 
 if is_torch_available():
     import numpy as np
     import torch
-
-    from transformers import (
-        BertLMHeadModel,
-        Speech2Text2ForCausalLM,
-        SpeechEncoderDecoderConfig,
-        SpeechEncoderDecoderModel,
-        Wav2Vec2Model,
-    )
+    from transformers import (BertLMHeadModel, Speech2Text2ForCausalLM,
+                              SpeechEncoderDecoderConfig,
+                              SpeechEncoderDecoderModel, Wav2Vec2Model)
     from transformers.modeling_outputs import BaseModelOutput
-    from transformers.models.speech_to_text.modeling_speech_to_text import Speech2TextEncoder
+    from transformers.models.speech_to_text.modeling_speech_to_text import \
+        Speech2TextEncoder
 
 
 @require_torch

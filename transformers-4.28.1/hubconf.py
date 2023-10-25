@@ -19,17 +19,10 @@ SRC_DIR = os.path.join(os.path.dirname(__file__), "src")
 sys.path.append(SRC_DIR)
 
 
-from transformers import (
-    AutoConfig,
-    AutoModel,
-    AutoModelForCausalLM,
-    AutoModelForMaskedLM,
-    AutoModelForQuestionAnswering,
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    add_start_docstrings,
-)
-
+from transformers import (AutoConfig, AutoModel, AutoModelForCausalLM,
+                          AutoModelForMaskedLM, AutoModelForQuestionAnswering,
+                          AutoModelForSequenceClassification, AutoTokenizer,
+                          add_start_docstrings)
 
 dependencies = ["torch", "numpy", "tokenizers", "filelock", "requests", "tqdm", "regex", "sentencepiece", "sacremoses", "importlib_metadata", "huggingface_hub"]
 

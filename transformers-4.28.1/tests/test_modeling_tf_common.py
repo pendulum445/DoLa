@@ -31,35 +31,20 @@ from datasets import Dataset
 from huggingface_hub import HfFolder, Repository, delete_repo
 from huggingface_hub.file_download import http_get
 from requests.exceptions import HTTPError
-
 from transformers import is_tf_available, is_torch_available
 from transformers.configuration_utils import PretrainedConfig
 from transformers.models.auto import get_values
-from transformers.testing_utils import (  # noqa: F401
-    TOKEN,
-    USER,
-    CaptureLogger,
-    CaptureStdout,
-    _tf_gpu_memory_limit,
-    is_pt_tf_cross_test,
-    is_staging_test,
-    require_safetensors,
-    require_tf,
-    require_tf2onnx,
-    slow,
-    tooslow,
-    torch_device,
-)
-from transformers.utils import (
-    CONFIG_NAME,
-    GENERATION_CONFIG_NAME,
-    SAFE_WEIGHTS_NAME,
-    TF2_WEIGHTS_INDEX_NAME,
-    TF2_WEIGHTS_NAME,
-    logging,
-)
+from transformers.testing_utils import (TOKEN, USER,  # noqa: F401
+                                        CaptureLogger, CaptureStdout,
+                                        _tf_gpu_memory_limit,
+                                        is_pt_tf_cross_test, is_staging_test,
+                                        require_safetensors, require_tf,
+                                        require_tf2onnx, slow, tooslow,
+                                        torch_device)
+from transformers.utils import (CONFIG_NAME, GENERATION_CONFIG_NAME,
+                                SAFE_WEIGHTS_NAME, TF2_WEIGHTS_INDEX_NAME,
+                                TF2_WEIGHTS_NAME, logging)
 from transformers.utils.generic import ModelOutput
-
 
 logger = logging.get_logger(__name__)
 
@@ -68,46 +53,37 @@ if is_tf_available():
     import h5py
     import numpy as np
     import tensorflow as tf
-
-    from transformers import (
-        TF_MODEL_FOR_CAUSAL_LM_MAPPING,
-        TF_MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING,
-        TF_MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
-        TF_MODEL_FOR_MASKED_IMAGE_MODELING_MAPPING,
-        TF_MODEL_FOR_MASKED_LM_MAPPING,
-        TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING,
-        TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING,
-        TF_MODEL_FOR_PRETRAINING_MAPPING,
-        TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
-        TF_MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING,
-        TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
-        TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
-        TF_MODEL_FOR_SPEECH_SEQ_2_SEQ_MAPPING,
-        TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
-        BertConfig,
-        PreTrainedModel,
-        PushToHubCallback,
-        RagRetriever,
-        TFAutoModel,
-        TFAutoModelForSequenceClassification,
-        TFBertForMaskedLM,
-        TFBertForSequenceClassification,
-        TFBertModel,
-        TFPreTrainedModel,
-        TFRagModel,
-        TFSharedEmbeddings,
-    )
-    from transformers.generation import (
-        TFBeamSampleDecoderOnlyOutput,
-        TFBeamSampleEncoderDecoderOutput,
-        TFBeamSearchDecoderOnlyOutput,
-        TFBeamSearchEncoderDecoderOutput,
-        TFGreedySearchDecoderOnlyOutput,
-        TFGreedySearchEncoderDecoderOutput,
-        TFSampleDecoderOnlyOutput,
-        TFSampleEncoderDecoderOutput,
-    )
-    from transformers.modeling_tf_utils import tf_shard_checkpoint, unpack_inputs
+    from transformers import (TF_MODEL_FOR_CAUSAL_LM_MAPPING,
+                              TF_MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING,
+                              TF_MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
+                              TF_MODEL_FOR_MASKED_IMAGE_MODELING_MAPPING,
+                              TF_MODEL_FOR_MASKED_LM_MAPPING,
+                              TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING,
+                              TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING,
+                              TF_MODEL_FOR_PRETRAINING_MAPPING,
+                              TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
+                              TF_MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING,
+                              TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
+                              TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
+                              TF_MODEL_FOR_SPEECH_SEQ_2_SEQ_MAPPING,
+                              TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
+                              BertConfig, PreTrainedModel, PushToHubCallback,
+                              RagRetriever, TFAutoModel,
+                              TFAutoModelForSequenceClassification,
+                              TFBertForMaskedLM,
+                              TFBertForSequenceClassification, TFBertModel,
+                              TFPreTrainedModel, TFRagModel,
+                              TFSharedEmbeddings)
+    from transformers.generation import (TFBeamSampleDecoderOnlyOutput,
+                                         TFBeamSampleEncoderDecoderOutput,
+                                         TFBeamSearchDecoderOnlyOutput,
+                                         TFBeamSearchEncoderDecoderOutput,
+                                         TFGreedySearchDecoderOnlyOutput,
+                                         TFGreedySearchEncoderDecoderOutput,
+                                         TFSampleDecoderOnlyOutput,
+                                         TFSampleEncoderDecoderOutput)
+    from transformers.modeling_tf_utils import (tf_shard_checkpoint,
+                                                unpack_inputs)
     from transformers.tf_utils import stable_softmax
 
     tf.config.experimental.enable_tensor_float_32_execution(False)
@@ -128,7 +104,6 @@ if is_tf_available():
 
 if is_torch_available():
     import torch
-
     from transformers import BertModel
 
 

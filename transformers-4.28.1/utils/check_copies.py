@@ -20,9 +20,7 @@ import re
 
 import black
 from doc_builder.style_doc import style_docstrings_in_code
-
 from transformers.utils import direct_transformers_import
-
 
 # All paths are set with the intent you should run this script from the root of the repo with the command
 # python utils/check_copies.py

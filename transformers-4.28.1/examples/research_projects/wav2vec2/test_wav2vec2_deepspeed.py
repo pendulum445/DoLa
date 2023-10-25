@@ -18,7 +18,6 @@
 import sys
 from pathlib import Path
 
-
 git_repo_path = Path(__file__).resolve().parents[3] / "src"
 sys.path.insert(1, str(git_repo_path))
 
@@ -34,20 +33,12 @@ from parameterized import parameterized  # noqa
 from transformers import TrainingArguments, is_torch_available  # noqa
 from transformers.deepspeed import is_deepspeed_available  # noqa
 from transformers.file_utils import WEIGHTS_NAME  # noqa
-from transformers.testing_utils import (  # noqa
-    CaptureLogger,
-    ExtendSysPath,
-    TestCasePlus,
-    execute_subprocess_async,
-    get_gpu_count,
-    mockenv_context,
-    require_deepspeed,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-    slow,
-)
+from transformers.testing_utils import (CaptureLogger, ExtendSysPath,  # noqa
+                                        TestCasePlus, execute_subprocess_async,
+                                        get_gpu_count, mockenv_context,
+                                        require_deepspeed, require_torch_gpu,
+                                        require_torch_multi_gpu, slow)
 from transformers.trainer_utils import set_seed  # noqa
-
 
 set_seed(42)
 

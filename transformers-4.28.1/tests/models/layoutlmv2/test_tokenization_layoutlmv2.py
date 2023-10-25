@@ -21,39 +21,21 @@ import tempfile
 import unittest
 from typing import List
 
-from transformers import (
-    AddedToken,
-    LayoutLMv2TokenizerFast,
-    SpecialTokensMixin,
-    is_tf_available,
-    is_torch_available,
-    logging,
-)
+from transformers import (AddedToken, LayoutLMv2TokenizerFast,
+                          SpecialTokensMixin, is_tf_available,
+                          is_torch_available, logging)
 from transformers.models.layoutlmv2.tokenization_layoutlmv2 import (
-    VOCAB_FILES_NAMES,
-    BasicTokenizer,
-    LayoutLMv2Tokenizer,
-    WordpieceTokenizer,
-    _is_control,
-    _is_punctuation,
-    _is_whitespace,
-)
-from transformers.testing_utils import (
-    is_pt_tf_cross_test,
-    require_detectron2,
-    require_pandas,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+    VOCAB_FILES_NAMES, BasicTokenizer, LayoutLMv2Tokenizer, WordpieceTokenizer,
+    _is_control, _is_punctuation, _is_whitespace)
+from transformers.testing_utils import (is_pt_tf_cross_test,
+                                        require_detectron2, require_pandas,
+                                        require_tokenizers, require_torch,
+                                        slow)
 
-from ...test_tokenization_common import (
-    SMALL_TRAINING_CORPUS,
-    TokenizerTesterMixin,
-    filter_non_english,
-    merge_model_tokenizer_mappings,
-)
-
+from ...test_tokenization_common import (SMALL_TRAINING_CORPUS,
+                                         TokenizerTesterMixin,
+                                         filter_non_english,
+                                         merge_model_tokenizer_mappings)
 
 logger = logging.get_logger(__name__)
 
@@ -1272,7 +1254,6 @@ class LayoutLMv2TokenizationTest(TokenizerTesterMixin, unittest.TestCase):
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import MODEL_MAPPING, TOKENIZER_MAPPING
 
         MODEL_TOKENIZER_MAPPING = merge_model_tokenizer_mappings(MODEL_MAPPING, TOKENIZER_MAPPING)

@@ -21,28 +21,25 @@ import unittest
 
 import numpy as np
 from huggingface_hub import hf_hub_download
-
 from transformers import VideoMAEConfig
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
-from transformers.utils import cached_property, is_torch_available, is_vision_available
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
+from transformers.utils import (cached_property, is_torch_available,
+                                is_vision_available)
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import (
-        MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING,
-        VideoMAEForPreTraining,
-        VideoMAEForVideoClassification,
-        VideoMAEModel,
-    )
-    from transformers.models.videomae.modeling_videomae import VIDEOMAE_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING,
+                              VideoMAEForPreTraining,
+                              VideoMAEForVideoClassification, VideoMAEModel)
+    from transformers.models.videomae.modeling_videomae import \
+        VIDEOMAE_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():

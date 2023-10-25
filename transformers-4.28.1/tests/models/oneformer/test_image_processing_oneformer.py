@@ -19,20 +19,21 @@ import unittest
 
 import numpy as np
 from huggingface_hub import hf_hub_download
-
 from transformers.testing_utils import require_torch, require_vision
 from transformers.utils import is_torch_available, is_vision_available
 
-from ...test_image_processing_common import ImageProcessingSavingTestMixin, prepare_image_inputs
-
+from ...test_image_processing_common import (ImageProcessingSavingTestMixin,
+                                             prepare_image_inputs)
 
 if is_torch_available():
     import torch
 
     if is_vision_available():
         from transformers import OneFormerImageProcessor
-        from transformers.models.oneformer.image_processing_oneformer import binary_mask_to_rle
-        from transformers.models.oneformer.modeling_oneformer import OneFormerForUniversalSegmentationOutput
+        from transformers.models.oneformer.image_processing_oneformer import \
+            binary_mask_to_rle
+        from transformers.models.oneformer.modeling_oneformer import \
+            OneFormerForUniversalSegmentationOutput
 
 if is_vision_available():
     from PIL import Image

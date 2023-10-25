@@ -32,6 +32,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import optax
+import transformers
 from datasets import Dataset, load_dataset
 from flax.core.frozen_dict import freeze, unfreeze
 from flax.training.common_utils import onehot, stack_forest
@@ -39,20 +40,11 @@ from jax.experimental.maps import mesh
 from jax.experimental.pjit import pjit
 from partitions import set_partitions
 from tqdm import tqdm
-
-import transformers
-from transformers import (
-    CONFIG_MAPPING,
-    FLAX_MODEL_FOR_CAUSAL_LM_MAPPING,
-    AutoConfig,
-    AutoTokenizer,
-    FlaxAutoModelForCausalLM,
-    HfArgumentParser,
-    TrainingArguments,
-    is_tensorboard_available,
-)
+from transformers import (CONFIG_MAPPING, FLAX_MODEL_FOR_CAUSAL_LM_MAPPING,
+                          AutoConfig, AutoTokenizer, FlaxAutoModelForCausalLM,
+                          HfArgumentParser, TrainingArguments,
+                          is_tensorboard_available)
 from transformers.testing_utils import CaptureLogger
-
 
 logger = logging.getLogger(__name__)
 

@@ -31,6 +31,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import optax
+import transformers
 from datasets import load_dataset
 from flax import struct, traverse_util
 from flax.jax_utils import pad_shard_unpad, replicate, unreplicate
@@ -38,19 +39,12 @@ from flax.training import train_state
 from flax.training.common_utils import get_metrics, onehot, shard
 from huggingface_hub import Repository, create_repo
 from tqdm import tqdm
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    FlaxAutoModelForSequenceClassification,
-    HfArgumentParser,
-    PretrainedConfig,
-    TrainingArguments,
-    is_tensorboard_available,
-)
-from transformers.utils import check_min_version, get_full_repo_name, send_example_telemetry
-
+from transformers import (AutoConfig, AutoTokenizer,
+                          FlaxAutoModelForSequenceClassification,
+                          HfArgumentParser, PretrainedConfig,
+                          TrainingArguments, is_tensorboard_available)
+from transformers.utils import (check_min_version, get_full_repo_name,
+                                send_example_telemetry)
 
 logger = logging.getLogger(__name__)
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.

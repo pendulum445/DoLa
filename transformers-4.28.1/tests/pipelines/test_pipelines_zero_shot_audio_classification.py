@@ -15,9 +15,9 @@
 import unittest
 
 from datasets import load_dataset
-
 from transformers.pipelines import pipeline
-from transformers.testing_utils import is_pipeline_test, nested_simplify, require_torch, slow
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_torch, slow)
 
 
 @is_pipeline_test

@@ -114,10 +114,8 @@ from statistics import fmean
 
 import pandas as pd
 import torch
-from tqdm import tqdm
-
 import transformers
-
+from tqdm import tqdm
 
 nan = float("nan")
 

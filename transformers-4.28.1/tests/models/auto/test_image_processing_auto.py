@@ -19,21 +19,15 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from transformers import (
-    CONFIG_MAPPING,
-    IMAGE_PROCESSOR_MAPPING,
-    AutoConfig,
-    AutoImageProcessor,
-    CLIPConfig,
-    CLIPImageProcessor,
-)
+from transformers import (CONFIG_MAPPING, IMAGE_PROCESSOR_MAPPING, AutoConfig,
+                          AutoImageProcessor, CLIPConfig, CLIPImageProcessor)
 from transformers.testing_utils import DUMMY_UNKNOWN_IDENTIFIER
-
 
 sys.path.append(str(Path(__file__).parent.parent.parent.parent / "utils"))
 
 from test_module.custom_configuration import CustomConfig  # noqa E402
-from test_module.custom_image_processing import CustomImageProcessor  # noqa E402
+from test_module.custom_image_processing import \
+    CustomImageProcessor  # noqa E402
 
 
 class AutoImageProcessorTest(unittest.TestCase):

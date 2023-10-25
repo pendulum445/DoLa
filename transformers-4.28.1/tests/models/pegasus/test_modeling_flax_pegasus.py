@@ -22,7 +22,6 @@ from transformers.testing_utils import require_flax, slow
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_flax_common import FlaxModelTesterMixin, ids_tensor
 
-
 if is_flax_available():
     import os
 
@@ -33,8 +32,8 @@ if is_flax_available():
     import jax
     import jax.numpy as jnp
     import numpy as np
-
-    from transformers import FlaxPegasusForConditionalGeneration, FlaxPegasusModel
+    from transformers import (FlaxPegasusForConditionalGeneration,
+                              FlaxPegasusModel)
 
 
 @require_flax

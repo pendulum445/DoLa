@@ -14,8 +14,8 @@
 
 from typing import TYPE_CHECKING
 
-from ...utils import OptionalDependencyNotAvailable, _LazyModule, is_tokenizers_available, is_torch_available
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_tokenizers_available, is_torch_available)
 
 _import_structure = {
     "configuration_retribert": ["RETRIBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "RetriBertConfig"],
@@ -44,7 +44,8 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_retribert import RETRIBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, RetriBertConfig
+    from .configuration_retribert import (
+        RETRIBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, RetriBertConfig)
     from .tokenization_retribert import RetriBertTokenizer
 
     try:
@@ -62,10 +63,8 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_retribert import (
-            RETRIBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
-            RetriBertModel,
-            RetriBertPreTrainedModel,
-        )
+            RETRIBERT_PRETRAINED_MODEL_ARCHIVE_LIST, RetriBertModel,
+            RetriBertPreTrainedModel)
 
 else:
     import sys

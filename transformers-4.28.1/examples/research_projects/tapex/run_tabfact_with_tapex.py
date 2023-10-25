@@ -29,25 +29,15 @@ from typing import Optional
 import datasets
 import numpy as np
 import pandas as pd
-from datasets import load_dataset
-
 import transformers
-from transformers import (
-    AutoConfig,
-    BartForSequenceClassification,
-    DataCollatorWithPadding,
-    EvalPrediction,
-    HfArgumentParser,
-    TapexTokenizer,
-    Trainer,
-    TrainingArguments,
-    default_data_collator,
-    set_seed,
-)
+from datasets import load_dataset
+from transformers import (AutoConfig, BartForSequenceClassification,
+                          DataCollatorWithPadding, EvalPrediction,
+                          HfArgumentParser, TapexTokenizer, Trainer,
+                          TrainingArguments, default_data_collator, set_seed)
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
-
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.17.0.dev0")

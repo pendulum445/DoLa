@@ -17,8 +17,8 @@
 {%- if cookiecutter.tokenizer_type == "Based on BERT" %}
 from ...utils import logging
 from ..bert.tokenization_bert_fast import BertTokenizerFast
-from .tokenization_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Tokenizer
-
+from .tokenization_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.\
+    camelcase_modelname}}Tokenizer
 
 logger = logging.get_logger(__name__)
 
@@ -60,8 +60,8 @@ class {{cookiecutter.camelcase_modelname}}TokenizerFast(BertTokenizerFast):
 {%- elif cookiecutter.tokenizer_type == "Based on BART" %}
 from ...utils import logging
 from ..bart.tokenization_bart_fast import BartTokenizerFast
-from .tokenization_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Tokenizer
-
+from .tokenization_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.\
+    camelcase_modelname}}Tokenizer
 
 logger = logging.get_logger(__name__)
 
@@ -107,8 +107,8 @@ from tokenizers import ByteLevelBPETokenizer
 
 from ...tokenization_utils_fast import PreTrainedTokenizerFast
 from ...utils import logging
-from .tokenization_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Tokenizer
-
+from .tokenization_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.\
+    camelcase_modelname}}Tokenizer
 
 logger = logging.get_logger(__name__)
 

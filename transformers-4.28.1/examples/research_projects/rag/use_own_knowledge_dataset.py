@@ -9,16 +9,9 @@ from typing import List, Optional
 import faiss
 import torch
 from datasets import Features, Sequence, Value, load_dataset
-
-from transformers import (
-    DPRContextEncoder,
-    DPRContextEncoderTokenizerFast,
-    HfArgumentParser,
-    RagRetriever,
-    RagSequenceForGeneration,
-    RagTokenizer,
-)
-
+from transformers import (DPRContextEncoder, DPRContextEncoderTokenizerFast,
+                          HfArgumentParser, RagRetriever,
+                          RagSequenceForGeneration, RagTokenizer)
 
 logger = logging.getLogger(__name__)
 torch.set_grad_enabled(False)

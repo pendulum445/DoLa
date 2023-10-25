@@ -24,7 +24,6 @@ import shutil
 from pathlib import Path
 
 from tqdm import tqdm
-
 from transformers import AutoTokenizer
 
 

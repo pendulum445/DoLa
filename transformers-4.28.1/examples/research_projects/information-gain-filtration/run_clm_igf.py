@@ -31,18 +31,10 @@ import random
 import joblib
 import numpy as np
 import torch
-from igf.igf import (
-    SecondaryLearner,
-    collect_objective_set,
-    compute_perplexity,
-    generate_datasets,
-    load_gpt2,
-    recopy_gpt2,
-    set_seed,
-    train_secondary_learner,
-)
+from igf.igf import (SecondaryLearner, collect_objective_set,
+                     compute_perplexity, generate_datasets, load_gpt2,
+                     recopy_gpt2, set_seed, train_secondary_learner)
 from torch.utils.data import DataLoader, RandomSampler
-
 from transformers import GPT2LMHeadModel
 
 

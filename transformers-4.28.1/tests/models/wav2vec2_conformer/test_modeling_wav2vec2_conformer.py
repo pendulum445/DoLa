@@ -19,39 +19,28 @@ import unittest
 
 import numpy as np
 from datasets import load_dataset
-
 from transformers import Wav2Vec2ConformerConfig, is_torch_available
-from transformers.testing_utils import is_pt_flax_cross_test, require_torch, slow, torch_device
+from transformers.testing_utils import (is_pt_flax_cross_test, require_torch,
+                                        slow, torch_device)
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        Wav2Vec2ConformerForAudioFrameClassification,
-        Wav2Vec2ConformerForCTC,
-        Wav2Vec2ConformerForPreTraining,
-        Wav2Vec2ConformerForSequenceClassification,
-        Wav2Vec2ConformerForXVector,
-        Wav2Vec2ConformerModel,
-        Wav2Vec2FeatureExtractor,
-        Wav2Vec2Processor,
-    )
+    from transformers import (Wav2Vec2ConformerForAudioFrameClassification,
+                              Wav2Vec2ConformerForCTC,
+                              Wav2Vec2ConformerForPreTraining,
+                              Wav2Vec2ConformerForSequenceClassification,
+                              Wav2Vec2ConformerForXVector,
+                              Wav2Vec2ConformerModel, Wav2Vec2FeatureExtractor,
+                              Wav2Vec2Processor)
     from transformers.models.wav2vec2_conformer.modeling_wav2vec2_conformer import (
-        Wav2Vec2ConformerGumbelVectorQuantizer,
-        _compute_mask_indices,
-        _sample_negative_indices,
-    )
+        Wav2Vec2ConformerGumbelVectorQuantizer, _compute_mask_indices,
+        _sample_negative_indices)
 
 
 class Wav2Vec2ConformerModelTester:

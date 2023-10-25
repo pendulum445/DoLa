@@ -30,6 +30,7 @@ import datasets
 import evaluate
 import numpy as np
 import torch
+import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from accelerate.utils import set_seed
@@ -37,23 +38,14 @@ from datasets import load_dataset
 from huggingface_hub import Repository, create_repo
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-from utils_qa import postprocess_qa_predictions_with_beam_search
-
-import transformers
-from transformers import (
-    AdamW,
-    DataCollatorWithPadding,
-    EvalPrediction,
-    SchedulerType,
-    XLNetConfig,
-    XLNetForQuestionAnswering,
-    XLNetTokenizerFast,
-    default_data_collator,
-    get_scheduler,
-)
-from transformers.utils import check_min_version, get_full_repo_name, send_example_telemetry
+from transformers import (AdamW, DataCollatorWithPadding, EvalPrediction,
+                          SchedulerType, XLNetConfig,
+                          XLNetForQuestionAnswering, XLNetTokenizerFast,
+                          default_data_collator, get_scheduler)
+from transformers.utils import (check_min_version, get_full_repo_name,
+                                send_example_telemetry)
 from transformers.utils.versions import require_version
-
+from utils_qa import postprocess_qa_predictions_with_beam_search
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

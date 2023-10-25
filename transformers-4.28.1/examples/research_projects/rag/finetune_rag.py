@@ -16,21 +16,13 @@ import torch.distributed as dist
 import torch.distributed as torch_distrib
 from pytorch_lightning.plugins.training_type import DDPPlugin
 from torch.utils.data import DataLoader
-
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    BartForConditionalGeneration,
-    BatchEncoding,
-    RagConfig,
-    RagSequenceForGeneration,
-    RagTokenForGeneration,
-    RagTokenizer,
-    T5ForConditionalGeneration,
-)
+from transformers import (AutoConfig, AutoTokenizer,
+                          BartForConditionalGeneration, BatchEncoding,
+                          RagConfig, RagSequenceForGeneration,
+                          RagTokenForGeneration, RagTokenizer,
+                          T5ForConditionalGeneration)
 from transformers import logging as transformers_logging
 from transformers.integrations import is_ray_available
-
 
 if is_ray_available():
     import ray
@@ -58,8 +50,8 @@ from utils_rag import (  # noqa: E402 # isort:skip
 
 # need the parent dir module
 sys.path.insert(2, str(Path(__file__).resolve().parents[1]))
-from lightning_base import BaseTransformer, add_generic_args, generic_train  # noqa
-
+from lightning_base import (BaseTransformer, add_generic_args,  # noqa
+                            generic_train)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

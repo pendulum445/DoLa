@@ -13,14 +13,8 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_tf_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_tf_available, is_torch_available)
 
 _import_structure = {
     "configuration_resnet": ["RESNET_PRETRAINED_CONFIG_ARCHIVE_MAP", "ResNetConfig", "ResNetOnnxConfig"]
@@ -66,7 +60,8 @@ else:
     ]
 
 if TYPE_CHECKING:
-    from .configuration_resnet import RESNET_PRETRAINED_CONFIG_ARCHIVE_MAP, ResNetConfig, ResNetOnnxConfig
+    from .configuration_resnet import (RESNET_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                       ResNetConfig, ResNetOnnxConfig)
 
     try:
         if not is_torch_available():
@@ -74,13 +69,10 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_resnet import (
-            RESNET_PRETRAINED_MODEL_ARCHIVE_LIST,
-            ResNetBackbone,
-            ResNetForImageClassification,
-            ResNetModel,
-            ResNetPreTrainedModel,
-        )
+        from .modeling_resnet import (RESNET_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                      ResNetBackbone,
+                                      ResNetForImageClassification,
+                                      ResNetModel, ResNetPreTrainedModel)
 
     try:
         if not is_tf_available():
@@ -90,10 +82,8 @@ if TYPE_CHECKING:
     else:
         from .modeling_tf_resnet import (
             TF_RESNET_PRETRAINED_MODEL_ARCHIVE_LIST,
-            TFResNetForImageClassification,
-            TFResNetModel,
-            TFResNetPreTrainedModel,
-        )
+            TFResNetForImageClassification, TFResNetModel,
+            TFResNetPreTrainedModel)
 
     try:
         if not is_flax_available():
@@ -101,7 +91,9 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_resnet import FlaxResNetForImageClassification, FlaxResNetModel, FlaxResNetPreTrainedModel
+        from .modeling_flax_resnet import (FlaxResNetForImageClassification,
+                                           FlaxResNetModel,
+                                           FlaxResNetPreTrainedModel)
 
 
 else:

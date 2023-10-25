@@ -19,43 +19,56 @@ import os
 import random
 from pathlib import Path
 
-from transformers.testing_utils import (
-    is_pipeline_test,
-    require_decord,
-    require_pytesseract,
-    require_timm,
-    require_torch,
-    require_torch_or_tf,
-    require_vision,
-)
+from transformers.testing_utils import (is_pipeline_test, require_decord,
+                                        require_pytesseract, require_timm,
+                                        require_torch, require_torch_or_tf,
+                                        require_vision)
 from transformers.utils import direct_transformers_import, logging
 
-from .pipelines.test_pipelines_audio_classification import AudioClassificationPipelineTests
-from .pipelines.test_pipelines_automatic_speech_recognition import AutomaticSpeechRecognitionPipelineTests
-from .pipelines.test_pipelines_conversational import ConversationalPipelineTests
-from .pipelines.test_pipelines_depth_estimation import DepthEstimationPipelineTests
-from .pipelines.test_pipelines_document_question_answering import DocumentQuestionAnsweringPipelineTests
-from .pipelines.test_pipelines_feature_extraction import FeatureExtractionPipelineTests
+from .pipelines.test_pipelines_audio_classification import \
+    AudioClassificationPipelineTests
+from .pipelines.test_pipelines_automatic_speech_recognition import \
+    AutomaticSpeechRecognitionPipelineTests
+from .pipelines.test_pipelines_conversational import \
+    ConversationalPipelineTests
+from .pipelines.test_pipelines_depth_estimation import \
+    DepthEstimationPipelineTests
+from .pipelines.test_pipelines_document_question_answering import \
+    DocumentQuestionAnsweringPipelineTests
+from .pipelines.test_pipelines_feature_extraction import \
+    FeatureExtractionPipelineTests
 from .pipelines.test_pipelines_fill_mask import FillMaskPipelineTests
-from .pipelines.test_pipelines_image_classification import ImageClassificationPipelineTests
-from .pipelines.test_pipelines_image_segmentation import ImageSegmentationPipelineTests
+from .pipelines.test_pipelines_image_classification import \
+    ImageClassificationPipelineTests
+from .pipelines.test_pipelines_image_segmentation import \
+    ImageSegmentationPipelineTests
 from .pipelines.test_pipelines_image_to_text import ImageToTextPipelineTests
-from .pipelines.test_pipelines_object_detection import ObjectDetectionPipelineTests
+from .pipelines.test_pipelines_object_detection import \
+    ObjectDetectionPipelineTests
 from .pipelines.test_pipelines_question_answering import QAPipelineTests
 from .pipelines.test_pipelines_summarization import SummarizationPipelineTests
 from .pipelines.test_pipelines_table_question_answering import TQAPipelineTests
-from .pipelines.test_pipelines_text2text_generation import Text2TextGenerationPipelineTests
-from .pipelines.test_pipelines_text_classification import TextClassificationPipelineTests
-from .pipelines.test_pipelines_text_generation import TextGenerationPipelineTests
-from .pipelines.test_pipelines_token_classification import TokenClassificationPipelineTests
+from .pipelines.test_pipelines_text2text_generation import \
+    Text2TextGenerationPipelineTests
+from .pipelines.test_pipelines_text_classification import \
+    TextClassificationPipelineTests
+from .pipelines.test_pipelines_text_generation import \
+    TextGenerationPipelineTests
+from .pipelines.test_pipelines_token_classification import \
+    TokenClassificationPipelineTests
 from .pipelines.test_pipelines_translation import TranslationPipelineTests
-from .pipelines.test_pipelines_video_classification import VideoClassificationPipelineTests
-from .pipelines.test_pipelines_visual_question_answering import VisualQuestionAnsweringPipelineTests
-from .pipelines.test_pipelines_zero_shot import ZeroShotClassificationPipelineTests
-from .pipelines.test_pipelines_zero_shot_audio_classification import ZeroShotAudioClassificationPipelineTests
-from .pipelines.test_pipelines_zero_shot_image_classification import ZeroShotImageClassificationPipelineTests
-from .pipelines.test_pipelines_zero_shot_object_detection import ZeroShotObjectDetectionPipelineTests
-
+from .pipelines.test_pipelines_video_classification import \
+    VideoClassificationPipelineTests
+from .pipelines.test_pipelines_visual_question_answering import \
+    VisualQuestionAnsweringPipelineTests
+from .pipelines.test_pipelines_zero_shot import \
+    ZeroShotClassificationPipelineTests
+from .pipelines.test_pipelines_zero_shot_audio_classification import \
+    ZeroShotAudioClassificationPipelineTests
+from .pipelines.test_pipelines_zero_shot_image_classification import \
+    ZeroShotImageClassificationPipelineTests
+from .pipelines.test_pipelines_zero_shot_object_detection import \
+    ZeroShotObjectDetectionPipelineTests
 
 pipeline_test_mapping = {
     "audio-classification": {"test": AudioClassificationPipelineTests},

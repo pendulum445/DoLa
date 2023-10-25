@@ -18,30 +18,25 @@ import unittest
 
 from datasets import load_dataset
 from packaging import version
-
 from transformers import ViltConfig, is_torch_available, is_vision_available
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
 from transformers.utils import cached_property
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        MODEL_MAPPING,
-        ViltForImageAndTextRetrieval,
-        ViltForImagesAndTextClassification,
-        ViltForMaskedLM,
-        ViltForQuestionAnswering,
-        ViltForTokenClassification,
-        ViltModel,
-    )
-    from transformers.models.vilt.modeling_vilt import VILT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_MAPPING, ViltForImageAndTextRetrieval,
+                              ViltForImagesAndTextClassification,
+                              ViltForMaskedLM, ViltForQuestionAnswering,
+                              ViltForTokenClassification, ViltModel)
+    from transformers.models.vilt.modeling_vilt import \
+        VILT_PRETRAINED_MODEL_ARCHIVE_LIST
     from transformers.pytorch_utils import is_torch_greater_or_equal_than_1_10
 else:
     is_torch_greater_or_equal_than_1_10 = False
@@ -49,7 +44,6 @@ else:
 if is_vision_available():
     import PIL
     from PIL import Image
-
     from transformers import ViltProcessor
 
 

@@ -16,7 +16,8 @@
 import os
 import unittest
 
-from transformers.models.phobert.tokenization_phobert import VOCAB_FILES_NAMES, PhobertTokenizer
+from transformers.models.phobert.tokenization_phobert import (
+    VOCAB_FILES_NAMES, PhobertTokenizer)
 
 from ...test_tokenization_common import TokenizerTesterMixin
 

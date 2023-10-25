@@ -17,23 +17,25 @@ import inspect
 import unittest
 
 from huggingface_hub import hf_hub_download
-
-from transformers import GitConfig, GitProcessor, GitVisionConfig, is_torch_available, is_vision_available
+from transformers import (GitConfig, GitProcessor, GitVisionConfig,
+                          is_torch_available, is_vision_available)
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import MODEL_FOR_CAUSAL_LM_MAPPING, GitForCausalLM, GitModel, GitVisionModel
-    from transformers.models.git.modeling_git import GIT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_FOR_CAUSAL_LM_MAPPING, GitForCausalLM,
+                              GitModel, GitVisionModel)
+    from transformers.models.git.modeling_git import \
+        GIT_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():

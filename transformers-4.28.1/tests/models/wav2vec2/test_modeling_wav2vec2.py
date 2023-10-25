@@ -24,53 +24,34 @@ import unittest
 
 import numpy as np
 from datasets import load_dataset
-
 from transformers import Wav2Vec2Config, is_torch_available
-from transformers.testing_utils import (
-    CaptureLogger,
-    is_pt_flax_cross_test,
-    is_pyctcdecode_available,
-    is_torchaudio_available,
-    require_pyctcdecode,
-    require_soundfile,
-    require_torch,
-    require_torchaudio,
-    run_test_in_subprocess,
-    slow,
-    torch_device,
-)
+from transformers.testing_utils import (CaptureLogger, is_pt_flax_cross_test,
+                                        is_pyctcdecode_available,
+                                        is_torchaudio_available,
+                                        require_pyctcdecode, require_soundfile,
+                                        require_torch, require_torchaudio,
+                                        run_test_in_subprocess, slow,
+                                        torch_device)
 from transformers.utils import is_torch_fx_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        Wav2Vec2FeatureExtractor,
-        Wav2Vec2ForAudioFrameClassification,
-        Wav2Vec2ForCTC,
-        Wav2Vec2ForMaskedLM,
-        Wav2Vec2ForPreTraining,
-        Wav2Vec2ForSequenceClassification,
-        Wav2Vec2ForXVector,
-        Wav2Vec2Model,
-        Wav2Vec2Processor,
-    )
+    from transformers import (Wav2Vec2FeatureExtractor,
+                              Wav2Vec2ForAudioFrameClassification,
+                              Wav2Vec2ForCTC, Wav2Vec2ForMaskedLM,
+                              Wav2Vec2ForPreTraining,
+                              Wav2Vec2ForSequenceClassification,
+                              Wav2Vec2ForXVector, Wav2Vec2Model,
+                              Wav2Vec2Processor)
     from transformers.models.wav2vec2.modeling_wav2vec2 import (
-        Wav2Vec2GumbelVectorQuantizer,
-        _compute_mask_indices,
-        _sample_negative_indices,
-    )
+        Wav2Vec2GumbelVectorQuantizer, _compute_mask_indices,
+        _sample_negative_indices)
 
 
 if is_torchaudio_available():
@@ -79,9 +60,9 @@ if is_torchaudio_available():
 
 if is_pyctcdecode_available():
     import pyctcdecode.decoder
-
     from transformers import Wav2Vec2ProcessorWithLM
-    from transformers.models.wav2vec2_with_lm import processing_wav2vec2_with_lm
+    from transformers.models.wav2vec2_with_lm import \
+        processing_wav2vec2_with_lm
 
 
 if is_torch_fx_available():

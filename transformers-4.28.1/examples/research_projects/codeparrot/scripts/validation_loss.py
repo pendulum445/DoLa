@@ -6,8 +6,8 @@ from arguments import EvaluationArguments
 from datasets import load_dataset
 from torch.utils.data import IterableDataset
 from torch.utils.data.dataloader import DataLoader
-
-from transformers import AutoModelForCausalLM, AutoTokenizer, HfArgumentParser, set_seed
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          HfArgumentParser, set_seed)
 
 
 class ConstantLengthDataset(IterableDataset):

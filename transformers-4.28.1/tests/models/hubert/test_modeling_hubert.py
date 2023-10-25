@@ -22,33 +22,24 @@ import tempfile
 import unittest
 
 import pytest
-
 from transformers import HubertConfig, is_torch_available
-from transformers.testing_utils import require_soundfile, require_torch, slow, torch_device
+from transformers.testing_utils import (require_soundfile, require_torch, slow,
+                                        torch_device)
 from transformers.utils import is_torch_fx_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        HubertForCTC,
-        HubertForSequenceClassification,
-        HubertModel,
-        Wav2Vec2FeatureExtractor,
-        Wav2Vec2Processor,
-    )
-    from transformers.models.hubert.modeling_hubert import _compute_mask_indices
+    from transformers import (HubertForCTC, HubertForSequenceClassification,
+                              HubertModel, Wav2Vec2FeatureExtractor,
+                              Wav2Vec2Processor)
+    from transformers.models.hubert.modeling_hubert import \
+        _compute_mask_indices
 
 if is_torch_fx_available():
     from transformers.utils.fx import symbolic_trace

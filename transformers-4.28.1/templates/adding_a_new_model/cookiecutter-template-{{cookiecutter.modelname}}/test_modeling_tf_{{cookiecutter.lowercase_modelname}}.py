@@ -17,16 +17,16 @@
 
 import unittest
 
-from transformers import is_tf_available, {{cookiecutter.camelcase_modelname}}Config
+from transformers import (is_tf_available,
+                          {{cookiecutter.camelcase_modelname}}Config)
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
-
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import (
         TF{{cookiecutter.camelcase_modelname}}ForCausalLM,
         TF{{cookiecutter.camelcase_modelname}}ForMaskedLM,
@@ -34,8 +34,7 @@ if is_tf_available():
         TF{{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
         TF{{cookiecutter.camelcase_modelname}}ForSequenceClassification,
         TF{{cookiecutter.camelcase_modelname}}ForTokenClassification,
-        TF{{cookiecutter.camelcase_modelname}}Model,
-    )
+        TF{{cookiecutter.camelcase_modelname}}Model)
 
 
 class TF{{cookiecutter.camelcase_modelname}}ModelTester:
@@ -704,24 +703,20 @@ class TF{{cookiecutter.camelcase_modelname}}ModelIntegrationTest(unittest.TestCa
 {% else %}
 import unittest
 
-from transformers import (
-    is_tf_available,
-    {{cookiecutter.camelcase_modelname}}Config,
-    {{cookiecutter.camelcase_modelname}}Tokenizer,
-)
-from transformers.testing_utils import require_sentencepiece, require_tf, require_tokenizers, slow
+from transformers import (is_tf_available,
+                          {{cookiecutter.camelcase_modelname}}Config,
+                          {{cookiecutter.camelcase_modelname}}Tokenizer)
+from transformers.testing_utils import (require_sentencepiece, require_tf,
+                                        require_tokenizers, slow)
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor
 
-
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import (
         TF{{cookiecutter.camelcase_modelname}}ForConditionalGeneration,
-        TF{{cookiecutter.camelcase_modelname}}Model,
-    )
+        TF{{cookiecutter.camelcase_modelname}}Model)
 
 
 @require_tf

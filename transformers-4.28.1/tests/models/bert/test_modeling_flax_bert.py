@@ -15,24 +15,18 @@
 import unittest
 
 import numpy as np
-
 from transformers import BertConfig, is_flax_available
 from transformers.testing_utils import require_flax, slow
 
-from ...test_modeling_flax_common import FlaxModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
-
+from ...test_modeling_flax_common import (FlaxModelTesterMixin, floats_tensor,
+                                          ids_tensor, random_attention_mask)
 
 if is_flax_available():
     from transformers.models.bert.modeling_flax_bert import (
-        FlaxBertForMaskedLM,
-        FlaxBertForMultipleChoice,
-        FlaxBertForNextSentencePrediction,
-        FlaxBertForPreTraining,
-        FlaxBertForQuestionAnswering,
-        FlaxBertForSequenceClassification,
-        FlaxBertForTokenClassification,
-        FlaxBertModel,
-    )
+        FlaxBertForMaskedLM, FlaxBertForMultipleChoice,
+        FlaxBertForNextSentencePrediction, FlaxBertForPreTraining,
+        FlaxBertForQuestionAnswering, FlaxBertForSequenceClassification,
+        FlaxBertForTokenClassification, FlaxBertModel)
 
 
 class FlaxBertModelTester(unittest.TestCase):

@@ -23,44 +23,28 @@ import unittest
 
 import numpy as np
 import requests
-
-from transformers import (
-    FlavaConfig,
-    FlavaImageCodebookConfig,
-    FlavaImageConfig,
-    FlavaMultimodalConfig,
-    FlavaTextConfig,
-)
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
+from transformers import (FlavaConfig, FlavaImageCodebookConfig,
+                          FlavaImageConfig, FlavaMultimodalConfig,
+                          FlavaTextConfig)
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
 from transformers.utils import is_torch_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import (
-        FlavaForPreTraining,
-        FlavaImageCodebook,
-        FlavaImageModel,
-        FlavaModel,
-        FlavaMultimodalModel,
-        FlavaTextModel,
-    )
+    from transformers import (FlavaForPreTraining, FlavaImageCodebook,
+                              FlavaImageModel, FlavaModel,
+                              FlavaMultimodalModel, FlavaTextModel)
     from transformers.models.flava.modeling_flava import (
         FLAVA_CODEBOOK_PRETRAINED_MODEL_ARCHIVE_LIST,
-        FLAVA_PRETRAINED_MODEL_ARCHIVE_LIST,
-    )
+        FLAVA_PRETRAINED_MODEL_ARCHIVE_LIST)
 else:
     FlavaModel = None
     FlavaForPreTraining = None
@@ -69,7 +53,6 @@ else:
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import FlavaProcessor
 
 

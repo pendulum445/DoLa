@@ -21,44 +21,26 @@ import unittest
 from pathlib import Path
 
 import pytest
-
-from transformers import (
-    BERT_PRETRAINED_CONFIG_ARCHIVE_MAP,
-    GPT2_PRETRAINED_CONFIG_ARCHIVE_MAP,
-    AutoTokenizer,
-    BertConfig,
-    BertTokenizer,
-    BertTokenizerFast,
-    CTRLTokenizer,
-    GPT2Tokenizer,
-    GPT2TokenizerFast,
-    PreTrainedTokenizerFast,
-    RobertaTokenizer,
-    RobertaTokenizerFast,
-    is_tokenizers_available,
-)
-from transformers.models.auto.configuration_auto import CONFIG_MAPPING, AutoConfig
+from transformers import (BERT_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                          GPT2_PRETRAINED_CONFIG_ARCHIVE_MAP, AutoTokenizer,
+                          BertConfig, BertTokenizer, BertTokenizerFast,
+                          CTRLTokenizer, GPT2Tokenizer, GPT2TokenizerFast,
+                          PreTrainedTokenizerFast, RobertaTokenizer,
+                          RobertaTokenizerFast, is_tokenizers_available)
+from transformers.models.auto.configuration_auto import (CONFIG_MAPPING,
+                                                         AutoConfig)
 from transformers.models.auto.tokenization_auto import (
-    TOKENIZER_MAPPING,
-    get_tokenizer_config,
-    tokenizer_class_from_name,
-)
+    TOKENIZER_MAPPING, get_tokenizer_config, tokenizer_class_from_name)
 from transformers.models.roberta.configuration_roberta import RobertaConfig
-from transformers.testing_utils import (
-    DUMMY_DIFF_TOKENIZER_IDENTIFIER,
-    DUMMY_UNKNOWN_IDENTIFIER,
-    SMALL_MODEL_IDENTIFIER,
-    RequestCounter,
-    require_tokenizers,
-    slow,
-)
-
+from transformers.testing_utils import (DUMMY_DIFF_TOKENIZER_IDENTIFIER,
+                                        DUMMY_UNKNOWN_IDENTIFIER,
+                                        SMALL_MODEL_IDENTIFIER, RequestCounter,
+                                        require_tokenizers, slow)
 
 sys.path.append(str(Path(__file__).parent.parent.parent.parent / "utils"))
 
 from test_module.custom_configuration import CustomConfig  # noqa E402
 from test_module.custom_tokenization import CustomTokenizer  # noqa E402
-
 
 if is_tokenizers_available():
     from test_module.custom_tokenization_fast import CustomTokenizerFast

@@ -15,8 +15,8 @@
 import sys
 
 from transformers.testing_utils import TestCasePlus
-from transformers.utils.versions import importlib_metadata, require_version, require_version_core
-
+from transformers.utils.versions import (importlib_metadata, require_version,
+                                         require_version_core)
 
 numpy_ver = importlib_metadata.version("numpy")
 python_ver = ".".join([str(x) for x in sys.version_info[:3]])

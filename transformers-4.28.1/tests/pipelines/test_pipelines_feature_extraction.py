@@ -15,20 +15,12 @@
 import unittest
 
 import numpy as np
-
-from transformers import (
-    FEATURE_EXTRACTOR_MAPPING,
-    IMAGE_PROCESSOR_MAPPING,
-    MODEL_MAPPING,
-    TF_MODEL_MAPPING,
-    FeatureExtractionPipeline,
-    LxmertConfig,
-    is_tf_available,
-    is_torch_available,
-    pipeline,
-)
-from transformers.testing_utils import is_pipeline_test, nested_simplify, require_tf, require_torch
-
+from transformers import (FEATURE_EXTRACTOR_MAPPING, IMAGE_PROCESSOR_MAPPING,
+                          MODEL_MAPPING, TF_MODEL_MAPPING,
+                          FeatureExtractionPipeline, LxmertConfig,
+                          is_tf_available, is_torch_available, pipeline)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_tf, require_torch)
 
 if is_torch_available():
     import torch

@@ -19,32 +19,20 @@ import tempfile
 import unittest
 from typing import List
 
-from transformers import (
-    AddedToken,
-    LayoutXLMTokenizerFast,
-    SpecialTokensMixin,
-    is_tf_available,
-    is_torch_available,
-    logging,
-)
-from transformers.models.layoutxlm.tokenization_layoutxlm import LayoutXLMTokenizer
-from transformers.testing_utils import (
-    get_tests_dir,
-    is_pt_tf_cross_test,
-    require_pandas,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+from transformers import (AddedToken, LayoutXLMTokenizerFast,
+                          SpecialTokensMixin, is_tf_available,
+                          is_torch_available, logging)
+from transformers.models.layoutxlm.tokenization_layoutxlm import \
+    LayoutXLMTokenizer
+from transformers.testing_utils import (get_tests_dir, is_pt_tf_cross_test,
+                                        require_pandas, require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow)
 
-from ...test_tokenization_common import (
-    SMALL_TRAINING_CORPUS,
-    TokenizerTesterMixin,
-    filter_non_english,
-    merge_model_tokenizer_mappings,
-)
-
+from ...test_tokenization_common import (SMALL_TRAINING_CORPUS,
+                                         TokenizerTesterMixin,
+                                         filter_non_english,
+                                         merge_model_tokenizer_mappings)
 
 logger = logging.get_logger(__name__)
 SAMPLE_VOCAB = get_tests_dir("fixtures/test_sentencepiece.model")
@@ -1174,7 +1162,6 @@ class LayoutXLMTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import MODEL_MAPPING, TOKENIZER_MAPPING
 
         MODEL_TOKENIZER_MAPPING = merge_model_tokenizer_mappings(MODEL_MAPPING, TOKENIZER_MAPPING)

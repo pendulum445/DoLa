@@ -14,27 +14,16 @@
 
 import unittest
 
-from transformers import (
-    MODEL_FOR_OBJECT_DETECTION_MAPPING,
-    AutoFeatureExtractor,
-    AutoModelForObjectDetection,
-    ObjectDetectionPipeline,
-    is_vision_available,
-    pipeline,
-)
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_pytesseract,
-    require_tf,
-    require_timm,
-    require_torch,
-    require_vision,
-    slow,
-)
+from transformers import (MODEL_FOR_OBJECT_DETECTION_MAPPING,
+                          AutoFeatureExtractor, AutoModelForObjectDetection,
+                          ObjectDetectionPipeline, is_vision_available,
+                          pipeline)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_pytesseract, require_tf,
+                                        require_timm, require_torch,
+                                        require_vision, slow)
 
 from .test_pipelines_common import ANY
-
 
 if is_vision_available():
     from PIL import Image

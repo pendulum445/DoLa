@@ -5,10 +5,9 @@ import sys
 from pathlib import Path
 
 import torch
-
-from transformers.testing_utils import TestCasePlus, execute_subprocess_async, require_torch_multi_gpu
+from transformers.testing_utils import (TestCasePlus, execute_subprocess_async,
+                                        require_torch_multi_gpu)
 from utils import load_json
-
 
 CUDA_AVAILABLE = torch.cuda.is_available()
 ARTICLES = [" Sam ate lunch today.", "Sams lunch ingredients."]

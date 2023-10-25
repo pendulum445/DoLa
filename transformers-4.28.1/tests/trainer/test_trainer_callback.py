@@ -17,23 +17,17 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from transformers import (
-    DefaultFlowCallback,
-    IntervalStrategy,
-    PrinterCallback,
-    ProgressCallback,
-    Trainer,
-    TrainerCallback,
-    TrainingArguments,
-    is_torch_available,
-)
+from transformers import (DefaultFlowCallback, IntervalStrategy,
+                          PrinterCallback, ProgressCallback, Trainer,
+                          TrainerCallback, TrainingArguments,
+                          is_torch_available)
 from transformers.testing_utils import require_torch
-
 
 if is_torch_available():
     from transformers.trainer import DEFAULT_CALLBACKS
 
-    from .test_trainer import RegressionDataset, RegressionModelConfig, RegressionPreTrainedModel
+    from .test_trainer import (RegressionDataset, RegressionModelConfig,
+                               RegressionPreTrainedModel)
 
 
 class MyTestTrainerCallback(TrainerCallback):

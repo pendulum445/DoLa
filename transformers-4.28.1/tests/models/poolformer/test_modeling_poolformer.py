@@ -26,17 +26,17 @@ from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import MODEL_MAPPING, PoolFormerConfig, PoolFormerForImageClassification, PoolFormerModel
-    from transformers.models.poolformer.modeling_poolformer import POOLFORMER_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_MAPPING, PoolFormerConfig,
+                              PoolFormerForImageClassification,
+                              PoolFormerModel)
+    from transformers.models.poolformer.modeling_poolformer import \
+        POOLFORMER_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import PoolFormerFeatureExtractor
 
 

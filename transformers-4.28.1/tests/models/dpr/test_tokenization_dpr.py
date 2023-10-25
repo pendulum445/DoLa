@@ -13,15 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from transformers import (
-    DPRContextEncoderTokenizer,
-    DPRContextEncoderTokenizerFast,
-    DPRQuestionEncoderTokenizer,
-    DPRQuestionEncoderTokenizerFast,
-    DPRReaderOutput,
-    DPRReaderTokenizer,
-    DPRReaderTokenizerFast,
-)
+from transformers import (DPRContextEncoderTokenizer,
+                          DPRContextEncoderTokenizerFast,
+                          DPRQuestionEncoderTokenizer,
+                          DPRQuestionEncoderTokenizerFast, DPRReaderOutput,
+                          DPRReaderTokenizer, DPRReaderTokenizerFast)
 from transformers.testing_utils import require_tokenizers, slow
 from transformers.tokenization_utils_base import BatchEncoding
 

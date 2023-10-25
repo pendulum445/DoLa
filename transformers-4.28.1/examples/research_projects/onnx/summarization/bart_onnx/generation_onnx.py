@@ -4,7 +4,6 @@ from typing import List, Optional, Tuple
 
 import torch
 import torch.nn.functional as F
-
 from transformers import BartConfig
 from transformers.generation import GenerationMixin
 

@@ -19,24 +19,18 @@ from transformers import is_tf_available
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import numpy
     import tensorflow as tf
-
     from transformers import (
         TF_DPR_CONTEXT_ENCODER_PRETRAINED_MODEL_ARCHIVE_LIST,
         TF_DPR_QUESTION_ENCODER_PRETRAINED_MODEL_ARCHIVE_LIST,
-        TF_DPR_READER_PRETRAINED_MODEL_ARCHIVE_LIST,
-        BertConfig,
-        DPRConfig,
-        TFDPRContextEncoder,
-        TFDPRQuestionEncoder,
-        TFDPRReader,
-    )
+        TF_DPR_READER_PRETRAINED_MODEL_ARCHIVE_LIST, BertConfig, DPRConfig,
+        TFDPRContextEncoder, TFDPRQuestionEncoder, TFDPRReader)
 
 
 class TFDPRModelTester:

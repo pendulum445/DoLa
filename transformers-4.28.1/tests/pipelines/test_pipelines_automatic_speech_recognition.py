@@ -18,34 +18,22 @@ import numpy as np
 import pytest
 from datasets import load_dataset
 from huggingface_hub import hf_hub_download, snapshot_download
-
-from transformers import (
-    MODEL_FOR_CTC_MAPPING,
-    MODEL_FOR_SPEECH_SEQ_2_SEQ_MAPPING,
-    AutoFeatureExtractor,
-    AutoProcessor,
-    AutoTokenizer,
-    Speech2TextForConditionalGeneration,
-    Wav2Vec2ForCTC,
-    WhisperForConditionalGeneration,
-)
+from transformers import (MODEL_FOR_CTC_MAPPING,
+                          MODEL_FOR_SPEECH_SEQ_2_SEQ_MAPPING,
+                          AutoFeatureExtractor, AutoProcessor, AutoTokenizer,
+                          Speech2TextForConditionalGeneration, Wav2Vec2ForCTC,
+                          WhisperForConditionalGeneration)
 from transformers.pipelines import AutomaticSpeechRecognitionPipeline, pipeline
 from transformers.pipelines.audio_utils import chunk_bytes_iter
-from transformers.pipelines.automatic_speech_recognition import _find_timestamp_sequence, chunk_iter
-from transformers.testing_utils import (
-    is_pipeline_test,
-    is_torch_available,
-    nested_simplify,
-    require_pyctcdecode,
-    require_tf,
-    require_torch,
-    require_torch_gpu,
-    require_torchaudio,
-    slow,
-)
+from transformers.pipelines.automatic_speech_recognition import (
+    _find_timestamp_sequence, chunk_iter)
+from transformers.testing_utils import (is_pipeline_test, is_torch_available,
+                                        nested_simplify, require_pyctcdecode,
+                                        require_tf, require_torch,
+                                        require_torch_gpu, require_torchaudio,
+                                        slow)
 
 from .test_pipelines_common import ANY
-
 
 if is_torch_available():
     import torch

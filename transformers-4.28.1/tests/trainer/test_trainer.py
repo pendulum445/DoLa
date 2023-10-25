@@ -33,78 +33,46 @@ import numpy as np
 from huggingface_hub import HfFolder, Repository, delete_repo
 from parameterized import parameterized
 from requests.exceptions import HTTPError
-
-from transformers import (
-    AutoTokenizer,
-    IntervalStrategy,
-    PretrainedConfig,
-    TrainingArguments,
-    is_torch_available,
-    logging,
-)
-from transformers.testing_utils import (
-    ENDPOINT_STAGING,
-    TOKEN,
-    USER,
-    CaptureLogger,
-    TestCasePlus,
-    get_gpu_count,
-    get_tests_dir,
-    is_staging_test,
-    require_accelerate,
-    require_intel_extension_for_pytorch,
-    require_optuna,
-    require_ray,
-    require_safetensors,
-    require_sentencepiece,
-    require_sigopt,
-    require_tokenizers,
-    require_torch,
-    require_torch_bf16_cpu,
-    require_torch_bf16_gpu,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-    require_torch_non_multi_gpu,
-    require_torch_tensorrt_fx,
-    require_torch_tf32,
-    require_torch_up_to_2_gpus,
-    require_torchdynamo,
-    require_wandb,
-    slow,
-)
+from transformers import (AutoTokenizer, IntervalStrategy, PretrainedConfig,
+                          TrainingArguments, is_torch_available, logging)
+from transformers.testing_utils import (ENDPOINT_STAGING, TOKEN, USER,
+                                        CaptureLogger, TestCasePlus,
+                                        get_gpu_count, get_tests_dir,
+                                        is_staging_test, require_accelerate,
+                                        require_intel_extension_for_pytorch,
+                                        require_optuna, require_ray,
+                                        require_safetensors,
+                                        require_sentencepiece, require_sigopt,
+                                        require_tokenizers, require_torch,
+                                        require_torch_bf16_cpu,
+                                        require_torch_bf16_gpu,
+                                        require_torch_gpu,
+                                        require_torch_multi_gpu,
+                                        require_torch_non_multi_gpu,
+                                        require_torch_tensorrt_fx,
+                                        require_torch_tf32,
+                                        require_torch_up_to_2_gpus,
+                                        require_torchdynamo, require_wandb,
+                                        slow)
 from transformers.trainer_utils import PREFIX_CHECKPOINT_DIR
 from transformers.training_args import OptimizerNames
-from transformers.utils import (
-    SAFE_WEIGHTS_INDEX_NAME,
-    SAFE_WEIGHTS_NAME,
-    WEIGHTS_INDEX_NAME,
-    WEIGHTS_NAME,
-    is_apex_available,
-    is_bitsandbytes_available,
-    is_safetensors_available,
-    is_torchdistx_available,
-)
+from transformers.utils import (SAFE_WEIGHTS_INDEX_NAME, SAFE_WEIGHTS_NAME,
+                                WEIGHTS_INDEX_NAME, WEIGHTS_NAME,
+                                is_apex_available, is_bitsandbytes_available,
+                                is_safetensors_available,
+                                is_torchdistx_available)
 from transformers.utils.hp_naming import TrialShortNamer
-
 
 if is_torch_available():
     import torch
+    import transformers.optimization
     from torch import nn
     from torch.utils.data import IterableDataset
-
-    import transformers.optimization
-    from transformers import (
-        AutoModelForSequenceClassification,
-        EarlyStoppingCallback,
-        GlueDataset,
-        GlueDataTrainingArguments,
-        GPT2Config,
-        GPT2LMHeadModel,
-        LineByLineTextDataset,
-        PreTrainedModel,
-        Trainer,
-        TrainerState,
-    )
+    from transformers import (AutoModelForSequenceClassification,
+                              EarlyStoppingCallback, GlueDataset,
+                              GlueDataTrainingArguments, GPT2Config,
+                              GPT2LMHeadModel, LineByLineTextDataset,
+                              PreTrainedModel, Trainer, TrainerState)
     from transformers.modeling_utils import unwrap_model
 
     if is_safetensors_available():

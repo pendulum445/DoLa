@@ -19,17 +19,12 @@ import os
 import unittest
 
 from transformers.models.roc_bert.tokenization_roc_bert import (
-    VOCAB_FILES_NAMES,
-    RoCBertBasicTokenizer,
-    RoCBertTokenizer,
-    RoCBertWordpieceTokenizer,
-    _is_control,
-    _is_punctuation,
-    _is_whitespace,
-)
+    VOCAB_FILES_NAMES, RoCBertBasicTokenizer, RoCBertTokenizer,
+    RoCBertWordpieceTokenizer, _is_control, _is_punctuation, _is_whitespace)
 from transformers.testing_utils import require_tokenizers, slow
 
-from ...test_tokenization_common import TokenizerTesterMixin, filter_non_english
+from ...test_tokenization_common import (TokenizerTesterMixin,
+                                         filter_non_english)
 
 
 @require_tokenizers

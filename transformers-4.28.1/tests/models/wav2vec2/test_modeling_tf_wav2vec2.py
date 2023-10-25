@@ -28,37 +28,30 @@ import numpy as np
 import pytest
 from datasets import load_dataset
 from huggingface_hub import snapshot_download
-
 from transformers import Wav2Vec2Config, is_tf_available
-from transformers.testing_utils import (
-    CaptureLogger,
-    is_flaky,
-    is_pt_tf_cross_test,
-    require_librosa,
-    require_pyctcdecode,
-    require_tf,
-    run_test_in_subprocess,
-    slow,
-)
+from transformers.testing_utils import (CaptureLogger, is_flaky,
+                                        is_pt_tf_cross_test, require_librosa,
+                                        require_pyctcdecode, require_tf,
+                                        run_test_in_subprocess, slow)
 from transformers.utils import is_librosa_available, is_pyctcdecode_available
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import TFWav2Vec2ForCTC, TFWav2Vec2Model, Wav2Vec2Processor
-    from transformers.models.wav2vec2.modeling_tf_wav2vec2 import _compute_mask_indices
+    from transformers import (TFWav2Vec2ForCTC, TFWav2Vec2Model,
+                              Wav2Vec2Processor)
+    from transformers.models.wav2vec2.modeling_tf_wav2vec2 import \
+        _compute_mask_indices
 
 
 if is_pyctcdecode_available():
     import pyctcdecode.decoder
-
     from transformers import Wav2Vec2ProcessorWithLM
-    from transformers.models.wav2vec2_with_lm import processing_wav2vec2_with_lm
+    from transformers.models.wav2vec2_with_lm import \
+        processing_wav2vec2_with_lm
 
 
 if is_librosa_available():
@@ -405,7 +398,6 @@ class TFWav2Vec2ModelTest(TFModelTesterMixin, PipelineTesterMixin, unittest.Test
         # We override the base test here to skip loss calculation for Wav2Vec2 models because the loss is massive with
         # the default labels and frequently overflows to inf or exceeds numerical tolerances between TF/PT
         import torch
-
         import transformers
 
         for model_class in self.all_model_classes:
@@ -588,7 +580,6 @@ class TFWav2Vec2RobustModelTest(TFModelTesterMixin, unittest.TestCase):
         # We override the base test here to skip loss calculation for Wav2Vec2 models because the loss is massive with
         # the default labels and frequently overflows to inf or exceeds numerical tolerances between TF/PT
         import torch
-
         import transformers
 
         for model_class in self.all_model_classes:

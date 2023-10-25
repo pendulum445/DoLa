@@ -19,26 +19,15 @@ import tempfile
 import unittest
 
 from datasets import load_dataset
-
-from transformers import (
-    SPIECE_UNDERLINE,
-    AddedToken,
-    LlamaTokenizer,
-    LlamaTokenizerFast,
-    is_torch_available,
-)
+from transformers import (SPIECE_UNDERLINE, AddedToken, LlamaTokenizer,
+                          LlamaTokenizerFast, is_torch_available)
 from transformers.convert_slow_tokenizer import convert_slow_tokenizer
-from transformers.testing_utils import (
-    get_tests_dir,
-    nested_simplify,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+from transformers.testing_utils import (get_tests_dir, nested_simplify,
+                                        require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow)
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 SAMPLE_VOCAB = get_tests_dir("fixtures/test_sentencepiece.model")
 

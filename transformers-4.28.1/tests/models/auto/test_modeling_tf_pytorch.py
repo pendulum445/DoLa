@@ -17,55 +17,41 @@
 import unittest
 
 from transformers import is_tf_available, is_torch_available
-from transformers.testing_utils import DUMMY_UNKNOWN_IDENTIFIER, SMALL_MODEL_IDENTIFIER, is_pt_tf_cross_test, slow
-
+from transformers.testing_utils import (DUMMY_UNKNOWN_IDENTIFIER,
+                                        SMALL_MODEL_IDENTIFIER,
+                                        is_pt_tf_cross_test, slow)
 
 if is_tf_available():
-    from transformers import (
-        AutoConfig,
-        BertConfig,
-        GPT2Config,
-        T5Config,
-        TFAutoModel,
-        TFAutoModelForCausalLM,
-        TFAutoModelForMaskedLM,
-        TFAutoModelForPreTraining,
-        TFAutoModelForQuestionAnswering,
-        TFAutoModelForSeq2SeqLM,
-        TFAutoModelForSequenceClassification,
-        TFAutoModelWithLMHead,
-        TFBertForMaskedLM,
-        TFBertForPreTraining,
-        TFBertForQuestionAnswering,
-        TFBertForSequenceClassification,
-        TFBertModel,
-        TFGPT2LMHeadModel,
-        TFRobertaForMaskedLM,
-        TFT5ForConditionalGeneration,
-    )
-    from transformers.models.bert.modeling_tf_bert import TF_BERT_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.gpt2.modeling_tf_gpt2 import TF_GPT2_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.t5.modeling_tf_t5 import TF_T5_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (AutoConfig, BertConfig, GPT2Config, T5Config,
+                              TFAutoModel, TFAutoModelForCausalLM,
+                              TFAutoModelForMaskedLM,
+                              TFAutoModelForPreTraining,
+                              TFAutoModelForQuestionAnswering,
+                              TFAutoModelForSeq2SeqLM,
+                              TFAutoModelForSequenceClassification,
+                              TFAutoModelWithLMHead, TFBertForMaskedLM,
+                              TFBertForPreTraining, TFBertForQuestionAnswering,
+                              TFBertForSequenceClassification, TFBertModel,
+                              TFGPT2LMHeadModel, TFRobertaForMaskedLM,
+                              TFT5ForConditionalGeneration)
+    from transformers.models.bert.modeling_tf_bert import \
+        TF_BERT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.gpt2.modeling_tf_gpt2 import \
+        TF_GPT2_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.t5.modeling_tf_t5 import \
+        TF_T5_PRETRAINED_MODEL_ARCHIVE_LIST
 
 if is_torch_available():
-    from transformers import (
-        AutoModel,
-        AutoModelForCausalLM,
-        AutoModelForMaskedLM,
-        AutoModelForPreTraining,
-        AutoModelForQuestionAnswering,
-        AutoModelForSeq2SeqLM,
-        AutoModelForSequenceClassification,
-        AutoModelWithLMHead,
-        BertForMaskedLM,
-        BertForPreTraining,
-        BertForQuestionAnswering,
-        BertForSequenceClassification,
-        BertModel,
-        GPT2LMHeadModel,
-        RobertaForMaskedLM,
-        T5ForConditionalGeneration,
-    )
+    from transformers import (AutoModel, AutoModelForCausalLM,
+                              AutoModelForMaskedLM, AutoModelForPreTraining,
+                              AutoModelForQuestionAnswering,
+                              AutoModelForSeq2SeqLM,
+                              AutoModelForSequenceClassification,
+                              AutoModelWithLMHead, BertForMaskedLM,
+                              BertForPreTraining, BertForQuestionAnswering,
+                              BertForSequenceClassification, BertModel,
+                              GPT2LMHeadModel, RobertaForMaskedLM,
+                              T5ForConditionalGeneration)
 
 
 @is_pt_tf_cross_test

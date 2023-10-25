@@ -28,11 +28,11 @@ import multiprocessing
 import os
 import time
 
+import transformers
 from create_dummy_models import COMPOSITE_MODELS, create_tiny_models
 from huggingface_hub import ModelFilter, hf_api
-
-import transformers
-from transformers import AutoFeatureExtractor, AutoImageProcessor, AutoTokenizer
+from transformers import (AutoFeatureExtractor, AutoImageProcessor,
+                          AutoTokenizer)
 from transformers.image_processing_utils import BaseImageProcessor
 
 

@@ -15,25 +15,22 @@
 import unittest
 
 from transformers import DebertaV2Config, is_torch_available
-from transformers.testing_utils import require_sentencepiece, require_tokenizers, require_torch, slow, torch_device
+from transformers.testing_utils import (require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow, torch_device)
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        DebertaV2ForMaskedLM,
-        DebertaV2ForMultipleChoice,
-        DebertaV2ForQuestionAnswering,
-        DebertaV2ForSequenceClassification,
-        DebertaV2ForTokenClassification,
-        DebertaV2Model,
-    )
-    from transformers.models.deberta_v2.modeling_deberta_v2 import DEBERTA_V2_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (DebertaV2ForMaskedLM, DebertaV2ForMultipleChoice,
+                              DebertaV2ForQuestionAnswering,
+                              DebertaV2ForSequenceClassification,
+                              DebertaV2ForTokenClassification, DebertaV2Model)
+    from transformers.models.deberta_v2.modeling_deberta_v2 import \
+        DEBERTA_V2_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class DebertaV2ModelTester(object):

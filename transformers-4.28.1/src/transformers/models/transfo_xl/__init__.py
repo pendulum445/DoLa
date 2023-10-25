@@ -14,8 +14,8 @@
 
 from typing import TYPE_CHECKING
 
-from ...utils import OptionalDependencyNotAvailable, _LazyModule, is_tf_available, is_torch_available
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_tf_available, is_torch_available)
 
 _import_structure = {
     "configuration_transfo_xl": ["TRANSFO_XL_PRETRAINED_CONFIG_ARCHIVE_MAP", "TransfoXLConfig"],
@@ -56,7 +56,8 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_transfo_xl import TRANSFO_XL_PRETRAINED_CONFIG_ARCHIVE_MAP, TransfoXLConfig
+    from .configuration_transfo_xl import (
+        TRANSFO_XL_PRETRAINED_CONFIG_ARCHIVE_MAP, TransfoXLConfig)
     from .tokenization_transfo_xl import TransfoXLCorpus, TransfoXLTokenizer
 
     try:
@@ -66,14 +67,10 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_transfo_xl import (
-            TRANSFO_XL_PRETRAINED_MODEL_ARCHIVE_LIST,
-            AdaptiveEmbedding,
-            TransfoXLForSequenceClassification,
-            TransfoXLLMHeadModel,
-            TransfoXLModel,
-            TransfoXLPreTrainedModel,
-            load_tf_weights_in_transfo_xl,
-        )
+            TRANSFO_XL_PRETRAINED_MODEL_ARCHIVE_LIST, AdaptiveEmbedding,
+            TransfoXLForSequenceClassification, TransfoXLLMHeadModel,
+            TransfoXLModel, TransfoXLPreTrainedModel,
+            load_tf_weights_in_transfo_xl)
 
     try:
         if not is_tf_available():
@@ -82,14 +79,9 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_tf_transfo_xl import (
-            TF_TRANSFO_XL_PRETRAINED_MODEL_ARCHIVE_LIST,
-            TFAdaptiveEmbedding,
-            TFTransfoXLForSequenceClassification,
-            TFTransfoXLLMHeadModel,
-            TFTransfoXLMainLayer,
-            TFTransfoXLModel,
-            TFTransfoXLPreTrainedModel,
-        )
+            TF_TRANSFO_XL_PRETRAINED_MODEL_ARCHIVE_LIST, TFAdaptiveEmbedding,
+            TFTransfoXLForSequenceClassification, TFTransfoXLLMHeadModel,
+            TFTransfoXLMainLayer, TFTransfoXLModel, TFTransfoXLPreTrainedModel)
 
 else:
     import sys

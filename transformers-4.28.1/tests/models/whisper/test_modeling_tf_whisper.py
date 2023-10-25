@@ -20,16 +20,18 @@ import traceback
 import unittest
 
 import numpy as np
-
-from transformers import WhisperConfig, WhisperFeatureExtractor, WhisperProcessor
-from transformers.testing_utils import is_tf_available, require_tf, require_tokenizers, run_test_in_subprocess, slow
+from transformers import (WhisperConfig, WhisperFeatureExtractor,
+                          WhisperProcessor)
+from transformers.testing_utils import (is_tf_available, require_tf,
+                                        require_tokenizers,
+                                        run_test_in_subprocess, slow)
 from transformers.utils import cached_property
 from transformers.utils.import_utils import is_datasets_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_datasets_available():
     import datasets
@@ -38,9 +40,10 @@ if is_datasets_available():
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import TFWhisperForConditionalGeneration, TFWhisperModel, set_seed
-    from transformers.models.whisper.modeling_tf_whisper import TFWhisperDecoder, TFWhisperEncoder
+    from transformers import (TFWhisperForConditionalGeneration,
+                              TFWhisperModel, set_seed)
+    from transformers.models.whisper.modeling_tf_whisper import (
+        TFWhisperDecoder, TFWhisperEncoder)
 
 
 def prepare_whisper_inputs_dict(

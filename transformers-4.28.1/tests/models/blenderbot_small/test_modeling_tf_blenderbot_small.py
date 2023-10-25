@@ -16,19 +16,21 @@
 
 import unittest
 
-from transformers import BlenderbotSmallConfig, BlenderbotSmallTokenizer, is_tf_available
-from transformers.testing_utils import require_tf, require_tokenizers, slow, tooslow
+from transformers import (BlenderbotSmallConfig, BlenderbotSmallTokenizer,
+                          is_tf_available)
+from transformers.testing_utils import (require_tf, require_tokenizers, slow,
+                                        tooslow)
 from transformers.utils import cached_property
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import TFAutoModelForSeq2SeqLM, TFBlenderbotSmallForConditionalGeneration, TFBlenderbotSmallModel
+    from transformers import (TFAutoModelForSeq2SeqLM,
+                              TFBlenderbotSmallForConditionalGeneration,
+                              TFBlenderbotSmallModel)
 
 
 @require_tf

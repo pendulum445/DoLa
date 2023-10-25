@@ -23,26 +23,23 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
-
 from transformers import BartTokenizer, T5Tokenizer
-from transformers.models.bert.tokenization_bert import VOCAB_FILES_NAMES as DPR_VOCAB_FILES_NAMES
-from transformers.models.dpr.tokenization_dpr import DPRContextEncoderTokenizer, DPRQuestionEncoderTokenizer
-from transformers.models.roberta.tokenization_roberta import VOCAB_FILES_NAMES as BART_VOCAB_FILES_NAMES
-from transformers.testing_utils import (
-    get_tests_dir,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    require_torch_non_multi_gpu,
-    slow,
-    torch_device,
-)
-from transformers.utils import cached_property, is_datasets_available, is_faiss_available, is_torch_available
+from transformers.models.bert.tokenization_bert import \
+    VOCAB_FILES_NAMES as DPR_VOCAB_FILES_NAMES
+from transformers.models.dpr.tokenization_dpr import (
+    DPRContextEncoderTokenizer, DPRQuestionEncoderTokenizer)
+from transformers.models.roberta.tokenization_roberta import \
+    VOCAB_FILES_NAMES as BART_VOCAB_FILES_NAMES
+from transformers.testing_utils import (get_tests_dir, require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        require_torch_non_multi_gpu, slow,
+                                        torch_device)
+from transformers.utils import (cached_property, is_datasets_available,
+                                is_faiss_available, is_torch_available)
 
 from ..bart.test_modeling_bart import BartModelTester
 from ..dpr.test_modeling_dpr import DPRModelTester
 from ..t5.test_modeling_t5 import T5ModelTester
-
 
 TOLERANCE = 1e-3
 
@@ -51,19 +48,10 @@ if is_torch_available() and is_datasets_available() and is_faiss_available():
     import faiss
     import torch
     from datasets import Dataset
-
-    from transformers import (
-        AutoConfig,
-        AutoModel,
-        AutoModelForSeq2SeqLM,
-        DPRContextEncoder,
-        RagConfig,
-        RagModel,
-        RagRetriever,
-        RagSequenceForGeneration,
-        RagTokenForGeneration,
-        RagTokenizer,
-    )
+    from transformers import (AutoConfig, AutoModel, AutoModelForSeq2SeqLM,
+                              DPRContextEncoder, RagConfig, RagModel,
+                              RagRetriever, RagSequenceForGeneration,
+                              RagTokenForGeneration, RagTokenizer)
     from transformers.modeling_outputs import BaseModelOutput
 
 

@@ -19,7 +19,6 @@ import os
 
 from get_test_info import get_tester_classes
 
-
 if __name__ == "__main__":
     failures = []
 

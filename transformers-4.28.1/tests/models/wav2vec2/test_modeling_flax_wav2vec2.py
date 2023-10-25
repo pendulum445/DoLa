@@ -20,47 +20,35 @@ import unittest
 
 import numpy as np
 from datasets import load_dataset
-
 from transformers import Wav2Vec2Config, is_flax_available
-from transformers.testing_utils import (
-    CaptureLogger,
-    is_flaky,
-    is_librosa_available,
-    is_pt_flax_cross_test,
-    is_pyctcdecode_available,
-    require_flax,
-    require_librosa,
-    require_pyctcdecode,
-    require_soundfile,
-    run_test_in_subprocess,
-    slow,
-)
+from transformers.testing_utils import (CaptureLogger, is_flaky,
+                                        is_librosa_available,
+                                        is_pt_flax_cross_test,
+                                        is_pyctcdecode_available, require_flax,
+                                        require_librosa, require_pyctcdecode,
+                                        require_soundfile,
+                                        run_test_in_subprocess, slow)
 
-from ...test_modeling_flax_common import FlaxModelTesterMixin, floats_tensor, random_attention_mask
-
+from ...test_modeling_flax_common import (FlaxModelTesterMixin, floats_tensor,
+                                          random_attention_mask)
 
 if is_flax_available():
     import jax
     import jax.numpy as jnp
     import optax
     from flax.traverse_util import flatten_dict
-
     from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Processor
     from transformers.models.wav2vec2.modeling_flax_wav2vec2 import (
-        FlaxWav2Vec2ForCTC,
-        FlaxWav2Vec2ForPreTraining,
-        FlaxWav2Vec2GumbelVectorQuantizer,
-        FlaxWav2Vec2Model,
-        _compute_mask_indices,
-        _sample_negative_indices,
-    )
+        FlaxWav2Vec2ForCTC, FlaxWav2Vec2ForPreTraining,
+        FlaxWav2Vec2GumbelVectorQuantizer, FlaxWav2Vec2Model,
+        _compute_mask_indices, _sample_negative_indices)
 
 
 if is_pyctcdecode_available():
     import pyctcdecode.decoder
-
     from transformers import Wav2Vec2ProcessorWithLM
-    from transformers.models.wav2vec2_with_lm import processing_wav2vec2_with_lm
+    from transformers.models.wav2vec2_with_lm import \
+        processing_wav2vec2_with_lm
 
 
 if is_librosa_available():

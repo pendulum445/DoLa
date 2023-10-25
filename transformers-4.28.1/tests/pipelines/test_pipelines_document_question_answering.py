@@ -14,26 +14,19 @@
 
 import unittest
 
-from transformers import MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING, AutoTokenizer, is_vision_available
+from transformers import (MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING,
+                          AutoTokenizer, is_vision_available)
 from transformers.pipelines import pipeline
 from transformers.pipelines.document_question_answering import apply_tesseract
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_detectron2,
-    require_pytesseract,
-    require_tf,
-    require_torch,
-    require_vision,
-    slow,
-)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_detectron2,
+                                        require_pytesseract, require_tf,
+                                        require_torch, require_vision, slow)
 
 from .test_pipelines_common import ANY
 
-
 if is_vision_available():
     from PIL import Image
-
     from transformers.image_utils import load_image
 else:
 

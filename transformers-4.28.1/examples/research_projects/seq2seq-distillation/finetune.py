@@ -13,37 +13,23 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pytorch_lightning as pl
 import torch
-from callbacks import Seq2SeqLoggingCallback, get_checkpoint_callback, get_early_stopping_callback
+from callbacks import (Seq2SeqLoggingCallback, get_checkpoint_callback,
+                       get_early_stopping_callback)
 from torch import nn
 from torch.utils.data import DataLoader
-
 from transformers import MBartTokenizer, T5ForConditionalGeneration
 from transformers.models.bart.modeling_bart import shift_tokens_right
-from utils import (
-    ROUGE_KEYS,
-    LegacySeq2SeqDataset,
-    Seq2SeqDataset,
-    assert_all_frozen,
-    calculate_bleu,
-    calculate_rouge,
-    check_output_dir,
-    flatten_list,
-    freeze_embeds,
-    freeze_params,
-    get_git_info,
-    label_smoothed_nll_loss,
-    lmap,
-    pickle_save,
-    save_git_info,
-    save_json,
-    use_task_specific_params,
-)
-
+from utils import (ROUGE_KEYS, LegacySeq2SeqDataset, Seq2SeqDataset,
+                   assert_all_frozen, calculate_bleu, calculate_rouge,
+                   check_output_dir, flatten_list, freeze_embeds,
+                   freeze_params, get_git_info, label_smoothed_nll_loss, lmap,
+                   pickle_save, save_git_info, save_json,
+                   use_task_specific_params)
 
 # need the parent dir module
 sys.path.insert(2, str(Path(__file__).resolve().parents[1]))
-from lightning_base import BaseTransformer, add_generic_args, generic_train  # noqa
-
+from lightning_base import (BaseTransformer, add_generic_args,  # noqa
+                            generic_train)
 
 logger = logging.getLogger(__name__)
 

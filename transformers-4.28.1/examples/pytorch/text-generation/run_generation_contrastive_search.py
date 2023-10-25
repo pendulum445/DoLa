@@ -25,9 +25,7 @@ import logging
 
 import numpy as np
 import torch
-
 from transformers import AutoModelForCausalLM, AutoTokenizer
-
 
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",

@@ -24,19 +24,11 @@ from typing import Dict, Optional
 import datasets
 import numpy as np
 import tensorflow as tf
-
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    EvalPrediction,
-    HfArgumentParser,
-    PreTrainedTokenizer,
-    TFAutoModelForSequenceClassification,
-    TFTrainer,
-    TFTrainingArguments,
-)
+from transformers import (AutoConfig, AutoTokenizer, EvalPrediction,
+                          HfArgumentParser, PreTrainedTokenizer,
+                          TFAutoModelForSequenceClassification, TFTrainer,
+                          TFTrainingArguments)
 from transformers.utils import logging as hf_logging
-
 
 hf_logging.set_verbosity_info()
 hf_logging.enable_default_handler()

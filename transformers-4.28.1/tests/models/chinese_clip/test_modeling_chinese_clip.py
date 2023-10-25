@@ -21,39 +21,30 @@ import unittest
 
 import numpy as np
 import requests
-
-from transformers import ChineseCLIPConfig, ChineseCLIPTextConfig, ChineseCLIPVisionConfig
+from transformers import (ChineseCLIPConfig, ChineseCLIPTextConfig,
+                          ChineseCLIPVisionConfig)
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
 from transformers.utils import is_torch_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import (
-        MODEL_FOR_PRETRAINING_MAPPING,
-        ChineseCLIPModel,
-        ChineseCLIPTextModel,
-        ChineseCLIPVisionModel,
-    )
-    from transformers.models.chinese_clip.modeling_chinese_clip import CHINESE_CLIP_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_FOR_PRETRAINING_MAPPING, ChineseCLIPModel,
+                              ChineseCLIPTextModel, ChineseCLIPVisionModel)
+    from transformers.models.chinese_clip.modeling_chinese_clip import \
+        CHINESE_CLIP_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import ChineseCLIPProcessor
 
 

@@ -27,7 +27,6 @@ import requests
 from get_ci_error_statistics import get_job_links
 from slack_sdk import WebClient
 
-
 client = WebClient(token=os.environ["CI_SLACK_BOT_TOKEN"])
 
 NON_MODEL_TEST_MODULES = [

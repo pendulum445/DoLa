@@ -15,18 +15,13 @@
 import unittest
 
 from huggingface_hub import hf_hub_download
-
-from transformers import MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING, VideoMAEFeatureExtractor
+from transformers import (MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING,
+                          VideoMAEFeatureExtractor)
 from transformers.pipelines import VideoClassificationPipeline, pipeline
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_decord,
-    require_tf,
-    require_torch,
-    require_torch_or_tf,
-    require_vision,
-)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_decord, require_tf,
+                                        require_torch, require_torch_or_tf,
+                                        require_vision)
 
 from .test_pipelines_common import ANY
 

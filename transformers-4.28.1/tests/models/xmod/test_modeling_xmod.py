@@ -15,28 +15,24 @@
 import unittest
 
 from transformers import XLMRobertaTokenizer, is_torch_available
-from transformers.testing_utils import require_sentencepiece, require_tokenizers, require_torch, slow, torch_device
+from transformers.testing_utils import (require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow, torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        XmodConfig,
-        XmodForCausalLM,
-        XmodForMaskedLM,
-        XmodForMultipleChoice,
-        XmodForQuestionAnswering,
-        XmodForSequenceClassification,
-        XmodForTokenClassification,
-        XmodModel,
-    )
-    from transformers.models.xmod.modeling_xmod import XmodEmbeddings, create_position_ids_from_input_ids
+    from transformers import (XmodConfig, XmodForCausalLM, XmodForMaskedLM,
+                              XmodForMultipleChoice, XmodForQuestionAnswering,
+                              XmodForSequenceClassification,
+                              XmodForTokenClassification, XmodModel)
+    from transformers.models.xmod.modeling_xmod import (
+        XmodEmbeddings, create_position_ids_from_input_ids)
 
 
 class XmodModelTester:

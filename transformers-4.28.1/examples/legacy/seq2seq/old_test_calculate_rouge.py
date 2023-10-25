@@ -17,9 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 from rouge_cli import calculate_rouge_path
-
 from utils import calculate_rouge
-
 
 PRED = [
     'Prosecutor: "No videos were used in the crash investigation" German papers say they saw a cell phone video of the'

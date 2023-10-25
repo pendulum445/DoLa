@@ -8,7 +8,6 @@ from dataclasses import dataclass
 import torch
 import torchaudio
 from tqdm import tqdm
-
 from transformers import AutoConfig, AutoModelForCTC, AutoProcessor
 
 

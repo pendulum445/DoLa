@@ -28,21 +28,15 @@ import random
 
 import numpy as np
 import torch
-from torch.utils.data import DataLoader, RandomSampler, SequentialSampler, TensorDataset
+import transformers
+from torch.utils.data import (DataLoader, RandomSampler, SequentialSampler,
+                              TensorDataset)
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
-
-import transformers
-from transformers import (
-    WEIGHTS_NAME,
-    AdamW,
-    AutoConfig,
-    AutoModelForMultipleChoice,
-    AutoTokenizer,
-    get_linear_schedule_with_warmup,
-)
+from transformers import (WEIGHTS_NAME, AdamW, AutoConfig,
+                          AutoModelForMultipleChoice, AutoTokenizer,
+                          get_linear_schedule_with_warmup)
 from transformers.trainer_utils import is_main_process
-
 
 try:
     from torch.utils.tensorboard import SummaryWriter

@@ -18,7 +18,6 @@ import unittest
 
 from transformers import DonutProcessor
 
-
 DONUT_PRETRAINED_MODEL_NAME = "naver-clova-ix/donut-base"
 
 

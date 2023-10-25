@@ -23,39 +23,25 @@ import datasets
 import numpy as np
 from huggingface_hub import HfFolder, Repository, create_repo, delete_repo
 from requests.exceptions import HTTPError
-
-from transformers import (
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    DistilBertForSequenceClassification,
-    TextClassificationPipeline,
-    TFAutoModelForSequenceClassification,
-    pipeline,
-)
+from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
+                          DistilBertForSequenceClassification,
+                          TextClassificationPipeline,
+                          TFAutoModelForSequenceClassification, pipeline)
 from transformers.pipelines import PIPELINE_REGISTRY, get_task
 from transformers.pipelines.base import Pipeline, _pad
-from transformers.testing_utils import (
-    TOKEN,
-    USER,
-    CaptureLogger,
-    RequestCounter,
-    is_pipeline_test,
-    is_staging_test,
-    nested_simplify,
-    require_tensorflow_probability,
-    require_tf,
-    require_torch,
-    require_torch_or_tf,
-    slow,
-)
-from transformers.utils import direct_transformers_import, is_tf_available, is_torch_available
+from transformers.testing_utils import (TOKEN, USER, CaptureLogger,
+                                        RequestCounter, is_pipeline_test,
+                                        is_staging_test, nested_simplify,
+                                        require_tensorflow_probability,
+                                        require_tf, require_torch,
+                                        require_torch_or_tf, slow)
+from transformers.utils import (direct_transformers_import, is_tf_available,
+                                is_torch_available)
 from transformers.utils import logging as transformers_logging
-
 
 sys.path.append(str(Path(__file__).parent.parent.parent / "utils"))
 
 from test_module.custom_pipeline import PairClassificationPipeline  # noqa E402
-
 
 logger = logging.getLogger(__name__)
 
@@ -395,7 +381,6 @@ class PipelineUtilsTest(unittest.TestCase):
     @require_torch
     def test_pipeline_batch_unbatch_iterator_tensors(self):
         import torch
-
         from transformers.pipelines.pt_utils import PipelineIterator
 
         dummy_dataset = [{"id": torch.LongTensor([[10, 20], [0, 1], [0, 2]])}, {"id": torch.LongTensor([[3]])}]
@@ -496,7 +481,6 @@ class PipelineUtilsTest(unittest.TestCase):
     @require_torch
     def test_load_default_pipelines_pt(self):
         import torch
-
         from transformers.pipelines import SUPPORTED_TASKS
 
         set_seed_fn = lambda: torch.manual_seed(0)  # noqa: E731
@@ -511,7 +495,6 @@ class PipelineUtilsTest(unittest.TestCase):
     @require_tf
     def test_load_default_pipelines_tf(self):
         import tensorflow as tf
-
         from transformers.pipelines import SUPPORTED_TASKS
 
         set_seed_fn = lambda: tf.random.set_seed(0)  # noqa: E731
@@ -777,7 +760,8 @@ class DynamicPipelineTester(unittest.TestCase):
             pass
 
     def test_push_to_hub_dynamic_pipeline(self):
-        from transformers import BertConfig, BertForSequenceClassification, BertTokenizer
+        from transformers import (BertConfig, BertForSequenceClassification,
+                                  BertTokenizer)
 
         PIPELINE_REGISTRY.register_pipeline(
             "pair-classification",

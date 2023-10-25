@@ -21,18 +21,19 @@ import tempfile
 import unittest
 
 import numpy as np
-
 import transformers
 from transformers import WhisperConfig
-from transformers.testing_utils import is_pt_flax_cross_test, require_torch, require_torchaudio, slow, torch_device
-from transformers.utils import cached_property, is_flax_available, is_torch_available
+from transformers.testing_utils import (is_pt_flax_cross_test, require_torch,
+                                        require_torchaudio, slow, torch_device)
+from transformers.utils import (cached_property, is_flax_available,
+                                is_torch_available)
 from transformers.utils.import_utils import is_datasets_available
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, _config_zero_init, floats_tensor, ids_tensor
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_datasets_available():
     import datasets
@@ -40,24 +41,17 @@ if is_datasets_available():
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        WhisperFeatureExtractor,
-        WhisperForAudioClassification,
-        WhisperForConditionalGeneration,
-        WhisperModel,
-        WhisperProcessor,
-        set_seed,
-    )
-    from transformers.models.whisper.modeling_whisper import WhisperDecoder, WhisperEncoder
+    from transformers import (WhisperFeatureExtractor,
+                              WhisperForAudioClassification,
+                              WhisperForConditionalGeneration, WhisperModel,
+                              WhisperProcessor, set_seed)
+    from transformers.models.whisper.modeling_whisper import (WhisperDecoder,
+                                                              WhisperEncoder)
 
 if is_flax_available():
     import jax.numpy as jnp
-
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 
 def prepare_whisper_inputs_dict(

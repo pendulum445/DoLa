@@ -17,27 +17,25 @@
 import unittest
 
 from transformers import RobertaPreLayerNormConfig, is_tf_available
-from transformers.testing_utils import require_sentencepiece, require_tf, require_tokenizers, slow
+from transformers.testing_utils import (require_sentencepiece, require_tf,
+                                        require_tokenizers, slow)
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import numpy
     import tensorflow as tf
-
     from transformers.models.roberta_prelayernorm.modeling_tf_roberta_prelayernorm import (
         TF_ROBERTA_PRELAYERNORM_PRETRAINED_MODEL_ARCHIVE_LIST,
-        TFRobertaPreLayerNormForCausalLM,
-        TFRobertaPreLayerNormForMaskedLM,
+        TFRobertaPreLayerNormForCausalLM, TFRobertaPreLayerNormForMaskedLM,
         TFRobertaPreLayerNormForMultipleChoice,
         TFRobertaPreLayerNormForQuestionAnswering,
         TFRobertaPreLayerNormForSequenceClassification,
         TFRobertaPreLayerNormForTokenClassification,
-        TFRobertaPreLayerNormModel,
-    )
+        TFRobertaPreLayerNormModel)
 
 
 # Copied from tests.models.roberta.test_modelling_tf_roberta.TFRobertaModelTester with Roberta->RobertaPreLayerNorm

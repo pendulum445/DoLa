@@ -27,27 +27,19 @@ from pathlib import Path
 
 import datasets
 import torch
+import transformers
 from accelerate import Accelerator, DistributedDataParallelKwargs
 from datasets import ClassLabel, load_dataset, load_metric
 from huggingface_hub import Repository
-from luke_utils import DataCollatorForLukeTokenClassification, is_punctuation, padding_tensor
+from luke_utils import (DataCollatorForLukeTokenClassification, is_punctuation,
+                        padding_tensor)
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-
-import transformers
-from transformers import (
-    AdamW,
-    LukeConfig,
-    LukeForEntitySpanClassification,
-    LukeTokenizer,
-    SchedulerType,
-    default_data_collator,
-    get_scheduler,
-    set_seed,
-)
+from transformers import (AdamW, LukeConfig, LukeForEntitySpanClassification,
+                          LukeTokenizer, SchedulerType, default_data_collator,
+                          get_scheduler, set_seed)
 from transformers.file_utils import get_full_repo_name
 from transformers.utils.versions import require_version
-
 
 logger = logging.getLogger(__name__)
 require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/token-classification/requirements.txt")

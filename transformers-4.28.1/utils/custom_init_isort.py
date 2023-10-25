@@ -17,7 +17,6 @@ import argparse
 import os
 import re
 
-
 PATH_TO_TRANSFORMERS = "src/transformers"
 
 # Pattern that looks at the indentation in a line.

@@ -13,8 +13,8 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import OptionalDependencyNotAvailable, _LazyModule, is_speech_available, is_torch_available
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_speech_available, is_torch_available)
 
 _import_structure = {
     "configuration_audio_spectrogram_transformer": [
@@ -46,9 +46,7 @@ else:
 
 if TYPE_CHECKING:
     from .configuration_audio_spectrogram_transformer import (
-        AUDIO_SPECTROGRAM_TRANSFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP,
-        ASTConfig,
-    )
+        AUDIO_SPECTROGRAM_TRANSFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, ASTConfig)
 
     try:
         if not is_torch_available():
@@ -58,10 +56,7 @@ if TYPE_CHECKING:
     else:
         from .modeling_audio_spectrogram_transformer import (
             AUDIO_SPECTROGRAM_TRANSFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
-            ASTForAudioClassification,
-            ASTModel,
-            ASTPreTrainedModel,
-        )
+            ASTForAudioClassification, ASTModel, ASTPreTrainedModel)
 
     try:
         if not is_speech_available():
@@ -69,7 +64,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .feature_extraction_audio_spectrogram_transformer import ASTFeatureExtractor
+        from .feature_extraction_audio_spectrogram_transformer import \
+            ASTFeatureExtractor
 
 
 else:

@@ -18,22 +18,16 @@ from pathlib import Path
 from shutil import copyfile
 
 from transformers import M2M100Tokenizer, is_torch_available
-from transformers.testing_utils import (
-    get_tests_dir,
-    nested_simplify,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+from transformers.testing_utils import (get_tests_dir, nested_simplify,
+                                        require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow)
 from transformers.utils import is_sentencepiece_available
-
 
 if is_sentencepiece_available():
     from transformers.models.m2m_100.tokenization_m2m_100 import VOCAB_FILES_NAMES, save_json
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 if is_sentencepiece_available():
     SAMPLE_SP = get_tests_dir("fixtures/test_sentencepiece.model")

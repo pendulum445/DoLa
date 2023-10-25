@@ -24,18 +24,12 @@ from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        OPENAI_GPT_PRETRAINED_MODEL_ARCHIVE_LIST,
-        OpenAIGPTConfig,
-        OpenAIGPTDoubleHeadsModel,
-        OpenAIGPTForSequenceClassification,
-        OpenAIGPTLMHeadModel,
-        OpenAIGPTModel,
-    )
+    from transformers import (OPENAI_GPT_PRETRAINED_MODEL_ARCHIVE_LIST,
+                              OpenAIGPTConfig, OpenAIGPTDoubleHeadsModel,
+                              OpenAIGPTForSequenceClassification,
+                              OpenAIGPTLMHeadModel, OpenAIGPTModel)
 
 
 class OpenAIGPTModelTester:

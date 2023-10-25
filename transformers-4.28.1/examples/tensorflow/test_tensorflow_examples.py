@@ -23,9 +23,7 @@ from unittest import skip
 from unittest.mock import patch
 
 import tensorflow as tf
-
 from transformers.testing_utils import TestCasePlus, get_gpu_count, slow
-
 
 SRC_DIRS = [
     os.path.join(os.path.dirname(__file__), dirname)

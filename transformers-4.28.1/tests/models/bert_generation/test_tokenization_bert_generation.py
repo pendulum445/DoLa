@@ -16,11 +16,11 @@
 import unittest
 
 from transformers import BertGenerationTokenizer
-from transformers.testing_utils import get_tests_dir, require_sentencepiece, require_torch, slow
+from transformers.testing_utils import (get_tests_dir, require_sentencepiece,
+                                        require_torch, slow)
 from transformers.utils import cached_property
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 SPIECE_UNDERLINE = "▁"
 
@@ -211,7 +211,6 @@ class BertGenerationTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import BertGenerationConfig, BertGenerationEncoder
 
         # Build sequence

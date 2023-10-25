@@ -15,25 +15,21 @@
 import unittest
 
 import numpy as np
-
 from transformers import RobertaPreLayerNormConfig, is_flax_available
 from transformers.testing_utils import require_flax, slow
 
-from ...test_modeling_flax_common import FlaxModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
-
+from ...test_modeling_flax_common import (FlaxModelTesterMixin, floats_tensor,
+                                          ids_tensor, random_attention_mask)
 
 if is_flax_available():
     import jax.numpy as jnp
-
     from transformers.models.roberta_prelayernorm.modeling_flax_roberta_prelayernorm import (
-        FlaxRobertaPreLayerNormForCausalLM,
-        FlaxRobertaPreLayerNormForMaskedLM,
+        FlaxRobertaPreLayerNormForCausalLM, FlaxRobertaPreLayerNormForMaskedLM,
         FlaxRobertaPreLayerNormForMultipleChoice,
         FlaxRobertaPreLayerNormForQuestionAnswering,
         FlaxRobertaPreLayerNormForSequenceClassification,
         FlaxRobertaPreLayerNormForTokenClassification,
-        FlaxRobertaPreLayerNormModel,
-    )
+        FlaxRobertaPreLayerNormModel)
 
 
 # Copied from tests.models.roberta.test_modelling_flax_roberta.FlaxRobertaModelTester with Roberta->RobertaPreLayerNorm

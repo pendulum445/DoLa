@@ -4,7 +4,6 @@ import time
 import numpy as np
 import onnxruntime as ort
 
-
 os.environ["ORT_TENSORRT_INT8_ENABLE"] = "1"
 os.environ["ORT_TENSORRT_INT8_USE_NATIVE_CALIBRATION_TABLE"] = "0"
 os.environ["ORT_TENSORRT_ENGINE_CACHE_ENABLE"] = "1"

@@ -21,23 +21,17 @@ import unittest
 
 import numpy as np
 import pytest
-
 from transformers import BertTokenizer, BertTokenizerFast
 from transformers.models.bert.tokenization_bert import VOCAB_FILES_NAMES
 from transformers.testing_utils import require_vision
 from transformers.utils import IMAGE_PROCESSOR_NAME, is_vision_available
 
-
 if is_vision_available():
     from PIL import Image
-
     from transformers import FlavaImageProcessor, FlavaProcessor
     from transformers.models.flava.image_processing_flava import (
-        FLAVA_CODEBOOK_MEAN,
-        FLAVA_CODEBOOK_STD,
-        FLAVA_IMAGE_MEAN,
-        FLAVA_IMAGE_STD,
-    )
+        FLAVA_CODEBOOK_MEAN, FLAVA_CODEBOOK_STD, FLAVA_IMAGE_MEAN,
+        FLAVA_IMAGE_STD)
 
 
 @require_vision

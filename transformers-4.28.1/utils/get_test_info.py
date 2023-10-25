@@ -17,7 +17,6 @@ import importlib
 import os
 import sys
 
-
 # This is required to make the module import works (when the python process is running from the root of the repo)
 sys.path.append(".")
 

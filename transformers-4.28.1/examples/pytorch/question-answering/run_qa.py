@@ -26,27 +26,18 @@ from typing import Optional
 
 import datasets
 import evaluate
+import transformers
 from datasets import load_dataset
 from trainer_qa import QuestionAnsweringTrainer
-from utils_qa import postprocess_qa_predictions
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoModelForQuestionAnswering,
-    AutoTokenizer,
-    DataCollatorWithPadding,
-    EvalPrediction,
-    HfArgumentParser,
-    PreTrainedTokenizerFast,
-    TrainingArguments,
-    default_data_collator,
-    set_seed,
-)
+from transformers import (AutoConfig, AutoModelForQuestionAnswering,
+                          AutoTokenizer, DataCollatorWithPadding,
+                          EvalPrediction, HfArgumentParser,
+                          PreTrainedTokenizerFast, TrainingArguments,
+                          default_data_collator, set_seed)
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
-
+from utils_qa import postprocess_qa_predictions
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

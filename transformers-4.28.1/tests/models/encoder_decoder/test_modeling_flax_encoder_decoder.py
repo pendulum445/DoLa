@@ -18,34 +18,25 @@ import tempfile
 import unittest
 
 import numpy as np
-
 from transformers import is_flax_available, is_torch_available
-from transformers.testing_utils import is_pt_flax_cross_test, require_flax, slow, torch_device
+from transformers.testing_utils import (is_pt_flax_cross_test, require_flax,
+                                        slow, torch_device)
 
 from ...test_modeling_flax_common import ids_tensor
 from ..bart.test_modeling_flax_bart import FlaxBartStandaloneDecoderModelTester
 from ..bert.test_modeling_flax_bert import FlaxBertModelTester
 from ..gpt2.test_modeling_flax_gpt2 import FlaxGPT2ModelTester
 
-
 if is_flax_available():
-    from transformers import (
-        AutoTokenizer,
-        EncoderDecoderConfig,
-        FlaxBartForCausalLM,
-        FlaxBertForCausalLM,
-        FlaxBertModel,
-        FlaxEncoderDecoderModel,
-        FlaxGPT2LMHeadModel,
-    )
+    from transformers import (AutoTokenizer, EncoderDecoderConfig,
+                              FlaxBartForCausalLM, FlaxBertForCausalLM,
+                              FlaxBertModel, FlaxEncoderDecoderModel,
+                              FlaxGPT2LMHeadModel)
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 if is_torch_available():
     import torch
-
     from transformers import EncoderDecoderModel
 
 

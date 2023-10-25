@@ -22,22 +22,16 @@ from transformers import XLNetConfig, is_tf_available
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
     from transformers.models.xlnet.modeling_tf_xlnet import (
-        TF_XLNET_PRETRAINED_MODEL_ARCHIVE_LIST,
-        TFXLNetForMultipleChoice,
-        TFXLNetForQuestionAnsweringSimple,
-        TFXLNetForSequenceClassification,
-        TFXLNetForTokenClassification,
-        TFXLNetLMHeadModel,
-        TFXLNetModel,
-    )
+        TF_XLNET_PRETRAINED_MODEL_ARCHIVE_LIST, TFXLNetForMultipleChoice,
+        TFXLNetForQuestionAnsweringSimple, TFXLNetForSequenceClassification,
+        TFXLNetForTokenClassification, TFXLNetLMHeadModel, TFXLNetModel)
 
 
 class TFXLNetModelTester:

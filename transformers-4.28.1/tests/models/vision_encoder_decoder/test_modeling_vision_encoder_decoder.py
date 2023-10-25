@@ -19,19 +19,15 @@ import unittest
 
 from datasets import load_dataset
 from packaging import version
-
 from transformers import DonutProcessor, TrOCRProcessor
-from transformers.testing_utils import (
-    require_sentencepiece,
-    require_torch,
-    require_vision,
-    slow,
-    to_2tuple,
-    torch_device,
-)
-from transformers.utils import cached_property, is_torch_available, is_vision_available
+from transformers.testing_utils import (require_sentencepiece, require_torch,
+                                        require_vision, slow, to_2tuple,
+                                        torch_device)
+from transformers.utils import (cached_property, is_torch_available,
+                                is_vision_available)
 
-from ...test_modeling_common import floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ..bart.test_modeling_bart import BartModelTester
 from ..bert.test_modeling_bert import BertModelTester
 from ..deit.test_modeling_deit import DeiTModelTester
@@ -39,29 +35,19 @@ from ..swin.test_modeling_swin import SwinModelTester
 from ..trocr.test_modeling_trocr import TrOCRStandaloneDecoderModelTester
 from ..vit.test_modeling_vit import ViTModelTester
 
-
 if is_torch_available():
     import numpy as np
     import torch
-
-    from transformers import (
-        AutoTokenizer,
-        BartForCausalLM,
-        BertLMHeadModel,
-        DeiTModel,
-        SwinModel,
-        TrOCRForCausalLM,
-        VisionEncoderDecoderConfig,
-        VisionEncoderDecoderModel,
-        ViTModel,
-    )
+    from transformers import (AutoTokenizer, BartForCausalLM, BertLMHeadModel,
+                              DeiTModel, SwinModel, TrOCRForCausalLM,
+                              VisionEncoderDecoderConfig,
+                              VisionEncoderDecoderModel, ViTModel)
     from transformers.modeling_outputs import BaseModelOutput
 
 
 if is_vision_available():
     import PIL
     from PIL import Image
-
     from transformers import ViTFeatureExtractor
 
 

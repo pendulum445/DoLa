@@ -17,28 +17,15 @@ import tempfile
 import unittest
 
 from packaging import version
-
-from transformers import (
-    AutoConfig,
-    AutoModel,
-    AutoModelForCausalLM,
-    AutoModelForSeq2SeqLM,
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    BitsAndBytesConfig,
-    pipeline,
-)
-from transformers.testing_utils import (
-    is_torch_available,
-    require_accelerate,
-    require_bitsandbytes,
-    require_torch,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-    slow,
-)
+from transformers import (AutoConfig, AutoModel, AutoModelForCausalLM,
+                          AutoModelForSeq2SeqLM,
+                          AutoModelForSequenceClassification, AutoTokenizer,
+                          BitsAndBytesConfig, pipeline)
+from transformers.testing_utils import (is_torch_available, require_accelerate,
+                                        require_bitsandbytes, require_torch,
+                                        require_torch_gpu,
+                                        require_torch_multi_gpu, slow)
 from transformers.utils.versions import importlib_metadata
-
 
 if is_torch_available():
     import torch
@@ -342,7 +329,6 @@ class MixedInt8T5Test(unittest.TestCase):
         both cases.
         """
         import bitsandbytes as bnb
-
         from transformers import T5ForConditionalGeneration
 
         # test with `t5-small`
@@ -369,7 +355,6 @@ class MixedInt8T5Test(unittest.TestCase):
         both cases.
         """
         import bitsandbytes as bnb
-
         from transformers import T5ForConditionalGeneration
 
         # test with `t5-small`

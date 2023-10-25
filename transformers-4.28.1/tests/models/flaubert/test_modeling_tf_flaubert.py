@@ -16,27 +16,23 @@
 import unittest
 
 from transformers import is_tf_available
-from transformers.testing_utils import require_sentencepiece, require_tf, require_tokenizers, slow
+from transformers.testing_utils import (require_sentencepiece, require_tf,
+                                        require_tokenizers, slow)
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import numpy as np
     import tensorflow as tf
-
-    from transformers import (
-        TF_FLAUBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
-        FlaubertConfig,
-        TFFlaubertForMultipleChoice,
-        TFFlaubertForQuestionAnsweringSimple,
-        TFFlaubertForSequenceClassification,
-        TFFlaubertForTokenClassification,
-        TFFlaubertModel,
-        TFFlaubertWithLMHeadModel,
-    )
+    from transformers import (TF_FLAUBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
+                              FlaubertConfig, TFFlaubertForMultipleChoice,
+                              TFFlaubertForQuestionAnsweringSimple,
+                              TFFlaubertForSequenceClassification,
+                              TFFlaubertForTokenClassification,
+                              TFFlaubertModel, TFFlaubertWithLMHeadModel)
 
 
 class TFFlaubertModelTester:

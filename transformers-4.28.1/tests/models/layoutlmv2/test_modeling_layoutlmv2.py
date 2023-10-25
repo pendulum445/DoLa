@@ -17,25 +17,24 @@
 
 import unittest
 
-from transformers.testing_utils import require_detectron2, require_torch, require_torch_multi_gpu, slow, torch_device
+from transformers.testing_utils import (require_detectron2, require_torch,
+                                        require_torch_multi_gpu, slow,
+                                        torch_device)
 from transformers.utils import is_detectron2_available, is_torch_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, _config_zero_init, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        LayoutLMv2Config,
-        LayoutLMv2ForQuestionAnswering,
-        LayoutLMv2ForSequenceClassification,
-        LayoutLMv2ForTokenClassification,
-        LayoutLMv2Model,
-    )
-    from transformers.models.layoutlmv2.modeling_layoutlmv2 import LAYOUTLMV2_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (LayoutLMv2Config, LayoutLMv2ForQuestionAnswering,
+                              LayoutLMv2ForSequenceClassification,
+                              LayoutLMv2ForTokenClassification,
+                              LayoutLMv2Model)
+    from transformers.models.layoutlmv2.modeling_layoutlmv2 import \
+        LAYOUTLMV2_PRETRAINED_MODEL_ARCHIVE_LIST
 
 if is_detectron2_available():
     from detectron2.structures.image_list import ImageList

@@ -14,12 +14,14 @@
 
 import unittest
 
-from transformers import SPIECE_UNDERLINE, ReformerTokenizer, ReformerTokenizerFast
-from transformers.testing_utils import get_tests_dir, require_sentencepiece, require_tokenizers, require_torch, slow
+from transformers import (SPIECE_UNDERLINE, ReformerTokenizer,
+                          ReformerTokenizerFast)
+from transformers.testing_utils import (get_tests_dir, require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow)
 from transformers.utils import cached_property
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 SAMPLE_VOCAB = get_tests_dir("fixtures/test_sentencepiece.model")
 
@@ -328,7 +330,6 @@ class ReformerTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import ReformerConfig, ReformerModel
 
         # Build sequence

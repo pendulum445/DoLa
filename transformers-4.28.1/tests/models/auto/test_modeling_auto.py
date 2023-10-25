@@ -21,70 +21,50 @@ from collections import OrderedDict
 from pathlib import Path
 
 import pytest
-
-from transformers import BertConfig, GPT2Model, is_safetensors_available, is_torch_available
+from transformers import (BertConfig, GPT2Model, is_safetensors_available,
+                          is_torch_available)
 from transformers.models.auto.configuration_auto import CONFIG_MAPPING
-from transformers.testing_utils import (
-    DUMMY_UNKNOWN_IDENTIFIER,
-    SMALL_MODEL_IDENTIFIER,
-    RequestCounter,
-    require_torch,
-    slow,
-)
+from transformers.testing_utils import (DUMMY_UNKNOWN_IDENTIFIER,
+                                        SMALL_MODEL_IDENTIFIER, RequestCounter,
+                                        require_torch, slow)
 
 from ..bert.test_modeling_bert import BertModelTester
-
 
 sys.path.append(str(Path(__file__).parent.parent.parent.parent / "utils"))
 
 from test_module.custom_configuration import CustomConfig  # noqa E402
 
-
 if is_torch_available():
     import torch
     from test_module.custom_modeling import CustomModel
-
-    from transformers import (
-        AutoConfig,
-        AutoModel,
-        AutoModelForCausalLM,
-        AutoModelForMaskedLM,
-        AutoModelForPreTraining,
-        AutoModelForQuestionAnswering,
-        AutoModelForSeq2SeqLM,
-        AutoModelForSequenceClassification,
-        AutoModelForTableQuestionAnswering,
-        AutoModelForTokenClassification,
-        AutoModelWithLMHead,
-        BertForMaskedLM,
-        BertForPreTraining,
-        BertForQuestionAnswering,
-        BertForSequenceClassification,
-        BertForTokenClassification,
-        BertModel,
-        FunnelBaseModel,
-        FunnelModel,
-        GPT2Config,
-        GPT2LMHeadModel,
-        RobertaForMaskedLM,
-        T5Config,
-        T5ForConditionalGeneration,
-        TapasConfig,
-        TapasForQuestionAnswering,
-    )
+    from transformers import (AutoConfig, AutoModel, AutoModelForCausalLM,
+                              AutoModelForMaskedLM, AutoModelForPreTraining,
+                              AutoModelForQuestionAnswering,
+                              AutoModelForSeq2SeqLM,
+                              AutoModelForSequenceClassification,
+                              AutoModelForTableQuestionAnswering,
+                              AutoModelForTokenClassification,
+                              AutoModelWithLMHead, BertForMaskedLM,
+                              BertForPreTraining, BertForQuestionAnswering,
+                              BertForSequenceClassification,
+                              BertForTokenClassification, BertModel,
+                              FunnelBaseModel, FunnelModel, GPT2Config,
+                              GPT2LMHeadModel, RobertaForMaskedLM, T5Config,
+                              T5ForConditionalGeneration, TapasConfig,
+                              TapasForQuestionAnswering)
     from transformers.models.auto.modeling_auto import (
-        MODEL_FOR_CAUSAL_LM_MAPPING,
-        MODEL_FOR_MASKED_LM_MAPPING,
-        MODEL_FOR_PRETRAINING_MAPPING,
-        MODEL_FOR_QUESTION_ANSWERING_MAPPING,
+        MODEL_FOR_CAUSAL_LM_MAPPING, MODEL_FOR_MASKED_LM_MAPPING,
+        MODEL_FOR_PRETRAINING_MAPPING, MODEL_FOR_QUESTION_ANSWERING_MAPPING,
         MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
-        MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
-        MODEL_MAPPING,
-    )
-    from transformers.models.bert.modeling_bert import BERT_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.gpt2.modeling_gpt2 import GPT2_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.t5.modeling_t5 import T5_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.tapas.modeling_tapas import TAPAS_PRETRAINED_MODEL_ARCHIVE_LIST
+        MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING, MODEL_MAPPING)
+    from transformers.models.bert.modeling_bert import \
+        BERT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.gpt2.modeling_gpt2 import \
+        GPT2_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.t5.modeling_t5 import \
+        T5_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.tapas.modeling_tapas import \
+        TAPAS_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 @require_torch

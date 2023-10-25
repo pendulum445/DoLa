@@ -26,16 +26,13 @@ from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import BlenderbotSmallForConditionalGeneration, BlenderbotSmallModel, BlenderbotSmallTokenizer
+    from transformers import (BlenderbotSmallForConditionalGeneration,
+                              BlenderbotSmallModel, BlenderbotSmallTokenizer)
     from transformers.models.blenderbot_small.modeling_blenderbot_small import (
-        BlenderbotSmallDecoder,
-        BlenderbotSmallEncoder,
-        BlenderbotSmallForCausalLM,
-    )
+        BlenderbotSmallDecoder, BlenderbotSmallEncoder,
+        BlenderbotSmallForCausalLM)
 
 
 def prepare_blenderbot_small_inputs_dict(

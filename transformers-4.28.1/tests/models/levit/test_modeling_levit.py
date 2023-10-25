@@ -21,33 +21,29 @@ import warnings
 from math import ceil, floor
 
 from packaging import version
-
 from transformers import LevitConfig
-from transformers.file_utils import cached_property, is_torch_available, is_vision_available
+from transformers.file_utils import (cached_property, is_torch_available,
+                                     is_vision_available)
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
-        MODEL_MAPPING,
-        LevitForImageClassification,
-        LevitForImageClassificationWithTeacher,
-        LevitModel,
-    )
-    from transformers.models.levit.modeling_levit import LEVIT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
+                              MODEL_MAPPING, LevitForImageClassification,
+                              LevitForImageClassificationWithTeacher,
+                              LevitModel)
+    from transformers.models.levit.modeling_levit import \
+        LEVIT_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import LevitFeatureExtractor
 
 

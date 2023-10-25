@@ -26,24 +26,15 @@ from typing import Optional
 
 import numpy as np
 from datasets import load_dataset
-
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    HfArgumentParser,
-    PretrainedConfig,
-    PushToHubCallback,
-    TFAutoModelForSequenceClassification,
-    TFTrainingArguments,
-    create_optimizer,
-    set_seed,
-)
-from transformers.utils import CONFIG_NAME, TF2_WEIGHTS_NAME, send_example_telemetry
-
+from transformers import (AutoConfig, AutoTokenizer, HfArgumentParser,
+                          PretrainedConfig, PushToHubCallback,
+                          TFAutoModelForSequenceClassification,
+                          TFTrainingArguments, create_optimizer, set_seed)
+from transformers.utils import (CONFIG_NAME, TF2_WEIGHTS_NAME,
+                                send_example_telemetry)
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"  # Reduce the amount of console output from TF
 import tensorflow as tf  # noqa: E402
-
 
 logger = logging.getLogger(__name__)
 

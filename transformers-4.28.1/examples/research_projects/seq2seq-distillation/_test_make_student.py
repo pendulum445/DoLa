@@ -2,11 +2,9 @@ import tempfile
 import unittest
 
 from make_student import create_student_by_copying_alternating_layers
-
 from transformers import AutoConfig
 from transformers.file_utils import cached_property
 from transformers.testing_utils import require_torch
-
 
 TINY_BART = "sshleifer/bart-tiny-random"
 TINY_T5 = "patrickvonplaten/t5-tiny-random"

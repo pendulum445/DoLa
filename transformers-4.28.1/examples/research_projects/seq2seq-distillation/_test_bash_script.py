@@ -10,12 +10,10 @@ import timeout_decorator
 import torch
 from distillation import SummarizationDistiller, distill_main
 from finetune import SummarizationModule, main
-
 from transformers import MarianMTModel
 from transformers.file_utils import cached_path
 from transformers.testing_utils import TestCasePlus, require_torch_gpu, slow
 from utils import load_json
-
 
 MARIAN_MODEL = "sshleifer/mar_enro_6_3_student"
 

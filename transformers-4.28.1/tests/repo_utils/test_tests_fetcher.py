@@ -21,31 +21,20 @@ from contextlib import contextmanager
 from pathlib import Path
 
 from git import Repo
-
 from transformers.testing_utils import CaptureStdout
-
 
 REPO_PATH = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 sys.path.append(os.path.join(REPO_PATH, "utils"))
 
 import tests_fetcher  # noqa: E402
-from tests_fetcher import (  # noqa: E402
-    checkout_commit,
-    clean_code,
-    create_module_to_test_map,
-    create_reverse_dependency_map,
-    create_reverse_dependency_tree,
-    diff_is_docstring_only,
-    extract_imports,
-    get_all_tests,
-    get_diff,
-    get_module_dependencies,
-    get_tree_starting_at,
-    infer_tests_to_run,
-    parse_commit_message,
-    print_tree_deps_of,
-)
-
+from tests_fetcher import (checkout_commit, clean_code,  # noqa: E402
+                           create_module_to_test_map,
+                           create_reverse_dependency_map,
+                           create_reverse_dependency_tree,
+                           diff_is_docstring_only, extract_imports,
+                           get_all_tests, get_diff, get_module_dependencies,
+                           get_tree_starting_at, infer_tests_to_run,
+                           parse_commit_message, print_tree_deps_of)
 
 BERT_MODELING_FILE = "src/transformers/models/bert/modeling_bert.py"
 BERT_MODEL_FILE = """from ...modeling_utils import PreTrainedModel

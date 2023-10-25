@@ -16,14 +16,13 @@ import unittest
 
 import numpy as np
 import timeout_decorator  # noqa
-
 from transformers import MarianConfig, is_flax_available
-from transformers.testing_utils import require_flax, require_sentencepiece, require_tokenizers, slow
+from transformers.testing_utils import (require_flax, require_sentencepiece,
+                                        require_tokenizers, slow)
 from transformers.utils import cached_property
 
 from ...generation.test_flax_utils import FlaxGenerationTesterMixin
 from ...test_modeling_flax_common import FlaxModelTesterMixin, ids_tensor
-
 
 if is_flax_available():
     import os
@@ -35,9 +34,9 @@ if is_flax_available():
 
     import jax
     import jax.numpy as jnp
-
     from transformers import MarianTokenizer
-    from transformers.models.marian.modeling_flax_marian import FlaxMarianModel, FlaxMarianMTModel, shift_tokens_right
+    from transformers.models.marian.modeling_flax_marian import (
+        FlaxMarianModel, FlaxMarianMTModel, shift_tokens_right)
 
 
 def prepare_marian_inputs_dict(

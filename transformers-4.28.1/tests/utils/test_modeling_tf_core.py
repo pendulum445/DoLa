@@ -26,24 +26,20 @@ from transformers.testing_utils import _tf_gpu_memory_limit, require_tf, slow
 
 from ..test_modeling_tf_common import ids_tensor
 
-
 if is_tf_available():
     import numpy as np
     import tensorflow as tf
-
-    from transformers import (
-        TF_MODEL_FOR_CAUSAL_LM_MAPPING,
-        TF_MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
-        TF_MODEL_FOR_MASKED_LM_MAPPING,
-        TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING,
-        TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING,
-        TF_MODEL_FOR_PRETRAINING_MAPPING,
-        TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
-        TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
-        TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
-        TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
-        TFSharedEmbeddings,
-    )
+    from transformers import (TF_MODEL_FOR_CAUSAL_LM_MAPPING,
+                              TF_MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
+                              TF_MODEL_FOR_MASKED_LM_MAPPING,
+                              TF_MODEL_FOR_MULTIPLE_CHOICE_MAPPING,
+                              TF_MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING,
+                              TF_MODEL_FOR_PRETRAINING_MAPPING,
+                              TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
+                              TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
+                              TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
+                              TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
+                              TFSharedEmbeddings)
 
     if _tf_gpu_memory_limit is not None:
         gpus = tf.config.list_physical_devices("GPU")

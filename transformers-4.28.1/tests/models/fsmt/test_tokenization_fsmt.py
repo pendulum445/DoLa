@@ -18,12 +18,12 @@ import json
 import os
 import unittest
 
-from transformers.models.fsmt.tokenization_fsmt import VOCAB_FILES_NAMES, FSMTTokenizer
+from transformers.models.fsmt.tokenization_fsmt import (VOCAB_FILES_NAMES,
+                                                        FSMTTokenizer)
 from transformers.testing_utils import slow
 from transformers.utils import cached_property
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 # using a different tiny model than the one used for default params defined in init to ensure proper testing
 FSMT_TINY2 = "stas/tiny-wmt19-en-ru"

@@ -4,7 +4,8 @@ from unittest.mock import MagicMock, patch
 
 from transformers import AutoModel, TFAutoModel
 from transformers.onnx import FeaturesManager
-from transformers.testing_utils import SMALL_MODEL_IDENTIFIER, require_tf, require_torch
+from transformers.testing_utils import (SMALL_MODEL_IDENTIFIER, require_tf,
+                                        require_torch)
 
 
 @require_torch

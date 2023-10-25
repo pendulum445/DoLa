@@ -19,28 +19,23 @@ import unittest
 
 import numpy as np
 from huggingface_hub import hf_hub_download
-
 from transformers import is_tensorflow_text_available, is_tf_available
-from transformers.testing_utils import require_tensorflow_text, require_tf, slow
+from transformers.testing_utils import (require_tensorflow_text, require_tf,
+                                        slow)
 
 from ..test_modeling_tf_common import floats_tensor
 from .test_framework_agnostic import GenerationIntegrationTestsMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        AutoTokenizer,
-        TFAutoModelForCausalLM,
-        TFAutoModelForSeq2SeqLM,
-        TFAutoModelForSpeechSeq2Seq,
-        TFAutoModelForVision2Seq,
-        TFBartForConditionalGeneration,
-        TFLogitsProcessorList,
-        TFMinLengthLogitsProcessor,
-        tf_top_k_top_p_filtering,
-    )
+    from transformers import (AutoTokenizer, TFAutoModelForCausalLM,
+                              TFAutoModelForSeq2SeqLM,
+                              TFAutoModelForSpeechSeq2Seq,
+                              TFAutoModelForVision2Seq,
+                              TFBartForConditionalGeneration,
+                              TFLogitsProcessorList,
+                              TFMinLengthLogitsProcessor,
+                              tf_top_k_top_p_filtering)
 
 if is_tensorflow_text_available():
     import tensorflow_text as text

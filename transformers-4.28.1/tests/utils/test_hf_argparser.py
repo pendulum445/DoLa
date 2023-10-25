@@ -24,10 +24,8 @@ from pathlib import Path
 from typing import List, Optional
 
 import yaml
-
 from transformers import HfArgumentParser, TrainingArguments
 from transformers.hf_argparser import make_choice_type_function, string_to_bool
-
 
 try:
     # For Python versions <3.8, Literal is not in typing: https://peps.python.org/pep-0586/

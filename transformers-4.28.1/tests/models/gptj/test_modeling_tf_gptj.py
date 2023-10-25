@@ -19,21 +19,16 @@ from transformers import AutoTokenizer, GPTJConfig, is_tf_available
 from transformers.testing_utils import require_tf, slow, tooslow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
 from ...utils.test_modeling_tf_core import TFCoreModelTesterMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
     from transformers.models.gptj.modeling_tf_gptj import (
-        TFGPTJForCausalLM,
-        TFGPTJForQuestionAnswering,
-        TFGPTJForSequenceClassification,
-        TFGPTJModel,
-        shape_list,
-    )
+        TFGPTJForCausalLM, TFGPTJForQuestionAnswering,
+        TFGPTJForSequenceClassification, TFGPTJModel, shape_list)
 
 
 class TFGPTJModelTester:

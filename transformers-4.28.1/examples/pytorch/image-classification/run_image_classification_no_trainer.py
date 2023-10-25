@@ -23,28 +23,23 @@ from pathlib import Path
 import datasets
 import evaluate
 import torch
+import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from accelerate.utils import set_seed
 from datasets import load_dataset
 from huggingface_hub import Repository, create_repo
 from torch.utils.data import DataLoader
-from torchvision.transforms import (
-    CenterCrop,
-    Compose,
-    Normalize,
-    RandomHorizontalFlip,
-    RandomResizedCrop,
-    Resize,
-    ToTensor,
-)
+from torchvision.transforms import (CenterCrop, Compose, Normalize,
+                                    RandomHorizontalFlip, RandomResizedCrop,
+                                    Resize, ToTensor)
 from tqdm.auto import tqdm
-
-import transformers
-from transformers import AutoConfig, AutoImageProcessor, AutoModelForImageClassification, SchedulerType, get_scheduler
-from transformers.utils import check_min_version, get_full_repo_name, send_example_telemetry
+from transformers import (AutoConfig, AutoImageProcessor,
+                          AutoModelForImageClassification, SchedulerType,
+                          get_scheduler)
+from transformers.utils import (check_min_version, get_full_repo_name,
+                                send_example_telemetry)
 from transformers.utils.versions import require_version
-
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

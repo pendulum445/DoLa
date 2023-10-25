@@ -27,29 +27,22 @@ from pathlib import Path
 
 from check_config_docstrings import get_checkpoint_from_config_class
 from datasets import load_dataset
-from get_test_info import get_model_to_tester_mapping, get_tester_classes_for_model
+from get_test_info import (get_model_to_tester_mapping,
+                           get_tester_classes_for_model)
 from huggingface_hub import Repository, create_repo, hf_api, upload_folder
-
-from transformers import (
-    CONFIG_MAPPING,
-    FEATURE_EXTRACTOR_MAPPING,
-    IMAGE_PROCESSOR_MAPPING,
-    PROCESSOR_MAPPING,
-    TOKENIZER_MAPPING,
-    AutoTokenizer,
-    LayoutLMv3TokenizerFast,
-    PreTrainedTokenizer,
-    PreTrainedTokenizerFast,
-    logging,
-)
+from transformers import (CONFIG_MAPPING, FEATURE_EXTRACTOR_MAPPING,
+                          IMAGE_PROCESSOR_MAPPING, PROCESSOR_MAPPING,
+                          TOKENIZER_MAPPING, AutoTokenizer,
+                          LayoutLMv3TokenizerFast, PreTrainedTokenizer,
+                          PreTrainedTokenizerFast, logging)
 from transformers.feature_extraction_utils import FeatureExtractionMixin
 from transformers.file_utils import is_tf_available, is_torch_available
 from transformers.image_processing_utils import BaseImageProcessor
-from transformers.models.auto.configuration_auto import AutoConfig, model_type_to_module_name
+from transformers.models.auto.configuration_auto import (
+    AutoConfig, model_type_to_module_name)
 from transformers.models.fsmt import configuration_fsmt
 from transformers.processing_utils import ProcessorMixin, transformers_module
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
-
 
 # make sure tokenizer plays nice with multiprocessing
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -812,30 +805,17 @@ def upload_model(model_dir, organization, token):
 def build_composite_models(config_class, output_dir):
     import tempfile
 
-    from transformers import (
-        BertConfig,
-        BertLMHeadModel,
-        BertModel,
-        BertTokenizer,
-        BertTokenizerFast,
-        EncoderDecoderModel,
-        GPT2Config,
-        GPT2LMHeadModel,
-        GPT2Tokenizer,
-        GPT2TokenizerFast,
-        SpeechEncoderDecoderModel,
-        TFEncoderDecoderModel,
-        TFVisionEncoderDecoderModel,
-        TFVisionTextDualEncoderModel,
-        VisionEncoderDecoderModel,
-        VisionTextDualEncoderModel,
-        ViTConfig,
-        ViTFeatureExtractor,
-        ViTModel,
-        Wav2Vec2Config,
-        Wav2Vec2Model,
-        Wav2Vec2Processor,
-    )
+    from transformers import (BertConfig, BertLMHeadModel, BertModel,
+                              BertTokenizer, BertTokenizerFast,
+                              EncoderDecoderModel, GPT2Config, GPT2LMHeadModel,
+                              GPT2Tokenizer, GPT2TokenizerFast,
+                              SpeechEncoderDecoderModel, TFEncoderDecoderModel,
+                              TFVisionEncoderDecoderModel,
+                              TFVisionTextDualEncoderModel,
+                              VisionEncoderDecoderModel,
+                              VisionTextDualEncoderModel, ViTConfig,
+                              ViTFeatureExtractor, ViTModel, Wav2Vec2Config,
+                              Wav2Vec2Model, Wav2Vec2Processor)
 
     # These will be removed at the end if they are empty
     result = {"error": None, "warnings": []}

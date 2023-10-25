@@ -18,7 +18,9 @@ import tempfile
 import unittest
 
 from transformers import PegasusConfig, is_torch_available
-from transformers.testing_utils import require_sentencepiece, require_tokenizers, require_torch, slow, torch_device
+from transformers.testing_utils import (require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        slow, torch_device)
 from transformers.utils import cached_property
 
 from ...generation.test_utils import GenerationTesterMixin
@@ -27,12 +29,12 @@ from ...test_modeling_common import ModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 from ..mbart.test_modeling_mbart import AbstractSeq2SeqIntegrationTest
 
-
 if is_torch_available():
     import torch
-
-    from transformers import AutoModelForSeq2SeqLM, PegasusForConditionalGeneration, PegasusModel
-    from transformers.models.pegasus.modeling_pegasus import PegasusDecoder, PegasusEncoder, PegasusForCausalLM
+    from transformers import (AutoModelForSeq2SeqLM,
+                              PegasusForConditionalGeneration, PegasusModel)
+    from transformers.models.pegasus.modeling_pegasus import (
+        PegasusDecoder, PegasusEncoder, PegasusForCausalLM)
 
 
 def prepare_pegasus_inputs_dict(

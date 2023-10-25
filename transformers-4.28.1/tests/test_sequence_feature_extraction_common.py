@@ -15,7 +15,6 @@
 
 
 import numpy as np
-
 from transformers import BatchFeature
 from transformers.testing_utils import require_tf, require_torch
 

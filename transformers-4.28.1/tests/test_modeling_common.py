@@ -32,77 +32,51 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import numpy as np
+import transformers
 from huggingface_hub import HfFolder, delete_repo
 from huggingface_hub.file_download import http_get
 from pytest import mark
 from requests.exceptions import HTTPError
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoModel,
-    AutoModelForSequenceClassification,
-    PretrainedConfig,
-    is_torch_available,
-    logging,
-)
+from transformers import (AutoConfig, AutoModel,
+                          AutoModelForSequenceClassification, PretrainedConfig,
+                          is_torch_available, logging)
 from transformers.models.auto import get_values
 from transformers.models.auto.modeling_auto import (
     MODEL_FOR_AUDIO_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_AUDIO_XVECTOR_MAPPING_NAMES,
-    MODEL_FOR_BACKBONE_MAPPING_NAMES,
+    MODEL_FOR_AUDIO_XVECTOR_MAPPING_NAMES, MODEL_FOR_BACKBONE_MAPPING_NAMES,
     MODEL_FOR_CAUSAL_IMAGE_MODELING_MAPPING_NAMES,
     MODEL_FOR_CAUSAL_LM_MAPPING_NAMES,
     MODEL_FOR_DOCUMENT_QUESTION_ANSWERING_MAPPING_NAMES,
     MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING_NAMES,
     MODEL_FOR_MASKED_IMAGE_MODELING_MAPPING_NAMES,
-    MODEL_FOR_MASKED_LM_MAPPING_NAMES,
-    MODEL_FOR_MULTIPLE_CHOICE_MAPPING_NAMES,
+    MODEL_FOR_MASKED_LM_MAPPING_NAMES, MODEL_FOR_MULTIPLE_CHOICE_MAPPING_NAMES,
     MODEL_FOR_NEXT_SENTENCE_PREDICTION_MAPPING_NAMES,
     MODEL_FOR_QUESTION_ANSWERING_MAPPING_NAMES,
     MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING_NAMES,
     MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING_NAMES,
     MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING_NAMES,
     MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING_NAMES,
-    MODEL_MAPPING_NAMES,
-)
-from transformers.testing_utils import (
-    TOKEN,
-    USER,
-    CaptureLogger,
-    TestCasePlus,
-    is_pt_flax_cross_test,
-    is_pt_tf_cross_test,
-    is_staging_test,
-    require_accelerate,
-    require_safetensors,
-    require_torch,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-    require_usr_bin_time,
-    slow,
-    torch_device,
-)
-from transformers.utils import (
-    CONFIG_NAME,
-    GENERATION_CONFIG_NAME,
-    SAFE_WEIGHTS_INDEX_NAME,
-    SAFE_WEIGHTS_NAME,
-    WEIGHTS_INDEX_NAME,
-    WEIGHTS_NAME,
-    is_accelerate_available,
-    is_flax_available,
-    is_tf_available,
-    is_torch_fx_available,
-)
+    MODEL_FOR_VIDEO_CLASSIFICATION_MAPPING_NAMES, MODEL_MAPPING_NAMES)
+from transformers.testing_utils import (TOKEN, USER, CaptureLogger,
+                                        TestCasePlus, is_pt_flax_cross_test,
+                                        is_pt_tf_cross_test, is_staging_test,
+                                        require_accelerate,
+                                        require_safetensors, require_torch,
+                                        require_torch_gpu,
+                                        require_torch_multi_gpu,
+                                        require_usr_bin_time, slow,
+                                        torch_device)
+from transformers.utils import (CONFIG_NAME, GENERATION_CONFIG_NAME,
+                                SAFE_WEIGHTS_INDEX_NAME, SAFE_WEIGHTS_NAME,
+                                WEIGHTS_INDEX_NAME, WEIGHTS_NAME,
+                                is_accelerate_available, is_flax_available,
+                                is_tf_available, is_torch_fx_available)
 from transformers.utils.generic import ModelOutput
-
 
 sys.path.append(str(Path(__file__).parent.parent / "utils"))
 
-from test_module.custom_configuration import CustomConfig, NoSuperInitConfig  # noqa E402
-
+from test_module.custom_configuration import (CustomConfig,  # noqa E402
+                                              NoSuperInitConfig)
 
 if is_accelerate_available():
     from accelerate.utils import compute_module_sizes
@@ -112,20 +86,11 @@ if is_torch_available():
     import torch
     from test_module.custom_modeling import CustomModel, NoSuperInitModel
     from torch import nn
-
-    from transformers import (
-        BERT_PRETRAINED_MODEL_ARCHIVE_LIST,
-        MODEL_MAPPING,
-        AdaptiveEmbedding,
-        AutoModelForCausalLM,
-        AutoTokenizer,
-        BertConfig,
-        BertModel,
-        CLIPTextModel,
-        PreTrainedModel,
-        T5Config,
-        T5ForConditionalGeneration,
-    )
+    from transformers import (BERT_PRETRAINED_MODEL_ARCHIVE_LIST,
+                              MODEL_MAPPING, AdaptiveEmbedding,
+                              AutoModelForCausalLM, AutoTokenizer, BertConfig,
+                              BertModel, CLIPTextModel, PreTrainedModel,
+                              T5Config, T5ForConditionalGeneration)
     from transformers.modeling_utils import shard_checkpoint
 
     # Fake pretrained models for tests
@@ -163,11 +128,8 @@ if is_tf_available():
 
 if is_flax_available():
     import jax.numpy as jnp
-
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 if is_torch_fx_available():
     from transformers.utils.fx import symbolic_trace

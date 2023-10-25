@@ -9,19 +9,12 @@ import torch
 from datasets import DatasetDict, load_dataset
 from packaging import version
 from torch import nn
-
-from transformers import (
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    Wav2Vec2Config,
-    Wav2Vec2FeatureExtractor,
-    Wav2Vec2ForPreTraining,
-    is_apex_available,
-    trainer_utils,
-)
-from transformers.models.wav2vec2.modeling_wav2vec2 import _compute_mask_indices
-
+from transformers import (HfArgumentParser, Trainer, TrainingArguments,
+                          Wav2Vec2Config, Wav2Vec2FeatureExtractor,
+                          Wav2Vec2ForPreTraining, is_apex_available,
+                          trainer_utils)
+from transformers.models.wav2vec2.modeling_wav2vec2 import \
+    _compute_mask_indices
 
 if is_apex_available():
     from apex import amp

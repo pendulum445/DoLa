@@ -20,28 +20,24 @@ import unittest
 
 import numpy as np
 from huggingface_hub import hf_hub_download
-
-from transformers import (
-    TvltConfig,
-    is_datasets_available,
-    is_speech_available,
-    is_torch_available,
-    is_vision_available,
-)
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
+from transformers import (TvltConfig, is_datasets_available,
+                          is_speech_available, is_torch_available,
+                          is_vision_available)
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
 from transformers.utils import cached_property
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, floats_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
     import torch.nn as nn
-
-    from transformers import TvltForAudioVisualClassification, TvltForPreTraining, TvltModel
-    from transformers.models.tvlt.modeling_tvlt import TVLT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (TvltForAudioVisualClassification,
+                              TvltForPreTraining, TvltModel)
+    from transformers.models.tvlt.modeling_tvlt import \
+        TVLT_PRETRAINED_MODEL_ARCHIVE_LIST
     from transformers.pytorch_utils import is_torch_greater_or_equal_than_1_10
 else:
     is_torch_greater_or_equal_than_1_10 = False

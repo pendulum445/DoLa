@@ -33,9 +33,7 @@ import re
 import unittest
 
 from get_test_info import get_test_classes
-
 from tests.test_pipeline_mixin import pipeline_test_mapping
-
 
 PIPELINE_TEST_MAPPING = {}
 for task, _ in pipeline_test_mapping.items():

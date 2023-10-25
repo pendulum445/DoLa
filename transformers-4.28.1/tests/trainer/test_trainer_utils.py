@@ -17,33 +17,29 @@ import copy
 import unittest
 
 import numpy as np
-
 from transformers.data.data_collator import default_data_collator
 from transformers.testing_utils import require_accelerate, require_torch
-from transformers.trainer_utils import RemoveColumnsCollator, find_executable_batch_size
+from transformers.trainer_utils import (RemoveColumnsCollator,
+                                        find_executable_batch_size)
 from transformers.utils import is_torch_available
-
 
 if is_torch_available():
     import torch
     from torch import nn
     from torch.utils.data import IterableDataset
-
     from transformers.modeling_outputs import SequenceClassifierOutput
     from transformers.tokenization_utils_base import BatchEncoding
-    from transformers.trainer_pt_utils import (
-        DistributedLengthGroupedSampler,
-        DistributedSamplerWithLoop,
-        DistributedTensorGatherer,
-        IterableDatasetShard,
-        LabelSmoother,
-        LengthGroupedSampler,
-        SequentialDistributedSampler,
-        ShardSampler,
-        get_parameter_names,
-        numpy_pad_and_concatenate,
-        torch_pad_and_concatenate,
-    )
+    from transformers.trainer_pt_utils import (DistributedLengthGroupedSampler,
+                                               DistributedSamplerWithLoop,
+                                               DistributedTensorGatherer,
+                                               IterableDatasetShard,
+                                               LabelSmoother,
+                                               LengthGroupedSampler,
+                                               SequentialDistributedSampler,
+                                               ShardSampler,
+                                               get_parameter_names,
+                                               numpy_pad_and_concatenate,
+                                               torch_pad_and_concatenate)
 
     class TstLayer(nn.Module):
         def __init__(self, hidden_size):

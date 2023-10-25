@@ -3,7 +3,6 @@ import time
 
 from arguments import PretokenizationArguments
 from datasets import load_dataset
-
 from transformers import AutoTokenizer, HfArgumentParser
 
 

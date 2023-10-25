@@ -13,16 +13,10 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_sentencepiece_available,
-    is_tf_available,
-    is_tokenizers_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_sentencepiece_available,
+                      is_tf_available, is_tokenizers_available,
+                      is_torch_available)
 
 _import_structure = {"configuration_pegasus": ["PEGASUS_PRETRAINED_CONFIG_ARCHIVE_MAP", "PegasusConfig"]}
 
@@ -82,7 +76,8 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_pegasus import PEGASUS_PRETRAINED_CONFIG_ARCHIVE_MAP, PegasusConfig
+    from .configuration_pegasus import (PEGASUS_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                        PegasusConfig)
 
     try:
         if not is_sentencepiece_available():
@@ -106,13 +101,10 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_pegasus import (
-            PEGASUS_PRETRAINED_MODEL_ARCHIVE_LIST,
-            PegasusForCausalLM,
-            PegasusForConditionalGeneration,
-            PegasusModel,
-            PegasusPreTrainedModel,
-        )
+        from .modeling_pegasus import (PEGASUS_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                       PegasusForCausalLM,
+                                       PegasusForConditionalGeneration,
+                                       PegasusModel, PegasusPreTrainedModel)
 
     try:
         if not is_tf_available():
@@ -120,7 +112,9 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_tf_pegasus import TFPegasusForConditionalGeneration, TFPegasusModel, TFPegasusPreTrainedModel
+        from .modeling_tf_pegasus import (TFPegasusForConditionalGeneration,
+                                          TFPegasusModel,
+                                          TFPegasusPreTrainedModel)
 
     try:
         if not is_flax_available():
@@ -129,10 +123,8 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_flax_pegasus import (
-            FlaxPegasusForConditionalGeneration,
-            FlaxPegasusModel,
-            FlaxPegasusPreTrainedModel,
-        )
+            FlaxPegasusForConditionalGeneration, FlaxPegasusModel,
+            FlaxPegasusPreTrainedModel)
 
 else:
     import sys

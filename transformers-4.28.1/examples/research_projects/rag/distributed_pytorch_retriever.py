@@ -6,9 +6,7 @@ import numpy as np
 import psutil
 import torch
 import torch.distributed as dist
-
 from transformers import RagRetriever
-
 
 logger = logging.getLogger(__name__)
 

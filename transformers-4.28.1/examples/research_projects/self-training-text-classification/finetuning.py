@@ -31,20 +31,12 @@ import torch
 from datasets import load_dataset, load_metric
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-
-from transformers import (
-    AdamW,
-    AutoConfig,
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    DataCollatorWithPadding,
-    default_data_collator,
-    get_scheduler,
-    set_seed,
-)
+from transformers import (AdamW, AutoConfig,
+                          AutoModelForSequenceClassification, AutoTokenizer,
+                          DataCollatorWithPadding, default_data_collator,
+                          get_scheduler, set_seed)
 from transformers.file_utils import ExplicitEnum
 from transformers.trainer_utils import IntervalStrategy
-
 
 logger = logging.getLogger(__name__)
 

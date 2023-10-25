@@ -19,16 +19,14 @@ import tempfile
 import unittest
 
 import numpy as np
-
 from transformers import BertTokenizerFast
-from transformers.models.bert.tokenization_bert import VOCAB_FILES_NAMES, BertTokenizer
+from transformers.models.bert.tokenization_bert import (VOCAB_FILES_NAMES,
+                                                        BertTokenizer)
 from transformers.testing_utils import require_tokenizers, require_vision
 from transformers.utils import IMAGE_PROCESSOR_NAME, is_vision_available
 
-
 if is_vision_available():
     from PIL import Image
-
     from transformers import VisionTextDualEncoderProcessor, ViTImageProcessor
 
 

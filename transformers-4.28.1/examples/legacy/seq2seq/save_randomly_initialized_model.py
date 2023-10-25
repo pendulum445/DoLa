@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import fire
-
 from transformers import AutoConfig, AutoModelForSeq2SeqLM, AutoTokenizer
 
 

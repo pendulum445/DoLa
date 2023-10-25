@@ -20,21 +20,17 @@ from transformers import EsmConfig, is_tf_available
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import numpy
     import tensorflow as tf
-
     from transformers.models.esm.modeling_tf_esm import (
-        TF_ESM_PRETRAINED_MODEL_ARCHIVE_LIST,
-        TFEsmForMaskedLM,
-        TFEsmForSequenceClassification,
-        TFEsmForTokenClassification,
-        TFEsmModel,
-    )
+        TF_ESM_PRETRAINED_MODEL_ARCHIVE_LIST, TFEsmForMaskedLM,
+        TFEsmForSequenceClassification, TFEsmForTokenClassification,
+        TFEsmModel)
 
 
 # copied from tests.test_modeling_tf_roberta

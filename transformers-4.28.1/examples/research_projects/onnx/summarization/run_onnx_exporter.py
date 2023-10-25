@@ -24,12 +24,10 @@ import sys
 import numpy as np
 import onnxruntime
 import torch
+import transformers
 from bart_onnx.generation_onnx import BARTBeamSearchGenerator
 from bart_onnx.reduce_onnx_size import remove_dup_initializers
-
-import transformers
 from transformers import BartForConditionalGeneration, BartTokenizer
-
 
 logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(name)s |  [%(filename)s:%(lineno)d] %(message)s",

@@ -6,7 +6,6 @@ import os
 import pytest
 from attr import dataclass
 
-
 os.environ["AWS_DEFAULT_REGION"] = "us-east-1"  # defaults region
 
 

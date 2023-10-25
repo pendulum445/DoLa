@@ -13,8 +13,8 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import OptionalDependencyNotAvailable, _LazyModule, is_torch_available, is_vision_available
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_torch_available, is_vision_available)
 
 _import_structure = {
     "configuration_efficientformer": [
@@ -46,7 +46,8 @@ else:
     ]
 
 if TYPE_CHECKING:
-    from .configuration_efficientformer import EFFICIENTFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, EfficientFormerConfig
+    from .configuration_efficientformer import (
+        EFFICIENTFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, EfficientFormerConfig)
 
     try:
         if not is_vision_available():
@@ -54,7 +55,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .image_processing_efficientformer import EfficientFormerImageProcessor
+        from .image_processing_efficientformer import \
+            EfficientFormerImageProcessor
 
     try:
         if not is_torch_available():
@@ -66,9 +68,7 @@ if TYPE_CHECKING:
             EFFICIENTFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
             EfficientFormerForImageClassification,
             EfficientFormerForImageClassificationWithTeacher,
-            EfficientFormerModel,
-            EfficientFormerPreTrainedModel,
-        )
+            EfficientFormerModel, EfficientFormerPreTrainedModel)
 
 else:
     import sys

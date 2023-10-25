@@ -14,22 +14,13 @@
 
 import unittest
 
-from transformers import (
-    MODEL_FOR_TABLE_QUESTION_ANSWERING_MAPPING,
-    AutoModelForTableQuestionAnswering,
-    AutoTokenizer,
-    TableQuestionAnsweringPipeline,
-    TFAutoModelForTableQuestionAnswering,
-    pipeline,
-)
-from transformers.testing_utils import (
-    is_pipeline_test,
-    require_pandas,
-    require_tensorflow_probability,
-    require_tf,
-    require_torch,
-    slow,
-)
+from transformers import (MODEL_FOR_TABLE_QUESTION_ANSWERING_MAPPING,
+                          AutoModelForTableQuestionAnswering, AutoTokenizer,
+                          TableQuestionAnsweringPipeline,
+                          TFAutoModelForTableQuestionAnswering, pipeline)
+from transformers.testing_utils import (is_pipeline_test, require_pandas,
+                                        require_tensorflow_probability,
+                                        require_tf, require_torch, slow)
 
 
 @is_pipeline_test

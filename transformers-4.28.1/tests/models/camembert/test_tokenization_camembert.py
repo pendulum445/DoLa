@@ -16,11 +16,11 @@
 import unittest
 
 from transformers import CamembertTokenizer, CamembertTokenizerFast
-from transformers.testing_utils import get_tests_dir, require_sentencepiece, require_tokenizers, slow
+from transformers.testing_utils import (get_tests_dir, require_sentencepiece,
+                                        require_tokenizers, slow)
 from transformers.utils import is_torch_available
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 SAMPLE_VOCAB = get_tests_dir("fixtures/test_sentencepiece.model")
 SAMPLE_BPE_VOCAB = get_tests_dir("fixtures/test_sentencepiece_bpe.model")

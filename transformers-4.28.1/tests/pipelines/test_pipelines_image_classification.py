@@ -14,25 +14,16 @@
 
 import unittest
 
-from transformers import (
-    MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
-    TF_MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
-    PreTrainedTokenizer,
-    is_vision_available,
-)
+from transformers import (MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
+                          TF_MODEL_FOR_IMAGE_CLASSIFICATION_MAPPING,
+                          PreTrainedTokenizer, is_vision_available)
 from transformers.pipelines import ImageClassificationPipeline, pipeline
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_tf,
-    require_torch,
-    require_torch_or_tf,
-    require_vision,
-    slow,
-)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_tf, require_torch,
+                                        require_torch_or_tf, require_vision,
+                                        slow)
 
 from .test_pipelines_common import ANY
-
 
 if is_vision_available():
     from PIL import Image

@@ -17,10 +17,12 @@ import unittest
 
 import numpy as np
 from parameterized import parameterized
-
-from transformers.testing_utils import require_flax, require_tf, require_torch, require_vision
-from transformers.utils.import_utils import is_flax_available, is_tf_available, is_torch_available, is_vision_available
-
+from transformers.testing_utils import (require_flax, require_tf,
+                                        require_torch, require_vision)
+from transformers.utils.import_utils import (is_flax_available,
+                                             is_tf_available,
+                                             is_torch_available,
+                                             is_vision_available)
 
 if is_torch_available():
     import torch
@@ -33,21 +35,15 @@ if is_flax_available():
 
 if is_vision_available():
     import PIL.Image
-
-    from transformers.image_transforms import (
-        center_crop,
-        center_to_corners_format,
-        convert_to_rgb,
-        corners_to_center_format,
-        get_resize_output_image_size,
-        id_to_rgb,
-        normalize,
-        pad,
-        resize,
-        rgb_to_id,
-        to_channel_dimension_format,
-        to_pil_image,
-    )
+    from transformers.image_transforms import (center_crop,
+                                               center_to_corners_format,
+                                               convert_to_rgb,
+                                               corners_to_center_format,
+                                               get_resize_output_image_size,
+                                               id_to_rgb, normalize, pad,
+                                               resize, rgb_to_id,
+                                               to_channel_dimension_format,
+                                               to_pil_image)
 
 
 def get_random_image(height, width, num_channels=3, channels_first=True):

@@ -14,8 +14,8 @@
 
 from typing import TYPE_CHECKING
 
-from ...utils import OptionalDependencyNotAvailable, _LazyModule, is_flax_available, is_torch_available
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_torch_available)
 
 _import_structure = {"configuration_speech_encoder_decoder": ["SpeechEncoderDecoderConfig"]}
 
@@ -36,7 +36,8 @@ else:
     _import_structure["modeling_flax_speech_encoder_decoder"] = ["FlaxSpeechEncoderDecoderModel"]
 
 if TYPE_CHECKING:
-    from .configuration_speech_encoder_decoder import SpeechEncoderDecoderConfig
+    from .configuration_speech_encoder_decoder import \
+        SpeechEncoderDecoderConfig
 
     try:
         if not is_torch_available():
@@ -52,7 +53,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_speech_encoder_decoder import FlaxSpeechEncoderDecoderModel
+        from .modeling_flax_speech_encoder_decoder import \
+            FlaxSpeechEncoderDecoderModel
 
 else:
     import sys

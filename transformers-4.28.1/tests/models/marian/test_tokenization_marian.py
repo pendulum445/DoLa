@@ -19,15 +19,15 @@ from pathlib import Path
 from shutil import copyfile
 
 from transformers import BatchEncoding, MarianTokenizer
-from transformers.testing_utils import get_tests_dir, require_sentencepiece, slow
-from transformers.utils import is_sentencepiece_available, is_tf_available, is_torch_available
-
+from transformers.testing_utils import (get_tests_dir, require_sentencepiece,
+                                        slow)
+from transformers.utils import (is_sentencepiece_available, is_tf_available,
+                                is_torch_available)
 
 if is_sentencepiece_available():
     from transformers.models.marian.tokenization_marian import VOCAB_FILES_NAMES, save_json
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 SAMPLE_SP = get_tests_dir("fixtures/test_sentencepiece.model")
 

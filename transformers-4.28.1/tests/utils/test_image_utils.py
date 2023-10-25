@@ -18,20 +18,21 @@ import unittest
 import datasets
 import numpy as np
 import pytest
-
 from transformers import is_torch_available, is_vision_available
-from transformers.image_utils import ChannelDimension, get_channel_dimension_axis, make_list_of_images
+from transformers.image_utils import (ChannelDimension,
+                                      get_channel_dimension_axis,
+                                      make_list_of_images)
 from transformers.testing_utils import require_torch, require_vision
-
 
 if is_torch_available():
     import torch
 
 if is_vision_available():
     import PIL.Image
-
     from transformers import ImageFeatureExtractionMixin
-    from transformers.image_utils import get_image_size, infer_channel_dimension_format, load_image
+    from transformers.image_utils import (get_image_size,
+                                          infer_channel_dimension_format,
+                                          load_image)
 
 
 def get_random_image(height, width):

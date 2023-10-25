@@ -18,60 +18,47 @@ import inspect
 import unittest
 
 import numpy as np
-
 from transformers import is_torch_available, pipeline
 from transformers.testing_utils import require_torch, slow, torch_device
 
 from ..test_modeling_common import floats_tensor, ids_tensor
 from .test_framework_agnostic import GenerationIntegrationTestsMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        AutoModelForCausalLM,
-        AutoModelForSeq2SeqLM,
-        AutoModelForSpeechSeq2Seq,
-        AutoModelForVision2Seq,
-        AutoTokenizer,
-        BartForConditionalGeneration,
-        BartTokenizer,
-        GPT2LMHeadModel,
-        GPT2Tokenizer,
-        ImageGPTForCausalImageModeling,
-        SpeechEncoderDecoderModel,
-        top_k_top_p_filtering,
-    )
-    from transformers.generation import (
-        BeamSampleDecoderOnlyOutput,
-        BeamSampleEncoderDecoderOutput,
-        BeamSearchDecoderOnlyOutput,
-        BeamSearchEncoderDecoderOutput,
-        BeamSearchScorer,
-        ConstrainedBeamSearchScorer,
-        DisjunctiveConstraint,
-        ForcedBOSTokenLogitsProcessor,
-        ForcedEOSTokenLogitsProcessor,
-        GreedySearchDecoderOnlyOutput,
-        GreedySearchEncoderDecoderOutput,
-        HammingDiversityLogitsProcessor,
-        InfNanRemoveLogitsProcessor,
-        LogitsProcessorList,
-        MaxLengthCriteria,
-        MinLengthLogitsProcessor,
-        NoBadWordsLogitsProcessor,
-        NoRepeatNGramLogitsProcessor,
-        PhrasalConstraint,
-        RepetitionPenaltyLogitsProcessor,
-        SampleDecoderOnlyOutput,
-        SampleEncoderDecoderOutput,
-        StoppingCriteria,
-        StoppingCriteriaList,
-        TemperatureLogitsWarper,
-        TopKLogitsWarper,
-        TopPLogitsWarper,
-    )
+    from transformers import (AutoModelForCausalLM, AutoModelForSeq2SeqLM,
+                              AutoModelForSpeechSeq2Seq,
+                              AutoModelForVision2Seq, AutoTokenizer,
+                              BartForConditionalGeneration, BartTokenizer,
+                              GPT2LMHeadModel, GPT2Tokenizer,
+                              ImageGPTForCausalImageModeling,
+                              SpeechEncoderDecoderModel, top_k_top_p_filtering)
+    from transformers.generation import (BeamSampleDecoderOnlyOutput,
+                                         BeamSampleEncoderDecoderOutput,
+                                         BeamSearchDecoderOnlyOutput,
+                                         BeamSearchEncoderDecoderOutput,
+                                         BeamSearchScorer,
+                                         ConstrainedBeamSearchScorer,
+                                         DisjunctiveConstraint,
+                                         ForcedBOSTokenLogitsProcessor,
+                                         ForcedEOSTokenLogitsProcessor,
+                                         GreedySearchDecoderOnlyOutput,
+                                         GreedySearchEncoderDecoderOutput,
+                                         HammingDiversityLogitsProcessor,
+                                         InfNanRemoveLogitsProcessor,
+                                         LogitsProcessorList,
+                                         MaxLengthCriteria,
+                                         MinLengthLogitsProcessor,
+                                         NoBadWordsLogitsProcessor,
+                                         NoRepeatNGramLogitsProcessor,
+                                         PhrasalConstraint,
+                                         RepetitionPenaltyLogitsProcessor,
+                                         SampleDecoderOnlyOutput,
+                                         SampleEncoderDecoderOutput,
+                                         StoppingCriteria,
+                                         StoppingCriteriaList,
+                                         TemperatureLogitsWarper,
+                                         TopKLogitsWarper, TopPLogitsWarper)
 
 
 class GenerationTesterMixin:

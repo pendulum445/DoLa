@@ -27,23 +27,16 @@ from typing import List, Optional, Tuple
 import datasets
 import evaluate
 import numpy as np
+import transformers
 from datasets import load_dataset
 from trainer_seq2seq_qa import QuestionAnsweringSeq2SeqTrainer
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoModelForSeq2SeqLM,
-    AutoTokenizer,
-    DataCollatorForSeq2Seq,
-    HfArgumentParser,
-    Seq2SeqTrainingArguments,
-    set_seed,
-)
-from transformers.trainer_utils import EvalLoopOutput, EvalPrediction, get_last_checkpoint
+from transformers import (AutoConfig, AutoModelForSeq2SeqLM, AutoTokenizer,
+                          DataCollatorForSeq2Seq, HfArgumentParser,
+                          Seq2SeqTrainingArguments, set_seed)
+from transformers.trainer_utils import (EvalLoopOutput, EvalPrediction,
+                                        get_last_checkpoint)
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
-
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

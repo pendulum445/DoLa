@@ -2,10 +2,10 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from transformers import AutoConfig, TFGPT2LMHeadModel, is_keras_nlp_available, is_tf_available
+from transformers import (AutoConfig, TFGPT2LMHeadModel,
+                          is_keras_nlp_available, is_tf_available)
 from transformers.models.gpt2.tokenization_gpt2 import GPT2Tokenizer
 from transformers.testing_utils import require_keras_nlp, require_tf, slow
-
 
 if is_tf_available():
     import tensorflow as tf

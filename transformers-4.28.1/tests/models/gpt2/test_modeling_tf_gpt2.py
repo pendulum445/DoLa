@@ -19,22 +19,17 @@ from transformers import GPT2Config, is_tf_available
 from transformers.testing_utils import require_tf, require_tf2onnx, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
 from ...utils.test_modeling_tf_core import TFCoreModelTesterMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import GPT2Tokenizer
     from transformers.models.gpt2.modeling_tf_gpt2 import (
-        TF_GPT2_PRETRAINED_MODEL_ARCHIVE_LIST,
-        TFGPT2DoubleHeadsModel,
-        TFGPT2ForSequenceClassification,
-        TFGPT2LMHeadModel,
-        TFGPT2Model,
-    )
+        TF_GPT2_PRETRAINED_MODEL_ARCHIVE_LIST, TFGPT2DoubleHeadsModel,
+        TFGPT2ForSequenceClassification, TFGPT2LMHeadModel, TFGPT2Model)
     from transformers.tf_utils import shape_list
 
 

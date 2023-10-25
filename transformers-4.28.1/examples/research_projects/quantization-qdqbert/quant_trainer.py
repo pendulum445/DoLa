@@ -22,7 +22,6 @@ import torch
 from pytorch_quantization import calib
 from pytorch_quantization.tensor_quant import QuantDescriptor
 
-
 logger = logging.getLogger(__name__)
 
 name_width = 50  # max width of layer names

@@ -20,25 +20,28 @@ import unittest
 
 from transformers import ConvNextV2Config
 from transformers.models.auto import get_values
-from transformers.models.auto.modeling_auto import MODEL_FOR_BACKBONE_MAPPING_NAMES, MODEL_MAPPING_NAMES
-from transformers.testing_utils import require_torch, require_vision, slow, torch_device
-from transformers.utils import cached_property, is_torch_available, is_vision_available
+from transformers.models.auto.modeling_auto import (
+    MODEL_FOR_BACKBONE_MAPPING_NAMES, MODEL_MAPPING_NAMES)
+from transformers.testing_utils import (require_torch, require_vision, slow,
+                                        torch_device)
+from transformers.utils import (cached_property, is_torch_available,
+                                is_vision_available)
 
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import ConvNextV2Backbone, ConvNextV2ForImageClassification, ConvNextV2Model
-    from transformers.models.convnextv2.modeling_convnextv2 import CONVNEXTV2_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (ConvNextV2Backbone,
+                              ConvNextV2ForImageClassification,
+                              ConvNextV2Model)
+    from transformers.models.convnextv2.modeling_convnextv2 import \
+        CONVNEXTV2_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import AutoImageProcessor
 
 

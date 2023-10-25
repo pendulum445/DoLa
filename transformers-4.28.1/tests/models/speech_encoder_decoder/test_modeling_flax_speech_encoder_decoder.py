@@ -17,40 +17,32 @@ import tempfile
 import unittest
 
 import numpy as np
-
 from transformers import is_flax_available, is_torch_available
-from transformers.testing_utils import is_pt_flax_cross_test, require_flax, slow, torch_device
+from transformers.testing_utils import (is_pt_flax_cross_test, require_flax,
+                                        slow, torch_device)
 
-from ...test_modeling_flax_common import floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_flax_common import (floats_tensor, ids_tensor,
+                                          random_attention_mask)
 from ..bart.test_modeling_flax_bart import FlaxBartStandaloneDecoderModelTester
 from ..bert.test_modeling_flax_bert import FlaxBertModelTester
 from ..gpt2.test_modeling_flax_gpt2 import FlaxGPT2ModelTester
 from ..wav2vec2.test_modeling_flax_wav2vec2 import FlaxWav2Vec2ModelTester
-
 
 if is_flax_available():
     import jax
     import jax.numpy as jnp
     from flax.training.common_utils import onehot
     from flax.traverse_util import flatten_dict
-
-    from transformers import (
-        FlaxBartForCausalLM,
-        FlaxBertForCausalLM,
-        FlaxGPT2LMHeadModel,
-        FlaxSpeechEncoderDecoderModel,
-        FlaxWav2Vec2Model,
-        SpeechEncoderDecoderConfig,
-    )
+    from transformers import (FlaxBartForCausalLM, FlaxBertForCausalLM,
+                              FlaxGPT2LMHeadModel,
+                              FlaxSpeechEncoderDecoderModel, FlaxWav2Vec2Model,
+                              SpeechEncoderDecoderConfig)
     from transformers.modeling_flax_outputs import FlaxBaseModelOutput
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 if is_torch_available():
     import torch
-
     from transformers import SpeechEncoderDecoderModel
 
 

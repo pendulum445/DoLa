@@ -19,15 +19,17 @@ import inspect
 import math
 import unittest
 
-from transformers import DetaConfig, is_torch_available, is_torchvision_available, is_vision_available
+from transformers import (DetaConfig, is_torch_available,
+                          is_torchvision_available, is_vision_available)
 from transformers.file_utils import cached_property
-from transformers.testing_utils import require_torchvision, require_vision, slow, torch_device
+from transformers.testing_utils import (require_torchvision, require_vision,
+                                        slow, torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, _config_zero_init, floats_tensor
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
@@ -38,7 +40,6 @@ if is_torchvision_available():
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import AutoImageProcessor
 
 

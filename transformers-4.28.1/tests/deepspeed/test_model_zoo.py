@@ -18,27 +18,18 @@ import subprocess
 from os.path import dirname
 
 from parameterized import parameterized
-
 from tests.trainer.test_trainer import TrainerIntegrationCommon  # noqa
 from transformers import is_torch_available
-from transformers.testing_utils import (
-    TestCasePlus,
-    execute_subprocess_async,
-    get_gpu_count,
-    get_tests_dir,
-    require_deepspeed,
-    require_torch_gpu,
-    slow,
-)
+from transformers.testing_utils import (TestCasePlus, execute_subprocess_async,
+                                        get_gpu_count, get_tests_dir,
+                                        require_deepspeed, require_torch_gpu,
+                                        slow)
 from transformers.trainer_utils import set_seed
 
-
 if is_torch_available():
-    from tests.trainer.test_trainer import (  # noqa
-        RegressionModelConfig,
-        RegressionPreTrainedModel,
-        get_regression_trainer,
-    )
+    from tests.trainer.test_trainer import (RegressionModelConfig,  # noqa
+                                            RegressionPreTrainedModel,
+                                            get_regression_trainer)
 
 
 set_seed(42)

@@ -21,16 +21,12 @@ import logging
 import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss, MSELoss
-
-from transformers.file_utils import add_start_docstrings, add_start_docstrings_to_model_forward
-from transformers.models.bert.modeling_bert import (
-    BERT_INPUTS_DOCSTRING,
-    BERT_START_DOCSTRING,
-    BertEncoder,
-    BertModel,
-    BertPreTrainedModel,
-)
-
+from transformers.file_utils import (add_start_docstrings,
+                                     add_start_docstrings_to_model_forward)
+from transformers.models.bert.modeling_bert import (BERT_INPUTS_DOCSTRING,
+                                                    BERT_START_DOCSTRING,
+                                                    BertEncoder, BertModel,
+                                                    BertPreTrainedModel)
 
 logger = logging.getLogger(__name__)
 

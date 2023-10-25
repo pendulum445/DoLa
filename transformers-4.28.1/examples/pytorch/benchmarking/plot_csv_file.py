@@ -20,7 +20,6 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import ScalarFormatter
-
 from transformers import HfArgumentParser
 
 

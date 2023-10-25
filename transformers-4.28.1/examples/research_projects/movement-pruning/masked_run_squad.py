@@ -30,23 +30,14 @@ from torch import nn
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
-
-from transformers import (
-    WEIGHTS_NAME,
-    AdamW,
-    BertConfig,
-    BertForQuestionAnswering,
-    BertTokenizer,
-    get_linear_schedule_with_warmup,
-    squad_convert_examples_to_features,
-)
+from transformers import (WEIGHTS_NAME, AdamW, BertConfig,
+                          BertForQuestionAnswering, BertTokenizer,
+                          get_linear_schedule_with_warmup,
+                          squad_convert_examples_to_features)
 from transformers.data.metrics.squad_metrics import (
-    compute_predictions_log_probs,
-    compute_predictions_logits,
-    squad_evaluate,
-)
-from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
-
+    compute_predictions_log_probs, compute_predictions_logits, squad_evaluate)
+from transformers.data.processors.squad import (SquadResult, SquadV1Processor,
+                                                SquadV2Processor)
 
 try:
     from torch.utils.tensorboard import SummaryWriter

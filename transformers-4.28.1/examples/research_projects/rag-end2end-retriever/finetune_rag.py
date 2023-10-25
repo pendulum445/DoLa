@@ -20,24 +20,14 @@ import torch
 import torch.distributed as dist
 from datasets import concatenate_datasets, load_from_disk
 from torch.utils.data import DataLoader
-
-from transformers import (
-    AutoConfig,
-    AutoTokenizer,
-    BartForConditionalGeneration,
-    BatchEncoding,
-    DPRConfig,
-    DPRContextEncoder,
-    DPRContextEncoderTokenizerFast,
-    RagConfig,
-    RagSequenceForGeneration,
-    RagTokenForGeneration,
-    RagTokenizer,
-    T5ForConditionalGeneration,
-)
+from transformers import (AutoConfig, AutoTokenizer,
+                          BartForConditionalGeneration, BatchEncoding,
+                          DPRConfig, DPRContextEncoder,
+                          DPRContextEncoderTokenizerFast, RagConfig,
+                          RagSequenceForGeneration, RagTokenForGeneration,
+                          RagTokenizer, T5ForConditionalGeneration)
 from transformers import logging as transformers_logging
 from transformers.integrations import is_ray_available
-
 
 if is_ray_available():
     import ray
@@ -45,22 +35,15 @@ if is_ray_available():
 
 from glob import glob
 
-from callbacks_rag import Seq2SeqLoggingCallback, get_checkpoint_callback, get_early_stopping_callback
+from callbacks_rag import (Seq2SeqLoggingCallback, get_checkpoint_callback,
+                           get_early_stopping_callback)
 from kb_encode_utils import add_index, embed_update
 from lightning_base import BaseTransformer, add_generic_args, generic_train
-from pynvml import nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlInit
-from utils_rag import (
-    Seq2SeqDataset,
-    calculate_exact_match,
-    get_git_info,
-    is_rag_model,
-    lmap,
-    pickle_save,
-    save_git_info,
-    save_json,
-    set_extra_model_params,
-)
-
+from pynvml import (nvmlDeviceGetCount, nvmlDeviceGetHandleByIndex,
+                    nvmlDeviceGetMemoryInfo, nvmlInit)
+from utils_rag import (Seq2SeqDataset, calculate_exact_match, get_git_info,
+                       is_rag_model, lmap, pickle_save, save_git_info,
+                       save_json, set_extra_model_params)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

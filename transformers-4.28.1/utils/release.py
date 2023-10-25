@@ -19,7 +19,6 @@ import re
 
 import packaging.version
 
-
 PATH_TO_EXAMPLES = "examples/"
 REPLACE_PATTERNS = {
     "examples": (re.compile(r'^check_min_version\("[^"]+"\)\s*$', re.MULTILINE), 'check_min_version("VERSION")\n'),

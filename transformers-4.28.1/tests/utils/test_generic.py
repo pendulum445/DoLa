@@ -16,19 +16,10 @@
 import unittest
 
 import numpy as np
-
 from transformers.testing_utils import require_flax, require_tf, require_torch
-from transformers.utils import (
-    expand_dims,
-    flatten_dict,
-    is_flax_available,
-    is_tf_available,
-    is_torch_available,
-    reshape,
-    squeeze,
-    transpose,
-)
-
+from transformers.utils import (expand_dims, flatten_dict, is_flax_available,
+                                is_tf_available, is_torch_available, reshape,
+                                squeeze, transpose)
 
 if is_flax_available():
     import jax.numpy as jnp

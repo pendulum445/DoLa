@@ -17,27 +17,22 @@ import random
 import unittest
 
 import numpy as np
-
 from transformers.testing_utils import require_torch, require_vision
 from transformers.utils import is_torch_available, is_vision_available
 
-from ...test_image_processing_common import ImageProcessingSavingTestMixin, prepare_image_inputs
-
+from ...test_image_processing_common import (ImageProcessingSavingTestMixin,
+                                             prepare_image_inputs)
 
 if is_torch_available():
     import torch
 
 if is_vision_available():
     import PIL
-
     from transformers import FlavaImageProcessor
     from transformers.image_utils import PILImageResampling
     from transformers.models.flava.image_processing_flava import (
-        FLAVA_CODEBOOK_MEAN,
-        FLAVA_CODEBOOK_STD,
-        FLAVA_IMAGE_MEAN,
-        FLAVA_IMAGE_STD,
-    )
+        FLAVA_CODEBOOK_MEAN, FLAVA_CODEBOOK_STD, FLAVA_IMAGE_MEAN,
+        FLAVA_IMAGE_STD)
 else:
     FLAVA_IMAGE_MEAN = FLAVA_IMAGE_STD = FLAVA_CODEBOOK_MEAN = FLAVA_CODEBOOK_STD = None
 

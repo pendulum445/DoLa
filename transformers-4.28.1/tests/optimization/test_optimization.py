@@ -21,22 +21,15 @@ import unittest
 from transformers import is_torch_available
 from transformers.testing_utils import require_torch
 
-
 if is_torch_available():
     import torch
     from torch import nn
-
     from transformers import (
-        Adafactor,
-        AdamW,
-        get_constant_schedule,
-        get_constant_schedule_with_warmup,
-        get_cosine_schedule_with_warmup,
+        Adafactor, AdamW, get_constant_schedule,
+        get_constant_schedule_with_warmup, get_cosine_schedule_with_warmup,
         get_cosine_with_hard_restarts_schedule_with_warmup,
-        get_inverse_sqrt_schedule,
-        get_linear_schedule_with_warmup,
-        get_polynomial_decay_schedule_with_warmup,
-    )
+        get_inverse_sqrt_schedule, get_linear_schedule_with_warmup,
+        get_polynomial_decay_schedule_with_warmup)
 
 
 def unwrap_schedule(scheduler, num_steps=10):

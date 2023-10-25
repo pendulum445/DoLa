@@ -12,9 +12,7 @@ import numpy as np
 from arguments import PreprocessingArguments
 from datasets import load_dataset
 from minhash_deduplication import deduplicate_dataset
-
 from transformers import AutoTokenizer, HfArgumentParser
-
 
 PATTERN = re.compile(r"\s+")
 

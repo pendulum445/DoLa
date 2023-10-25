@@ -24,32 +24,28 @@ from importlib import import_module
 
 import numpy as np
 import requests
-
-from transformers import GroupViTConfig, GroupViTTextConfig, GroupViTVisionConfig
-from transformers.testing_utils import (
-    is_pt_tf_cross_test,
-    require_tensorflow_probability,
-    require_tf,
-    require_vision,
-    slow,
-)
+from transformers import (GroupViTConfig, GroupViTTextConfig,
+                          GroupViTVisionConfig)
+from transformers.testing_utils import (is_pt_tf_cross_test,
+                                        require_tensorflow_probability,
+                                        require_tf, require_vision, slow)
 from transformers.utils import is_tf_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import TFGroupViTModel, TFGroupViTTextModel, TFGroupViTVisionModel, TFSharedEmbeddings
-    from transformers.models.groupvit.modeling_tf_groupvit import TF_GROUPVIT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (TFGroupViTModel, TFGroupViTTextModel,
+                              TFGroupViTVisionModel, TFSharedEmbeddings)
+    from transformers.models.groupvit.modeling_tf_groupvit import \
+        TF_GROUPVIT_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import CLIPProcessor
 
 

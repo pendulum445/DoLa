@@ -21,27 +21,22 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-
 from transformers import AddedToken
-from transformers.models.tapas.tokenization_tapas import (
-    VOCAB_FILES_NAMES,
-    BasicTokenizer,
-    TapasTokenizer,
-    WordpieceTokenizer,
-    _is_control,
-    _is_punctuation,
-    _is_whitespace,
-)
-from transformers.testing_utils import (
-    is_pt_tf_cross_test,
-    require_pandas,
-    require_tensorflow_probability,
-    require_tokenizers,
-    require_torch,
-    slow,
-)
+from transformers.models.tapas.tokenization_tapas import (VOCAB_FILES_NAMES,
+                                                          BasicTokenizer,
+                                                          TapasTokenizer,
+                                                          WordpieceTokenizer,
+                                                          _is_control,
+                                                          _is_punctuation,
+                                                          _is_whitespace)
+from transformers.testing_utils import (is_pt_tf_cross_test, require_pandas,
+                                        require_tensorflow_probability,
+                                        require_tokenizers, require_torch,
+                                        slow)
 
-from ...test_tokenization_common import TokenizerTesterMixin, filter_non_english, merge_model_tokenizer_mappings
+from ...test_tokenization_common import (TokenizerTesterMixin,
+                                         filter_non_english,
+                                         merge_model_tokenizer_mappings)
 
 
 @require_tokenizers
@@ -1030,7 +1025,6 @@ class TapasTokenizationTest(TokenizerTesterMixin, unittest.TestCase):
     @slow
     def test_torch_encode_plus_sent_to_model(self):
         import torch
-
         from transformers import MODEL_MAPPING, TOKENIZER_MAPPING
 
         MODEL_TOKENIZER_MAPPING = merge_model_tokenizer_mappings(MODEL_MAPPING, TOKENIZER_MAPPING)

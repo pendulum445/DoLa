@@ -10,7 +10,6 @@ from datasketch import MinHash, MinHashLSH
 from dpu_utils.utils.iterators import ThreadedIterator
 from tqdm import tqdm
 
-
 NON_ALPHA = re.compile("[^A-Za-z_0-9]")
 # parameters used in DuplicationIndex
 MIN_NUM_TOKENS = 10

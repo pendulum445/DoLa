@@ -18,39 +18,30 @@
 
 from typing import Callable, Optional, Tuple
 
-import numpy as np
-
 import flax.linen as nn
 import jax
 import jax.numpy as jnp
-from flax.core.frozen_dict import FrozenDict, unfreeze, freeze
+import numpy as np
+from flax.core.frozen_dict import FrozenDict, freeze, unfreeze
 from flax.linen import combine_masks, make_causal_mask
 from flax.linen import partitioning as nn_partitioning
-from flax.traverse_util import flatten_dict, unflatten_dict
 from flax.linen.attention import dot_product_attention_weights
+from flax.traverse_util import flatten_dict, unflatten_dict
 from jax import lax
 
-from ...utils import add_start_docstrings, add_start_docstrings_to_model_forward
 from ...modeling_flax_outputs import (
     FlaxBaseModelOutputWithPastAndCrossAttentions,
-    FlaxBaseModelOutputWithPoolingAndCrossAttentions,
-    FlaxCausalLMOutput,
-    FlaxCausalLMOutputWithCrossAttentions,
-    FlaxMaskedLMOutput,
-    FlaxMultipleChoiceModelOutput,
-    FlaxQuestionAnsweringModelOutput,
-    FlaxSequenceClassifierOutput,
-    FlaxTokenClassifierOutput,
-)
-from ...modeling_flax_utils import (
-    ACT2FN,
-    FlaxPreTrainedModel,
-    append_call_sample_docstring,
-    overwrite_call_docstring,
-)
-from ...utils import logging
-from .configuration_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Config
-
+    FlaxBaseModelOutputWithPoolingAndCrossAttentions, FlaxCausalLMOutput,
+    FlaxCausalLMOutputWithCrossAttentions, FlaxMaskedLMOutput,
+    FlaxMultipleChoiceModelOutput, FlaxQuestionAnsweringModelOutput,
+    FlaxSequenceClassifierOutput, FlaxTokenClassifierOutput)
+from ...modeling_flax_utils import (ACT2FN, FlaxPreTrainedModel,
+                                    append_call_sample_docstring,
+                                    overwrite_call_docstring)
+from ...utils import (add_start_docstrings,
+                      add_start_docstrings_to_model_forward, logging)
+from .configuration_{{cookiecutter.\
+    camelcase_modelname}}Config.lowercase_modelname}} import {{cookiecutter
 
 logger = logging.get_logger(__name__)
 
@@ -1513,33 +1504,25 @@ from typing import Callable, Optional, Tuple
 import flax.linen as nn
 import jax
 import jax.numpy as jnp
-from flax.core.frozen_dict import FrozenDict, unfreeze, freeze
+from flax.core.frozen_dict import FrozenDict, freeze, unfreeze
 from flax.linen import combine_masks, make_causal_mask
 from flax.linen.attention import dot_product_attention_weights
 from flax.traverse_util import flatten_dict, unflatten_dict
 from jax import lax
 from jax.random import PRNGKey
 
-from ...utils import add_start_docstrings, replace_return_docstrings
 from ...modeling_flax_outputs import (
-    FlaxBaseModelOutput,
-    FlaxBaseModelOutputWithPastAndCrossAttentions,
-    FlaxCausalLMOutputWithCrossAttentions,
-    FlaxSeq2SeqLMOutput,
-    FlaxSeq2SeqModelOutput,
-    FlaxSeq2SeqQuestionAnsweringModelOutput,
-    FlaxSeq2SeqSequenceClassifierOutput,
-)
-from ...modeling_flax_utils import (
-    ACT2FN,
-    FlaxPreTrainedModel,
-    append_call_sample_docstring,
-    append_replace_return_docstrings,
-    overwrite_call_docstring,
-)
-from ...utils import logging
-from .configuration_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Config
-
+    FlaxBaseModelOutput, FlaxBaseModelOutputWithPastAndCrossAttentions,
+    FlaxCausalLMOutputWithCrossAttentions, FlaxSeq2SeqLMOutput,
+    FlaxSeq2SeqModelOutput, FlaxSeq2SeqQuestionAnsweringModelOutput,
+    FlaxSeq2SeqSequenceClassifierOutput)
+from ...modeling_flax_utils import (ACT2FN, FlaxPreTrainedModel,
+                                    append_call_sample_docstring,
+                                    append_replace_return_docstrings,
+                                    overwrite_call_docstring)
+from ...utils import add_start_docstrings, logging, replace_return_docstrings
+from .configuration_{{cookiecutter.\
+    camelcase_modelname}}Config.lowercase_modelname}} import {{cookiecutter
 
 logger = logging.get_logger(__name__)
 

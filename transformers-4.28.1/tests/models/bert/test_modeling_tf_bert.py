@@ -21,26 +21,19 @@ from transformers.models.auto import get_values
 from transformers.testing_utils import require_tf, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
 from ...utils.test_modeling_tf_core import TFCoreModelTesterMixin
 
-
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import TF_MODEL_FOR_PRETRAINING_MAPPING
     from transformers.models.bert.modeling_tf_bert import (
-        TFBertForMaskedLM,
-        TFBertForMultipleChoice,
-        TFBertForNextSentencePrediction,
-        TFBertForPreTraining,
-        TFBertForQuestionAnswering,
-        TFBertForSequenceClassification,
-        TFBertForTokenClassification,
-        TFBertLMHeadModel,
-        TFBertModel,
-    )
+        TFBertForMaskedLM, TFBertForMultipleChoice,
+        TFBertForNextSentencePrediction, TFBertForPreTraining,
+        TFBertForQuestionAnswering, TFBertForSequenceClassification,
+        TFBertForTokenClassification, TFBertLMHeadModel, TFBertModel)
 
 
 class TFBertModelTester:

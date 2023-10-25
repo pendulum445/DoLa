@@ -16,35 +16,26 @@
 import unittest
 
 from transformers import ReformerConfig, is_torch_available
-from transformers.testing_utils import (
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    require_torch_multi_gpu,
-    slow,
-    torch_device,
-)
+from transformers.testing_utils import (require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        require_torch_multi_gpu, slow,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import (
-        REFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
-        ReformerForMaskedLM,
-        ReformerForQuestionAnswering,
-        ReformerForSequenceClassification,
-        ReformerLayer,
-        ReformerModel,
-        ReformerModelWithLMHead,
-        ReformerTokenizer,
-    )
+    from transformers import (REFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
+                              ReformerForMaskedLM,
+                              ReformerForQuestionAnswering,
+                              ReformerForSequenceClassification, ReformerLayer,
+                              ReformerModel, ReformerModelWithLMHead,
+                              ReformerTokenizer)
 
 
 class ReformerModelTester:

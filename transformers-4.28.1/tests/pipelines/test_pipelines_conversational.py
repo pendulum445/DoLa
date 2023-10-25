@@ -14,25 +14,20 @@
 
 import unittest
 
-from transformers import (
-    MODEL_FOR_CAUSAL_LM_MAPPING,
-    MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
-    TF_MODEL_FOR_CAUSAL_LM_MAPPING,
-    TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
-    AutoModelForCausalLM,
-    AutoModelForSeq2SeqLM,
-    AutoTokenizer,
-    BlenderbotSmallForConditionalGeneration,
-    BlenderbotSmallTokenizer,
-    Conversation,
-    ConversationalPipeline,
-    TFAutoModelForCausalLM,
-    pipeline,
-)
-from transformers.testing_utils import is_pipeline_test, require_tf, require_torch, slow, torch_device
+from transformers import (MODEL_FOR_CAUSAL_LM_MAPPING,
+                          MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
+                          TF_MODEL_FOR_CAUSAL_LM_MAPPING,
+                          TF_MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING,
+                          AutoModelForCausalLM, AutoModelForSeq2SeqLM,
+                          AutoTokenizer,
+                          BlenderbotSmallForConditionalGeneration,
+                          BlenderbotSmallTokenizer, Conversation,
+                          ConversationalPipeline, TFAutoModelForCausalLM,
+                          pipeline)
+from transformers.testing_utils import (is_pipeline_test, require_tf,
+                                        require_torch, slow, torch_device)
 
 from .test_pipelines_common import ANY
-
 
 DEFAULT_DEVICE_NUM = -1 if torch_device == "cpu" else 0
 

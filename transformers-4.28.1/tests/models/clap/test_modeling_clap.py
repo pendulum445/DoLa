@@ -22,34 +22,25 @@ import unittest
 
 import numpy as np
 from datasets import load_dataset
-
-from transformers import ClapAudioConfig, ClapConfig, ClapProcessor, ClapTextConfig
+from transformers import (ClapAudioConfig, ClapConfig, ClapProcessor,
+                          ClapTextConfig)
 from transformers.testing_utils import require_torch, slow, torch_device
 from transformers.utils import is_torch_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import (
-        ClapAudioModel,
-        ClapAudioModelWithProjection,
-        ClapModel,
-        ClapTextModel,
-        ClapTextModelWithProjection,
-    )
-    from transformers.models.clap.modeling_clap import CLAP_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (ClapAudioModel, ClapAudioModelWithProjection,
+                              ClapModel, ClapTextModel,
+                              ClapTextModelWithProjection)
+    from transformers.models.clap.modeling_clap import \
+        CLAP_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class ClapAudioModelTester:

@@ -28,10 +28,8 @@ from torch.optim import AdamW
 from torch.utils.data import BatchSampler, DataLoader, RandomSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
-
 from transformers import get_linear_schedule_with_warmup
 from utils import logger
-
 
 try:
     from torch.utils.tensorboard import SummaryWriter

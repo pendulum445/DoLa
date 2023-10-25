@@ -25,10 +25,9 @@ from unittest import mock
 
 import torch
 from accelerate.utils import write_basic_config
-
-from transformers.testing_utils import TestCasePlus, get_gpu_count, run_command, slow, torch_device
+from transformers.testing_utils import (TestCasePlus, get_gpu_count,
+                                        run_command, slow, torch_device)
 from transformers.utils import is_apex_available
-
 
 logging.basicConfig(level=logging.DEBUG)
 

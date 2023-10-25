@@ -13,14 +13,8 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_tf_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_tf_available, is_torch_available)
 
 _import_structure = {"configuration_gptj": ["GPTJ_PRETRAINED_CONFIG_ARCHIVE_MAP", "GPTJConfig", "GPTJOnnxConfig"]}
 
@@ -67,7 +61,8 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_gptj import GPTJ_PRETRAINED_CONFIG_ARCHIVE_MAP, GPTJConfig, GPTJOnnxConfig
+    from .configuration_gptj import (GPTJ_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                     GPTJConfig, GPTJOnnxConfig)
 
     try:
         if not is_torch_available():
@@ -75,14 +70,10 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_gptj import (
-            GPTJ_PRETRAINED_MODEL_ARCHIVE_LIST,
-            GPTJForCausalLM,
-            GPTJForQuestionAnswering,
-            GPTJForSequenceClassification,
-            GPTJModel,
-            GPTJPreTrainedModel,
-        )
+        from .modeling_gptj import (GPTJ_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                    GPTJForCausalLM, GPTJForQuestionAnswering,
+                                    GPTJForSequenceClassification, GPTJModel,
+                                    GPTJPreTrainedModel)
 
     try:
         if not is_tf_available():
@@ -90,13 +81,10 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_tf_gptj import (
-            TFGPTJForCausalLM,
-            TFGPTJForQuestionAnswering,
-            TFGPTJForSequenceClassification,
-            TFGPTJModel,
-            TFGPTJPreTrainedModel,
-        )
+        from .modeling_tf_gptj import (TFGPTJForCausalLM,
+                                       TFGPTJForQuestionAnswering,
+                                       TFGPTJForSequenceClassification,
+                                       TFGPTJModel, TFGPTJPreTrainedModel)
 
     try:
         if not is_flax_available():
@@ -104,7 +92,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_gptj import FlaxGPTJForCausalLM, FlaxGPTJModel, FlaxGPTJPreTrainedModel
+        from .modeling_flax_gptj import (FlaxGPTJForCausalLM, FlaxGPTJModel,
+                                         FlaxGPTJPreTrainedModel)
 
 else:
     import sys

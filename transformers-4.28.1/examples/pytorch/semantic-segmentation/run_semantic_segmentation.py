@@ -24,27 +24,19 @@ from typing import Optional
 import evaluate
 import numpy as np
 import torch
+import transformers
 from datasets import load_dataset
 from huggingface_hub import hf_hub_download
 from PIL import Image
 from torch import nn
 from torchvision import transforms
 from torchvision.transforms import functional
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoImageProcessor,
-    AutoModelForSemanticSegmentation,
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    default_data_collator,
-)
+from transformers import (AutoConfig, AutoImageProcessor,
+                          AutoModelForSemanticSegmentation, HfArgumentParser,
+                          Trainer, TrainingArguments, default_data_collator)
 from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
-
 
 """ Finetuning any 🤗 Transformers model supported by AutoModelForSemanticSegmentation for semantic segmentation leveraging the Trainer API."""
 

@@ -19,10 +19,8 @@ from transformers import is_torch_available
 from transformers.testing_utils import require_torch, slow
 from transformers.trainer_utils import set_seed
 
-
 if is_torch_available():
     import torch
-
     from transformers import JukeboxModel, JukeboxPrior, JukeboxTokenizer
 
 

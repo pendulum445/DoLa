@@ -16,12 +16,11 @@
 import unittest
 
 from transformers import is_tf_available
-from transformers.testing_utils import require_sentencepiece, require_tf, require_tokenizers, slow
-
+from transformers.testing_utils import (require_sentencepiece, require_tf,
+                                        require_tokenizers, slow)
 
 if is_tf_available():
     import tensorflow as tf
-
     from transformers import AutoTokenizer, TFAutoModelForSeq2SeqLM
 
 

@@ -16,7 +16,6 @@
 import unittest
 
 from datasets import load_dataset
-
 from transformers import BloomTokenizerFast
 from transformers.testing_utils import require_tokenizers
 

@@ -5,6 +5,7 @@ import re
 from collections import defaultdict
 
 import torch
+import transformers
 from accelerate import Accelerator
 from accelerate.utils import set_seed
 from arguments import HumanEvalArguments
@@ -12,10 +13,9 @@ from datasets import load_dataset, load_metric
 from torch.utils.data import IterableDataset
 from torch.utils.data.dataloader import DataLoader
 from tqdm import tqdm
-
-import transformers
-from transformers import AutoModelForCausalLM, AutoTokenizer, HfArgumentParser, StoppingCriteria, StoppingCriteriaList
-
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          HfArgumentParser, StoppingCriteria,
+                          StoppingCriteriaList)
 
 EOF_STRINGS = ["\nclass", "\ndef", "\n#", "\n@", "\nprint", "\nif"]
 

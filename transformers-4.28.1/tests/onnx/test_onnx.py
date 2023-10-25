@@ -16,15 +16,13 @@ import unittest
 from pathlib import Path
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 
-from transformers import BertConfig, BertTokenizerFast, FeatureExtractionPipeline
-from transformers.convert_graph_to_onnx import (
-    convert,
-    ensure_valid_input,
-    generate_identified_filename,
-    infer_shapes,
-    quantize,
-)
-from transformers.testing_utils import require_tf, require_tokenizers, require_torch, slow
+from transformers import (BertConfig, BertTokenizerFast,
+                          FeatureExtractionPipeline)
+from transformers.convert_graph_to_onnx import (convert, ensure_valid_input,
+                                                generate_identified_filename,
+                                                infer_shapes, quantize)
+from transformers.testing_utils import (require_tf, require_tokenizers,
+                                        require_torch, slow)
 
 
 class FuncContiguousArgs:

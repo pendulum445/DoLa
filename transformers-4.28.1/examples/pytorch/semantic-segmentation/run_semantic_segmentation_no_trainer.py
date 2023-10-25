@@ -25,6 +25,7 @@ import datasets
 import evaluate
 import numpy as np
 import torch
+import transformers
 from accelerate import Accelerator
 from accelerate.logging import get_logger
 from accelerate.utils import set_seed
@@ -35,19 +36,12 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.transforms import functional
 from tqdm.auto import tqdm
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoImageProcessor,
-    AutoModelForSemanticSegmentation,
-    SchedulerType,
-    default_data_collator,
-    get_scheduler,
-)
-from transformers.utils import check_min_version, get_full_repo_name, send_example_telemetry
+from transformers import (AutoConfig, AutoImageProcessor,
+                          AutoModelForSemanticSegmentation, SchedulerType,
+                          default_data_collator, get_scheduler)
+from transformers.utils import (check_min_version, get_full_repo_name,
+                                send_example_telemetry)
 from transformers.utils.versions import require_version
-
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

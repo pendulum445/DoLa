@@ -18,7 +18,6 @@
 from ...utils import logging
 from ..bert.tokenization_bert import BertTokenizer
 
-
 logger = logging.get_logger(__name__)
 
 VOCAB_FILES_NAMES = {"vocab_file": "vocab.txt"}
@@ -58,7 +57,6 @@ class {{cookiecutter.camelcase_modelname}}Tokenizer(BertTokenizer):
 {%- elif cookiecutter.tokenizer_type == "Based on BART" %}
 from ...utils import logging
 from ..bart.tokenization_bart import BartTokenizer
-
 
 logger = logging.get_logger(__name__)
 
@@ -101,7 +99,6 @@ from tokenizers import ByteLevelBPETokenizer
 from ...tokenization_utils import AddedToken, PreTrainedTokenizer
 from ...tokenization_utils_fast import PreTrainedTokenizerFast
 from ...utils import logging
-
 
 logger = logging.get_logger(__name__)
 

@@ -29,23 +29,13 @@ import sys
 from dataclasses import dataclass, field
 from typing import Optional
 
-from datasets import Dataset, load_dataset
-
 import transformers
-from transformers import (
-    CONFIG_MAPPING,
-    MODEL_FOR_MASKED_LM_MAPPING,
-    AutoConfig,
-    AutoModelForMaskedLM,
-    AutoTokenizer,
-    DataCollatorForWholeWordMask,
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    set_seed,
-)
+from datasets import Dataset, load_dataset
+from transformers import (CONFIG_MAPPING, MODEL_FOR_MASKED_LM_MAPPING,
+                          AutoConfig, AutoModelForMaskedLM, AutoTokenizer,
+                          DataCollatorForWholeWordMask, HfArgumentParser,
+                          Trainer, TrainingArguments, set_seed)
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
-
 
 logger = logging.getLogger(__name__)
 MODEL_CONFIG_CLASSES = list(MODEL_FOR_MASKED_LM_MAPPING.keys())

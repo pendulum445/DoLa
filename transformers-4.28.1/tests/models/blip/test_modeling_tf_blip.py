@@ -21,33 +21,27 @@ import unittest
 
 import numpy as np
 import requests
-
 from transformers import BlipConfig, BlipTextConfig, BlipVisionConfig
 from transformers.testing_utils import require_tf, require_vision, slow
 from transformers.utils import is_tf_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        TFBlipForConditionalGeneration,
-        TFBlipForImageTextRetrieval,
-        TFBlipForQuestionAnswering,
-        TFBlipModel,
-        TFBlipTextModel,
-        TFBlipVisionModel,
-    )
-    from transformers.models.blip.modeling_tf_blip import TF_BLIP_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (TFBlipForConditionalGeneration,
+                              TFBlipForImageTextRetrieval,
+                              TFBlipForQuestionAnswering, TFBlipModel,
+                              TFBlipTextModel, TFBlipVisionModel)
+    from transformers.models.blip.modeling_tf_blip import \
+        TF_BLIP_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import BlipProcessor
 
 

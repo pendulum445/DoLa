@@ -9,7 +9,6 @@ from parameterized import parameterized_class
 
 from . import is_sagemaker_available
 
-
 if is_sagemaker_available():
     from sagemaker import Session, TrainingJobAnalytics
     from sagemaker.huggingface import HuggingFace

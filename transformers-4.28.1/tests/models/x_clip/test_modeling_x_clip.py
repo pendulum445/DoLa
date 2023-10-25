@@ -22,28 +22,23 @@ import unittest
 
 import numpy as np
 from huggingface_hub import hf_hub_download
-
 from transformers import XCLIPConfig, XCLIPTextConfig, XCLIPVisionConfig
-from transformers.testing_utils import require_torch, require_torch_multi_gpu, require_vision, slow, torch_device
+from transformers.testing_utils import (require_torch, require_torch_multi_gpu,
+                                        require_vision, slow, torch_device)
 from transformers.utils import is_torch_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
     from transformers import XCLIPModel, XCLIPTextModel, XCLIPVisionModel
-    from transformers.models.x_clip.modeling_x_clip import XCLIP_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.x_clip.modeling_x_clip import \
+        XCLIP_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():

@@ -18,36 +18,28 @@ import tempfile
 import unittest
 
 import numpy as np
-
-from transformers import is_flax_available, is_torch_available, is_vision_available
-from transformers.testing_utils import is_pt_flax_cross_test, require_flax, require_vision, slow, torch_device
+from transformers import (is_flax_available, is_torch_available,
+                          is_vision_available)
+from transformers.testing_utils import (is_pt_flax_cross_test, require_flax,
+                                        require_vision, slow, torch_device)
 
 from ...test_modeling_flax_common import floats_tensor, ids_tensor
 from ..gpt2.test_modeling_flax_gpt2 import FlaxGPT2ModelTester
 from ..vit.test_modeling_flax_vit import FlaxViTModelTester
 
-
 if is_flax_available():
-    from transformers import (
-        AutoTokenizer,
-        FlaxGPT2LMHeadModel,
-        FlaxVisionEncoderDecoderModel,
-        FlaxViTModel,
-        VisionEncoderDecoderConfig,
-    )
+    from transformers import (AutoTokenizer, FlaxGPT2LMHeadModel,
+                              FlaxVisionEncoderDecoderModel, FlaxViTModel,
+                              VisionEncoderDecoderConfig)
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 if is_torch_available():
     import torch
-
     from transformers import VisionEncoderDecoderModel
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import ViTFeatureExtractor
 
 

@@ -18,19 +18,18 @@ import tempfile
 import unittest
 
 import numpy as np
-
 from transformers import LxmertConfig, is_tf_available
 from transformers.testing_utils import require_tf, slow, tooslow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers.models.lxmert.modeling_tf_lxmert import TFLxmertForPreTraining, TFLxmertModel
+    from transformers.models.lxmert.modeling_tf_lxmert import (
+        TFLxmertForPreTraining, TFLxmertModel)
 
 
 class TFLxmertModelTester(object):

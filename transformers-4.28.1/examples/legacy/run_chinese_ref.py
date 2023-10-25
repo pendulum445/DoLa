@@ -4,7 +4,6 @@ import json
 from typing import List
 
 from ltp import LTP
-
 from transformers import BertTokenizer
 
 

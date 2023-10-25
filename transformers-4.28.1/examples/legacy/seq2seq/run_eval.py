@@ -24,10 +24,9 @@ from typing import Dict, List
 
 import torch
 from tqdm import tqdm
-
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-from utils import calculate_bleu, calculate_rouge, chunks, parse_numeric_n_bool_cl_kwargs, use_task_specific_params
-
+from utils import (calculate_bleu, calculate_rouge, chunks,
+                   parse_numeric_n_bool_cl_kwargs, use_task_specific_params)
 
 logger = getLogger(__name__)
 

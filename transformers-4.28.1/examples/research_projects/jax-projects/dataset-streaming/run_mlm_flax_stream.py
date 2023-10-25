@@ -26,7 +26,6 @@ import sys
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
-
 # You can also adapt this script on your own masked language modeling task. Pointers for this are left as comments.
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -42,21 +41,11 @@ from flax import jax_utils, traverse_util
 from flax.training import train_state
 from flax.training.common_utils import get_metrics, onehot, shard
 from tqdm import tqdm
-
-from transformers import (
-    CONFIG_MAPPING,
-    FLAX_MODEL_FOR_MASKED_LM_MAPPING,
-    AutoConfig,
-    AutoTokenizer,
-    FlaxAutoModelForMaskedLM,
-    HfArgumentParser,
-    PreTrainedTokenizerBase,
-    TensorType,
-    TrainingArguments,
-    is_tensorboard_available,
-    set_seed,
-)
-
+from transformers import (CONFIG_MAPPING, FLAX_MODEL_FOR_MASKED_LM_MAPPING,
+                          AutoConfig, AutoTokenizer, FlaxAutoModelForMaskedLM,
+                          HfArgumentParser, PreTrainedTokenizerBase,
+                          TensorType, TrainingArguments,
+                          is_tensorboard_available, set_seed)
 
 if datasets.__version__ <= "1.8.0":
     raise ValueError("Make sure to upgrade `datasets` to a version >= 1.9.0 to use dataset streaming")

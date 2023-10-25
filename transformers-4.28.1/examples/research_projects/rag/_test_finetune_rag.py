@@ -5,16 +5,10 @@ import sys
 from pathlib import Path
 
 import finetune_rag
-
 from transformers.file_utils import is_apex_available
-from transformers.testing_utils import (
-    TestCasePlus,
-    execute_subprocess_async,
-    require_ray,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-)
-
+from transformers.testing_utils import (TestCasePlus, execute_subprocess_async,
+                                        require_ray, require_torch_gpu,
+                                        require_torch_multi_gpu)
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()

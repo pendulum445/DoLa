@@ -29,7 +29,6 @@ import time
 from dataclasses import asdict, dataclass, field
 from enum import Enum
 from itertools import chain
-
 # You can also adapt this script on your own masked language modeling task. Pointers for this are left as comments.
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -46,21 +45,11 @@ from flax.training import train_state
 from flax.training.common_utils import get_metrics, onehot, shard
 from huggingface_hub import Repository, create_repo
 from tqdm import tqdm
-
-from transformers import (
-    CONFIG_MAPPING,
-    FLAX_MODEL_FOR_MASKED_LM_MAPPING,
-    AutoConfig,
-    AutoTokenizer,
-    FlaxAutoModelForMaskedLM,
-    HfArgumentParser,
-    PreTrainedTokenizerBase,
-    TensorType,
-    is_tensorboard_available,
-    set_seed,
-)
+from transformers import (CONFIG_MAPPING, FLAX_MODEL_FOR_MASKED_LM_MAPPING,
+                          AutoConfig, AutoTokenizer, FlaxAutoModelForMaskedLM,
+                          HfArgumentParser, PreTrainedTokenizerBase,
+                          TensorType, is_tensorboard_available, set_seed)
 from transformers.utils import get_full_repo_name, send_example_telemetry
-
 
 MODEL_CONFIG_CLASSES = list(FLAX_MODEL_FOR_MASKED_LM_MAPPING.keys())
 MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)

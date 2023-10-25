@@ -130,9 +130,9 @@
 # Replace with:
 {% if cookiecutter.is_encoder_decoder_model == "False" %}
         from .models.{{cookiecutter.lowercase_modelname}} import (
-            {{cookiecutter.uppercase_modelname}}_PRETRAINED_MODEL_ARCHIVE_LIST,
-            {{cookiecutter.camelcase_modelname}}ForMaskedLM,
+            load_tf_weights_in_{{cookiecutter.lowercase_modelname}},
             {{cookiecutter.camelcase_modelname}}ForCausalLM,
+            {{cookiecutter.camelcase_modelname}}ForMaskedLM,
             {{cookiecutter.camelcase_modelname}}ForMultipleChoice,
             {{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
             {{cookiecutter.camelcase_modelname}}ForSequenceClassification,
@@ -140,18 +140,16 @@
             {{cookiecutter.camelcase_modelname}}Layer,
             {{cookiecutter.camelcase_modelname}}Model,
             {{cookiecutter.camelcase_modelname}}PreTrainedModel,
-            load_tf_weights_in_{{cookiecutter.lowercase_modelname}},
-        )
+            {{cookiecutter.uppercase_modelname}}_PRETRAINED_MODEL_ARCHIVE_LIST)
 {% else %}
         from .models.{{cookiecutter.lowercase_modelname}} import (
-            {{cookiecutter.uppercase_modelname}}_PRETRAINED_MODEL_ARCHIVE_LIST,
-            {{cookiecutter.camelcase_modelname}}ForConditionalGeneration,
             {{cookiecutter.camelcase_modelname}}ForCausalLM,
+            {{cookiecutter.camelcase_modelname}}ForConditionalGeneration,
             {{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
             {{cookiecutter.camelcase_modelname}}ForSequenceClassification,
             {{cookiecutter.camelcase_modelname}}Model,
             {{cookiecutter.camelcase_modelname}}PreTrainedModel,
-        )
+            {{cookiecutter.uppercase_modelname}}_PRETRAINED_MODEL_ARCHIVE_LIST)
 {% endif -%}
 # End.
 
@@ -160,22 +158,20 @@
 {% if cookiecutter.is_encoder_decoder_model == "False" %}
         from .models.{{cookiecutter.lowercase_modelname}} import (
             TF_{{cookiecutter.uppercase_modelname}}_PRETRAINED_MODEL_ARCHIVE_LIST,
-            TF{{cookiecutter.camelcase_modelname}}ForMaskedLM,
             TF{{cookiecutter.camelcase_modelname}}ForCausalLM,
+            TF{{cookiecutter.camelcase_modelname}}ForMaskedLM,
             TF{{cookiecutter.camelcase_modelname}}ForMultipleChoice,
             TF{{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
             TF{{cookiecutter.camelcase_modelname}}ForSequenceClassification,
             TF{{cookiecutter.camelcase_modelname}}ForTokenClassification,
             TF{{cookiecutter.camelcase_modelname}}Layer,
             TF{{cookiecutter.camelcase_modelname}}Model,
-            TF{{cookiecutter.camelcase_modelname}}PreTrainedModel,
-        )
+            TF{{cookiecutter.camelcase_modelname}}PreTrainedModel)
 {% else %}
         from .models.{{cookiecutter.lowercase_modelname}} import (
             TF{{cookiecutter.camelcase_modelname}}ForConditionalGeneration,
             TF{{cookiecutter.camelcase_modelname}}Model,
-            TF{{cookiecutter.camelcase_modelname}}PreTrainedModel,
-        )
+            TF{{cookiecutter.camelcase_modelname}}PreTrainedModel)
 {% endif -%}
 # End.
 
@@ -183,35 +179,38 @@
 # Replace with:
 {% if cookiecutter.is_encoder_decoder_model == "False" %}
         from .models.{{cookiecutter.lowercase_modelname}} import (
-            Flax{{cookiecutter.camelcase_modelname}}ForMaskedLM,
             Flax{{cookiecutter.camelcase_modelname}}ForCausalLM,
+            Flax{{cookiecutter.camelcase_modelname}}ForMaskedLM,
             Flax{{cookiecutter.camelcase_modelname}}ForMultipleChoice,
             Flax{{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
             Flax{{cookiecutter.camelcase_modelname}}ForSequenceClassification,
             Flax{{cookiecutter.camelcase_modelname}}ForTokenClassification,
             Flax{{cookiecutter.camelcase_modelname}}Layer,
             Flax{{cookiecutter.camelcase_modelname}}Model,
-            Flax{{cookiecutter.camelcase_modelname}}PreTrainedModel,
-        )
+            Flax{{cookiecutter.camelcase_modelname}}PreTrainedModel)
 {% else %}
         from .models.{{cookiecutter.lowercase_modelname}} import (
             Flax{{cookiecutter.camelcase_modelname}}ForConditionalGeneration,
             Flax{{cookiecutter.camelcase_modelname}}ForQuestionAnswering,
             Flax{{cookiecutter.camelcase_modelname}}ForSequenceClassification,
             Flax{{cookiecutter.camelcase_modelname}}Model,
-            Flax{{cookiecutter.camelcase_modelname}}PreTrainedModel,
-        )
+            Flax{{cookiecutter.camelcase_modelname}}PreTrainedModel)
 {% endif -%}
 # End.
 
-# Below: "        # Fast tokenizers imports"
-# Replace with:
-        from .models.{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}TokenizerFast
+"        # Fast tokenizers imports"
+        e with:
+        from .models.{{cookiecutter.\
+            camelcase_modelname}}TokenizerFast.\
+            lowercase_modelname}} import {{cookiecutter
 # End.
 
-# Below: "    from .models.albert import ALBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, AlbertConfig"
-# Replace with:
-    from .models.{{cookiecutter.lowercase_modelname}} import {{cookiecutter.uppercase_modelname}}_PRETRAINED_CONFIG_ARCHIVE_MAP, {{cookiecutter.camelcase_modelname}}Config, {{cookiecutter.camelcase_modelname}}Tokenizer
+low: "    from .models.albert import ALBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, AlbertConfig"
+    place with:
+    from .models.{{cookiecutter.lowercase_modelname}} import (
+        {{cookiecutter.camelcase_modelname}}Config,
+        {{cookiecutter.camelcase_modelname}}Tokenizer,
+        {{cookiecutter.uppercase_modelname}}_PRETRAINED_CONFIG_ARCHIVE_MAP)
 # End.
 
 

@@ -14,15 +14,9 @@
 
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_sentencepiece_available,
-    is_tf_available,
-    is_tokenizers_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_sentencepiece_available, is_tf_available,
+                      is_tokenizers_available, is_torch_available)
 
 _import_structure = {
     "configuration_camembert": ["CAMEMBERT_PRETRAINED_CONFIG_ARCHIVE_MAP", "CamembertConfig", "CamembertOnnxConfig"],
@@ -82,7 +76,9 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_camembert import CAMEMBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, CamembertConfig, CamembertOnnxConfig
+    from .configuration_camembert import (
+        CAMEMBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, CamembertConfig,
+        CamembertOnnxConfig)
 
     try:
         if not is_sentencepiece_available():
@@ -107,16 +103,11 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_camembert import (
-            CAMEMBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
-            CamembertForCausalLM,
-            CamembertForMaskedLM,
-            CamembertForMultipleChoice,
-            CamembertForQuestionAnswering,
-            CamembertForSequenceClassification,
-            CamembertForTokenClassification,
-            CamembertModel,
-            CamembertPreTrainedModel,
-        )
+            CAMEMBERT_PRETRAINED_MODEL_ARCHIVE_LIST, CamembertForCausalLM,
+            CamembertForMaskedLM, CamembertForMultipleChoice,
+            CamembertForQuestionAnswering, CamembertForSequenceClassification,
+            CamembertForTokenClassification, CamembertModel,
+            CamembertPreTrainedModel)
 
     try:
         if not is_tf_available():
@@ -125,16 +116,12 @@ if TYPE_CHECKING:
         pass
     else:
         from .modeling_tf_camembert import (
-            TF_CAMEMBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
-            TFCamembertForCausalLM,
-            TFCamembertForMaskedLM,
-            TFCamembertForMultipleChoice,
+            TF_CAMEMBERT_PRETRAINED_MODEL_ARCHIVE_LIST, TFCamembertForCausalLM,
+            TFCamembertForMaskedLM, TFCamembertForMultipleChoice,
             TFCamembertForQuestionAnswering,
             TFCamembertForSequenceClassification,
-            TFCamembertForTokenClassification,
-            TFCamembertModel,
-            TFCamembertPreTrainedModel,
-        )
+            TFCamembertForTokenClassification, TFCamembertModel,
+            TFCamembertPreTrainedModel)
 
 else:
     import sys

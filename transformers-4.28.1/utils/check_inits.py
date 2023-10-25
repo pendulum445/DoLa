@@ -18,7 +18,6 @@ import os
 import re
 from pathlib import Path
 
-
 PATH_TO_TRANSFORMERS = "src/transformers"
 
 

@@ -21,28 +21,24 @@ import tempfile
 import unittest
 
 from transformers import Speech2TextConfig
-from transformers.testing_utils import (
-    is_torch_available,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    require_torchaudio,
-    slow,
-    torch_device,
-)
+from transformers.testing_utils import (is_torch_available,
+                                        require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        require_torchaudio, slow, torch_device)
 from transformers.utils import cached_property
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, _config_zero_init, floats_tensor, ids_tensor
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import Speech2TextForConditionalGeneration, Speech2TextModel, Speech2TextProcessor
-    from transformers.models.speech_to_text.modeling_speech_to_text import Speech2TextDecoder, Speech2TextEncoder
+    from transformers import (Speech2TextForConditionalGeneration,
+                              Speech2TextModel, Speech2TextProcessor)
+    from transformers.models.speech_to_text.modeling_speech_to_text import (
+        Speech2TextDecoder, Speech2TextEncoder)
 
 
 def prepare_speech_to_text_inputs_dict(

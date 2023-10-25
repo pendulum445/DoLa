@@ -13,15 +13,9 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_tf_available,
-    is_tokenizers_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_tf_available,
+                      is_tokenizers_available, is_torch_available)
 
 _import_structure = {
     "configuration_bart": ["BART_PRETRAINED_CONFIG_ARCHIVE_MAP", "BartConfig", "BartOnnxConfig"],
@@ -83,7 +77,8 @@ else:
     ]
 
 if TYPE_CHECKING:
-    from .configuration_bart import BART_PRETRAINED_CONFIG_ARCHIVE_MAP, BartConfig, BartOnnxConfig
+    from .configuration_bart import (BART_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                     BartConfig, BartOnnxConfig)
     from .tokenization_bart import BartTokenizer
 
     try:
@@ -100,16 +95,12 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_bart import (
-            BART_PRETRAINED_MODEL_ARCHIVE_LIST,
-            BartForCausalLM,
-            BartForConditionalGeneration,
-            BartForQuestionAnswering,
-            BartForSequenceClassification,
-            BartModel,
-            BartPretrainedModel,
-            PretrainedBartModel,
-        )
+        from .modeling_bart import (BART_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                    BartForCausalLM,
+                                    BartForConditionalGeneration,
+                                    BartForQuestionAnswering,
+                                    BartForSequenceClassification, BartModel,
+                                    BartPretrainedModel, PretrainedBartModel)
 
     try:
         if not is_tf_available():
@@ -117,12 +108,9 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_tf_bart import (
-            TFBartForConditionalGeneration,
-            TFBartForSequenceClassification,
-            TFBartModel,
-            TFBartPretrainedModel,
-        )
+        from .modeling_tf_bart import (TFBartForConditionalGeneration,
+                                       TFBartForSequenceClassification,
+                                       TFBartModel, TFBartPretrainedModel)
 
     try:
         if not is_flax_available():
@@ -130,15 +118,13 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_bart import (
-            FlaxBartDecoderPreTrainedModel,
-            FlaxBartForCausalLM,
-            FlaxBartForConditionalGeneration,
-            FlaxBartForQuestionAnswering,
-            FlaxBartForSequenceClassification,
-            FlaxBartModel,
-            FlaxBartPreTrainedModel,
-        )
+        from .modeling_flax_bart import (FlaxBartDecoderPreTrainedModel,
+                                         FlaxBartForCausalLM,
+                                         FlaxBartForConditionalGeneration,
+                                         FlaxBartForQuestionAnswering,
+                                         FlaxBartForSequenceClassification,
+                                         FlaxBartModel,
+                                         FlaxBartPreTrainedModel)
 
 else:
     import sys

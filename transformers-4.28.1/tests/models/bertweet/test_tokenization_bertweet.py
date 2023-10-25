@@ -16,7 +16,8 @@
 import os
 import unittest
 
-from transformers.models.bertweet.tokenization_bertweet import VOCAB_FILES_NAMES, BertweetTokenizer
+from transformers.models.bertweet.tokenization_bertweet import (
+    VOCAB_FILES_NAMES, BertweetTokenizer)
 
 from ...test_tokenization_common import TokenizerTesterMixin
 

@@ -21,12 +21,10 @@ import unittest
 
 import black
 
-
 git_repo_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 sys.path.append(os.path.join(git_repo_path, "utils"))
 
 import check_copies  # noqa: E402
-
 
 # This is the reference code that will be used in the tests.
 # If BertLMPredictionHead is changed in modeling_bert.py, this code needs to be manually updated.

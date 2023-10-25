@@ -13,16 +13,10 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_sentencepiece_available,
-    is_tf_available,
-    is_tokenizers_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_sentencepiece_available,
+                      is_tf_available, is_tokenizers_available,
+                      is_torch_available)
 
 _import_structure = {"configuration_mbart": ["MBART_PRETRAINED_CONFIG_ARCHIVE_MAP", "MBartConfig", "MBartOnnxConfig"]}
 
@@ -86,7 +80,8 @@ else:
 
 
 if TYPE_CHECKING:
-    from .configuration_mbart import MBART_PRETRAINED_CONFIG_ARCHIVE_MAP, MBartConfig, MBartOnnxConfig
+    from .configuration_mbart import (MBART_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                      MBartConfig, MBartOnnxConfig)
 
     try:
         if not is_sentencepiece_available():
@@ -110,15 +105,12 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_mbart import (
-            MBART_PRETRAINED_MODEL_ARCHIVE_LIST,
-            MBartForCausalLM,
-            MBartForConditionalGeneration,
-            MBartForQuestionAnswering,
-            MBartForSequenceClassification,
-            MBartModel,
-            MBartPreTrainedModel,
-        )
+        from .modeling_mbart import (MBART_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                     MBartForCausalLM,
+                                     MBartForConditionalGeneration,
+                                     MBartForQuestionAnswering,
+                                     MBartForSequenceClassification,
+                                     MBartModel, MBartPreTrainedModel)
 
     try:
         if not is_tf_available():
@@ -126,7 +118,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_tf_mbart import TFMBartForConditionalGeneration, TFMBartModel, TFMBartPreTrainedModel
+        from .modeling_tf_mbart import (TFMBartForConditionalGeneration,
+                                        TFMBartModel, TFMBartPreTrainedModel)
 
     try:
         if not is_flax_available():
@@ -134,13 +127,11 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_mbart import (
-            FlaxMBartForConditionalGeneration,
-            FlaxMBartForQuestionAnswering,
-            FlaxMBartForSequenceClassification,
-            FlaxMBartModel,
-            FlaxMBartPreTrainedModel,
-        )
+        from .modeling_flax_mbart import (FlaxMBartForConditionalGeneration,
+                                          FlaxMBartForQuestionAnswering,
+                                          FlaxMBartForSequenceClassification,
+                                          FlaxMBartModel,
+                                          FlaxMBartPreTrainedModel)
 
 else:
     import sys

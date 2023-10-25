@@ -21,19 +21,10 @@ from typing import List, Optional, Union
 
 import tqdm
 from filelock import FileLock
-
-from transformers import (
-    BartTokenizer,
-    BartTokenizerFast,
-    DataProcessor,
-    PreTrainedTokenizer,
-    RobertaTokenizer,
-    RobertaTokenizerFast,
-    XLMRobertaTokenizer,
-    is_tf_available,
-    is_torch_available,
-)
-
+from transformers import (BartTokenizer, BartTokenizerFast, DataProcessor,
+                          PreTrainedTokenizer, RobertaTokenizer,
+                          RobertaTokenizerFast, XLMRobertaTokenizer,
+                          is_tf_available, is_torch_available)
 
 logger = logging.getLogger(__name__)
 

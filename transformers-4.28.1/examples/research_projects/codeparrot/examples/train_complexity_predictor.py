@@ -4,16 +4,9 @@ from copy import deepcopy
 import numpy as np
 from datasets import ClassLabel, DatasetDict, load_dataset
 from evaluate import load
-
-from transformers import (
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    DataCollatorWithPadding,
-    Trainer,
-    TrainerCallback,
-    TrainingArguments,
-    set_seed,
-)
+from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
+                          DataCollatorWithPadding, Trainer, TrainerCallback,
+                          TrainingArguments, set_seed)
 
 
 def get_args():

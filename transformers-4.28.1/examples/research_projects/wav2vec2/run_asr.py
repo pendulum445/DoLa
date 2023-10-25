@@ -13,19 +13,10 @@ import torch
 from lang_trans import arabic
 from packaging import version
 from torch import nn
-
-from transformers import (
-    HfArgumentParser,
-    Trainer,
-    TrainingArguments,
-    Wav2Vec2CTCTokenizer,
-    Wav2Vec2FeatureExtractor,
-    Wav2Vec2ForCTC,
-    Wav2Vec2Processor,
-    is_apex_available,
-    trainer_utils,
-)
-
+from transformers import (HfArgumentParser, Trainer, TrainingArguments,
+                          Wav2Vec2CTCTokenizer, Wav2Vec2FeatureExtractor,
+                          Wav2Vec2ForCTC, Wav2Vec2Processor, is_apex_available,
+                          trainer_utils)
 
 if is_apex_available():
     from apex import amp

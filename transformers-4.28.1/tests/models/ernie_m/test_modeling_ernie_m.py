@@ -21,22 +21,19 @@ from transformers import ErnieMConfig, is_torch_available
 from transformers.testing_utils import require_torch, slow, torch_device
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        ErnieMForInformationExtraction,
-        ErnieMForMultipleChoice,
-        ErnieMForQuestionAnswering,
-        ErnieMForSequenceClassification,
-        ErnieMForTokenClassification,
-        ErnieMModel,
-    )
-    from transformers.models.ernie_m.modeling_ernie_m import ERNIE_M_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (ErnieMForInformationExtraction,
+                              ErnieMForMultipleChoice,
+                              ErnieMForQuestionAnswering,
+                              ErnieMForSequenceClassification,
+                              ErnieMForTokenClassification, ErnieMModel)
+    from transformers.models.ernie_m.modeling_ernie_m import \
+        ERNIE_M_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class ErnieMModelTester:

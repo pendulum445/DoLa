@@ -24,12 +24,13 @@ from pathlib import Path
 from transformers import is_flax_available, is_tf_available, is_torch_available
 from transformers.models.auto import get_values
 from transformers.models.auto.configuration_auto import CONFIG_MAPPING_NAMES
-from transformers.models.auto.feature_extraction_auto import FEATURE_EXTRACTOR_MAPPING_NAMES
-from transformers.models.auto.image_processing_auto import IMAGE_PROCESSOR_MAPPING_NAMES
+from transformers.models.auto.feature_extraction_auto import \
+    FEATURE_EXTRACTOR_MAPPING_NAMES
+from transformers.models.auto.image_processing_auto import \
+    IMAGE_PROCESSOR_MAPPING_NAMES
 from transformers.models.auto.processing_auto import PROCESSOR_MAPPING_NAMES
 from transformers.models.auto.tokenization_auto import TOKENIZER_MAPPING_NAMES
 from transformers.utils import ENV_VARS_TRUE_VALUES, direct_transformers_import
-
 
 # All paths are set with the intent you should run this script from the root of the repo with the command
 # python utils/check_repo.py

@@ -29,25 +29,15 @@ from typing import Optional, Union
 
 import datasets
 import tensorflow as tf
-from datasets import load_dataset
-
 import transformers
-from transformers import (
-    CONFIG_NAME,
-    TF2_WEIGHTS_NAME,
-    AutoConfig,
-    AutoTokenizer,
-    DefaultDataCollator,
-    HfArgumentParser,
-    PushToHubCallback,
-    TFAutoModelForMultipleChoice,
-    TFTrainingArguments,
-    create_optimizer,
-    set_seed,
-)
+from datasets import load_dataset
+from transformers import (CONFIG_NAME, TF2_WEIGHTS_NAME, AutoConfig,
+                          AutoTokenizer, DefaultDataCollator, HfArgumentParser,
+                          PushToHubCallback, TFAutoModelForMultipleChoice,
+                          TFTrainingArguments, create_optimizer, set_seed)
 from transformers.tokenization_utils_base import PreTrainedTokenizerBase
-from transformers.utils import PaddingStrategy, check_min_version, send_example_telemetry
-
+from transformers.utils import (PaddingStrategy, check_min_version,
+                                send_example_telemetry)
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.28.0")

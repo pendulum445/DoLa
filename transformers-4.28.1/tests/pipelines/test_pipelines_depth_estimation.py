@@ -15,20 +15,14 @@
 import hashlib
 import unittest
 
-from transformers import MODEL_FOR_DEPTH_ESTIMATION_MAPPING, is_torch_available, is_vision_available
+from transformers import (MODEL_FOR_DEPTH_ESTIMATION_MAPPING,
+                          is_torch_available, is_vision_available)
 from transformers.pipelines import DepthEstimationPipeline, pipeline
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_tf,
-    require_timm,
-    require_torch,
-    require_vision,
-    slow,
-)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_tf, require_timm,
+                                        require_torch, require_vision, slow)
 
 from .test_pipelines_common import ANY
-
 
 if is_torch_available():
     import torch

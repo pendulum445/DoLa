@@ -14,22 +14,14 @@
 
 import unittest
 
-from transformers import (
-    MODEL_FOR_QUESTION_ANSWERING_MAPPING,
-    TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
-    LxmertConfig,
-    QuestionAnsweringPipeline,
-)
+from transformers import (MODEL_FOR_QUESTION_ANSWERING_MAPPING,
+                          TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
+                          LxmertConfig, QuestionAnsweringPipeline)
 from transformers.data.processors.squad import SquadExample
 from transformers.pipelines import QuestionAnsweringArgumentHandler, pipeline
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_tf,
-    require_torch,
-    require_torch_or_tf,
-    slow,
-)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_tf, require_torch,
+                                        require_torch_or_tf, slow)
 
 from .test_pipelines_common import ANY
 

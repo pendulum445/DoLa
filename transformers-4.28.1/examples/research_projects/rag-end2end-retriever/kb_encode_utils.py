@@ -3,8 +3,8 @@ from functools import partial
 from glob import glob
 
 import faiss
-from datasets import Features, Sequence, Value, concatenate_datasets, load_dataset, load_from_disk
-
+from datasets import (Features, Sequence, Value, concatenate_datasets,
+                      load_dataset, load_from_disk)
 from transformers import DPRContextEncoder, DPRContextEncoderTokenizerFast
 
 

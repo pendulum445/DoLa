@@ -20,9 +20,9 @@ import tempfile
 import unittest
 
 import numpy as np
-
 from transformers import is_tf_available, is_torch_available
-from transformers.testing_utils import is_pt_tf_cross_test, require_tf, require_torch, slow, torch_device
+from transformers.testing_utils import (is_pt_tf_cross_test, require_tf,
+                                        require_torch, slow, torch_device)
 from transformers.utils.generic import ModelOutput
 
 from ...test_modeling_tf_common import ids_tensor
@@ -31,30 +31,18 @@ from ..gpt2.test_modeling_tf_gpt2 import TFGPT2ModelTester
 from ..rembert.test_modeling_tf_rembert import TFRemBertModelTester
 from ..roberta.test_modeling_tf_roberta import TFRobertaModelTester
 
-
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        AutoConfig,
-        AutoTokenizer,
-        EncoderDecoderConfig,
-        TFAutoModel,
-        TFAutoModelForCausalLM,
-        TFBertLMHeadModel,
-        TFBertModel,
-        TFEncoderDecoderModel,
-        TFGPT2LMHeadModel,
-        TFRemBertForCausalLM,
-        TFRemBertModel,
-        TFRobertaForCausalLM,
-        TFRobertaModel,
-    )
+    from transformers import (AutoConfig, AutoTokenizer, EncoderDecoderConfig,
+                              TFAutoModel, TFAutoModelForCausalLM,
+                              TFBertLMHeadModel, TFBertModel,
+                              TFEncoderDecoderModel, TFGPT2LMHeadModel,
+                              TFRemBertForCausalLM, TFRemBertModel,
+                              TFRobertaForCausalLM, TFRobertaModel)
     from transformers.modeling_tf_outputs import TFBaseModelOutput
 
 if is_torch_available():
     import torch
-
     from transformers import BertLMHeadModel, BertModel, EncoderDecoderModel
 
 

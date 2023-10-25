@@ -19,18 +19,10 @@ import unittest.mock as mock
 from pathlib import Path
 
 from requests.exceptions import HTTPError
-
-from transformers.utils import (
-    CONFIG_NAME,
-    FLAX_WEIGHTS_NAME,
-    TF2_WEIGHTS_NAME,
-    TRANSFORMERS_CACHE,
-    WEIGHTS_NAME,
-    cached_file,
-    get_file_from_repo,
-    has_file,
-)
-
+from transformers.utils import (CONFIG_NAME, FLAX_WEIGHTS_NAME,
+                                TF2_WEIGHTS_NAME, TRANSFORMERS_CACHE,
+                                WEIGHTS_NAME, cached_file, get_file_from_repo,
+                                has_file)
 
 RANDOM_BERT = "hf-internal-testing/tiny-random-bert"
 CACHE_DIR = os.path.join(TRANSFORMERS_CACHE, "models--hf-internal-testing--tiny-random-bert")

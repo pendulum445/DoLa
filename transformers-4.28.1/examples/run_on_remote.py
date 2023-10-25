@@ -19,7 +19,6 @@ import shlex
 
 import runhouse as rh
 
-
 if __name__ == "__main__":
     # Refer to https://runhouse-docs.readthedocs-hosted.com/en/main/rh_primitives/cluster.html#hardware-setup for cloud access
     # setup instructions, if using on-demand hardware

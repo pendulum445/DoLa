@@ -18,30 +18,25 @@ import unittest
 
 from transformers import ErnieConfig, is_torch_available
 from transformers.models.auto import get_values
-from transformers.testing_utils import require_torch, require_torch_gpu, slow, torch_device
+from transformers.testing_utils import (require_torch, require_torch_gpu, slow,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        MODEL_FOR_PRETRAINING_MAPPING,
-        ErnieForCausalLM,
-        ErnieForMaskedLM,
-        ErnieForMultipleChoice,
-        ErnieForNextSentencePrediction,
-        ErnieForPreTraining,
-        ErnieForQuestionAnswering,
-        ErnieForSequenceClassification,
-        ErnieForTokenClassification,
-        ErnieModel,
-    )
-    from transformers.models.ernie.modeling_ernie import ERNIE_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_FOR_PRETRAINING_MAPPING, ErnieForCausalLM,
+                              ErnieForMaskedLM, ErnieForMultipleChoice,
+                              ErnieForNextSentencePrediction,
+                              ErnieForPreTraining, ErnieForQuestionAnswering,
+                              ErnieForSequenceClassification,
+                              ErnieForTokenClassification, ErnieModel)
+    from transformers.models.ernie.modeling_ernie import \
+        ERNIE_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class ErnieModelTester:

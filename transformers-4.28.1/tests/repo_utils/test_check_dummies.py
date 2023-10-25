@@ -16,13 +16,12 @@ import os
 import sys
 import unittest
 
-
 git_repo_path = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 sys.path.append(os.path.join(git_repo_path, "utils"))
 
 import check_dummies  # noqa: E402
-from check_dummies import create_dummy_files, create_dummy_object, find_backend, read_init  # noqa: E402
-
+from check_dummies import (create_dummy_files,  # noqa: E402
+                           create_dummy_object, find_backend, read_init)
 
 # Align TRANSFORMERS_PATH in check_dummies with the current path
 check_dummies.PATH_TO_TRANSFORMERS = os.path.join(git_repo_path, "src", "transformers")

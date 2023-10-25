@@ -44,7 +44,6 @@ from pathlib import Path
 
 from git import Repo
 
-
 PATH_TO_REPO = Path(__file__).parent.parent.resolve()
 PATH_TO_TRANFORMERS = PATH_TO_REPO / "src/transformers"
 PATH_TO_TESTS = PATH_TO_REPO / "tests"

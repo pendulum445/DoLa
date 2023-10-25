@@ -20,32 +20,19 @@ import datasets
 import numpy as np
 import requests
 from datasets import load_dataset
-
-from transformers import (
-    MODEL_FOR_IMAGE_SEGMENTATION_MAPPING,
-    MODEL_FOR_INSTANCE_SEGMENTATION_MAPPING,
-    MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING,
-    AutoImageProcessor,
-    AutoModelForImageSegmentation,
-    AutoModelForInstanceSegmentation,
-    DetrForSegmentation,
-    ImageSegmentationPipeline,
-    MaskFormerForInstanceSegmentation,
-    is_vision_available,
-    pipeline,
-)
-from transformers.testing_utils import (
-    is_pipeline_test,
-    nested_simplify,
-    require_tf,
-    require_timm,
-    require_torch,
-    require_vision,
-    slow,
-)
+from transformers import (MODEL_FOR_IMAGE_SEGMENTATION_MAPPING,
+                          MODEL_FOR_INSTANCE_SEGMENTATION_MAPPING,
+                          MODEL_FOR_SEMANTIC_SEGMENTATION_MAPPING,
+                          AutoImageProcessor, AutoModelForImageSegmentation,
+                          AutoModelForInstanceSegmentation,
+                          DetrForSegmentation, ImageSegmentationPipeline,
+                          MaskFormerForInstanceSegmentation,
+                          is_vision_available, pipeline)
+from transformers.testing_utils import (is_pipeline_test, nested_simplify,
+                                        require_tf, require_timm,
+                                        require_torch, require_vision, slow)
 
 from .test_pipelines_common import ANY
-
 
 if is_vision_available():
     from PIL import Image

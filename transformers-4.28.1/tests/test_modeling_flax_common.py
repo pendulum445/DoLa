@@ -21,24 +21,16 @@ import unittest
 from typing import List, Tuple
 
 import numpy as np
+import transformers
 from huggingface_hub import HfFolder, delete_repo
 from requests.exceptions import HTTPError
-
-import transformers
 from transformers import BertConfig, is_flax_available, is_torch_available
 from transformers.models.auto import get_values
-from transformers.testing_utils import (
-    TOKEN,
-    USER,
-    CaptureLogger,
-    is_pt_flax_cross_test,
-    is_staging_test,
-    require_flax,
-    torch_device,
-)
+from transformers.testing_utils import (TOKEN, USER, CaptureLogger,
+                                        is_pt_flax_cross_test, is_staging_test,
+                                        require_flax, torch_device)
 from transformers.utils import CONFIG_NAME, GENERATION_CONFIG_NAME, logging
 from transformers.utils.generic import ModelOutput
-
 
 if is_flax_available():
     import os
@@ -48,20 +40,15 @@ if is_flax_available():
     from flax.core.frozen_dict import FrozenDict, freeze, unfreeze
     from flax.serialization import from_bytes
     from flax.traverse_util import flatten_dict, unflatten_dict
-
-    from transformers import (
-        FLAX_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
-        FLAX_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
-        FLAX_MODEL_MAPPING,
-        FlaxAutoModel,
-        FlaxAutoModelForSequenceClassification,
-        FlaxBertModel,
-    )
+    from transformers import (FLAX_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
+                              FLAX_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
+                              FLAX_MODEL_MAPPING, FlaxAutoModel,
+                              FlaxAutoModelForSequenceClassification,
+                              FlaxBertModel)
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
-    from transformers.modeling_flax_utils import FLAX_WEIGHTS_INDEX_NAME, FLAX_WEIGHTS_NAME
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
+    from transformers.modeling_flax_utils import (FLAX_WEIGHTS_INDEX_NAME,
+                                                  FLAX_WEIGHTS_NAME)
 
     os.environ["XLA_PYTHON_CLIENT_MEM_FRACTION"] = "0.12"  # assumed parallelism: 8
 

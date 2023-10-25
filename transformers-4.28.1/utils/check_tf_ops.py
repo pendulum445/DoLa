@@ -19,7 +19,6 @@ import os
 
 from tensorflow.core.protobuf.saved_model_pb2 import SavedModel
 
-
 # All paths are set with the intent you should run this script from the root of the repo with the command
 # python utils/check_copies.py
 REPO_PATH = "."

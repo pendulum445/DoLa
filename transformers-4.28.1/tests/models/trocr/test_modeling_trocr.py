@@ -17,18 +17,18 @@
 import unittest
 
 from transformers import TrOCRConfig
-from transformers.testing_utils import is_torch_available, require_torch, torch_device
+from transformers.testing_utils import (is_torch_available, require_torch,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers.models.trocr.modeling_trocr import TrOCRDecoder, TrOCRForCausalLM
+    from transformers.models.trocr.modeling_trocr import (TrOCRDecoder,
+                                                          TrOCRForCausalLM)
 
 
 @require_torch

@@ -6,6 +6,7 @@ from pathlib import Path
 
 import datasets
 import torch
+import transformers
 from accelerate import Accelerator, DistributedType
 from arguments import TrainingArguments
 from datasets import load_dataset
@@ -14,9 +15,8 @@ from torch.optim import AdamW
 from torch.utils.data import IterableDataset
 from torch.utils.data.dataloader import DataLoader
 from torch.utils.data.datapipes.iter.combinatorics import ShufflerIterDataPipe
-
-import transformers
-from transformers import AutoModelForCausalLM, AutoTokenizer, HfArgumentParser, get_scheduler, set_seed
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          HfArgumentParser, get_scheduler, set_seed)
 
 
 class ConstantLengthDataset(IterableDataset):

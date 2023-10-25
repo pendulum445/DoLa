@@ -13,16 +13,10 @@
 # limitations under the License.
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_sentencepiece_available,
-    is_tf_available,
-    is_tokenizers_available,
-    is_torch_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_sentencepiece_available,
+                      is_tf_available, is_tokenizers_available,
+                      is_torch_available)
 
 _import_structure = {
     "configuration_marian": ["MARIAN_PRETRAINED_CONFIG_ARCHIVE_MAP", "MarianConfig", "MarianOnnxConfig"],
@@ -67,7 +61,8 @@ else:
     _import_structure["modeling_flax_marian"] = ["FlaxMarianModel", "FlaxMarianMTModel", "FlaxMarianPreTrainedModel"]
 
 if TYPE_CHECKING:
-    from .configuration_marian import MARIAN_PRETRAINED_CONFIG_ARCHIVE_MAP, MarianConfig, MarianOnnxConfig
+    from .configuration_marian import (MARIAN_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                       MarianConfig, MarianOnnxConfig)
 
     try:
         if not is_sentencepiece_available():
@@ -83,13 +78,9 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_marian import (
-            MARIAN_PRETRAINED_MODEL_ARCHIVE_LIST,
-            MarianForCausalLM,
-            MarianModel,
-            MarianMTModel,
-            MarianPreTrainedModel,
-        )
+        from .modeling_marian import (MARIAN_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                      MarianForCausalLM, MarianModel,
+                                      MarianMTModel, MarianPreTrainedModel)
 
     try:
         if not is_tf_available():
@@ -97,7 +88,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_tf_marian import TFMarianModel, TFMarianMTModel, TFMarianPreTrainedModel
+        from .modeling_tf_marian import (TFMarianModel, TFMarianMTModel,
+                                         TFMarianPreTrainedModel)
 
     try:
         if not is_flax_available():
@@ -105,7 +97,8 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_marian import FlaxMarianModel, FlaxMarianMTModel, FlaxMarianPreTrainedModel
+        from .modeling_flax_marian import (FlaxMarianModel, FlaxMarianMTModel,
+                                           FlaxMarianPreTrainedModel)
 
 else:
     import sys

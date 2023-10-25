@@ -22,57 +22,38 @@ import unittest
 
 import numpy as np
 import requests
-
 import transformers
 from transformers import CLIPConfig, CLIPTextConfig, CLIPVisionConfig
-from transformers.testing_utils import (
-    is_flax_available,
-    is_pt_flax_cross_test,
-    require_torch,
-    require_vision,
-    slow,
-    torch_device,
-)
+from transformers.testing_utils import (is_flax_available,
+                                        is_pt_flax_cross_test, require_torch,
+                                        require_vision, slow, torch_device)
 from transformers.utils import is_torch_available, is_vision_available
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
     from torch import nn
-
-    from transformers import (
-        CLIPModel,
-        CLIPTextModel,
-        CLIPTextModelWithProjection,
-        CLIPVisionModel,
-        CLIPVisionModelWithProjection,
-    )
-    from transformers.models.clip.modeling_clip import CLIP_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (CLIPModel, CLIPTextModel,
+                              CLIPTextModelWithProjection, CLIPVisionModel,
+                              CLIPVisionModelWithProjection)
+    from transformers.models.clip.modeling_clip import \
+        CLIP_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import CLIPProcessor
 
 
 if is_flax_available():
     import jax.numpy as jnp
-
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 
 class CLIPVisionModelTester:

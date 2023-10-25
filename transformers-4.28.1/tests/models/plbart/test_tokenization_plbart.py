@@ -15,17 +15,13 @@
 import tempfile
 import unittest
 
-from transformers import SPIECE_UNDERLINE, BatchEncoding, PLBartTokenizer, is_torch_available
-from transformers.testing_utils import (
-    get_tests_dir,
-    nested_simplify,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-)
+from transformers import (SPIECE_UNDERLINE, BatchEncoding, PLBartTokenizer,
+                          is_torch_available)
+from transformers.testing_utils import (get_tests_dir, nested_simplify,
+                                        require_sentencepiece,
+                                        require_tokenizers, require_torch)
 
 from ...test_tokenization_common import TokenizerTesterMixin
-
 
 SAMPLE_VOCAB = get_tests_dir("fixtures/test_sentencepiece.model")
 

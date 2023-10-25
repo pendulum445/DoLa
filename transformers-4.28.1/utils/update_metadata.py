@@ -22,9 +22,7 @@ import tempfile
 import pandas as pd
 from datasets import Dataset
 from huggingface_hub import Repository
-
 from transformers.utils import direct_transformers_import
-
 
 # All paths are set with the intent you should run this script from the root of the repo with the command
 # python utils/update_metadata.py

@@ -36,6 +36,7 @@ import jax
 import jax.numpy as jnp
 import optax
 import torch
+import transformers
 from flax import jax_utils
 from flax.jax_utils import unreplicate
 from flax.training import train_state
@@ -43,13 +44,12 @@ from flax.training.common_utils import get_metrics, shard, shard_prng_key
 from modeling_hybrid_clip import FlaxHybridCLIP
 from torchvision.datasets import VisionDataset
 from torchvision.io import ImageReadMode, read_image
-from torchvision.transforms import CenterCrop, ConvertImageDtype, Normalize, Resize
+from torchvision.transforms import (CenterCrop, ConvertImageDtype, Normalize,
+                                    Resize)
 from torchvision.transforms.functional import InterpolationMode
 from tqdm import tqdm
-
-import transformers
-from transformers import AutoTokenizer, HfArgumentParser, TrainingArguments, is_tensorboard_available, set_seed
-
+from transformers import (AutoTokenizer, HfArgumentParser, TrainingArguments,
+                          is_tensorboard_available, set_seed)
 
 logger = logging.getLogger(__name__)
 

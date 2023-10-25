@@ -7,29 +7,23 @@ from unittest.mock import patch
 
 import pytest
 from parameterized import parameterized
-
-from transformers import AutoConfig, PreTrainedTokenizerBase, is_tf_available, is_torch_available
-from transformers.onnx import (
-    EXTERNAL_DATA_FORMAT_SIZE_LIMIT,
-    OnnxConfig,
-    OnnxConfigWithPast,
-    ParameterFormat,
-    validate_model_outputs,
-)
-from transformers.onnx.utils import (
-    compute_effective_axis_dimension,
-    compute_serialized_parameters_size,
-    get_preprocessor,
-)
-from transformers.testing_utils import require_onnx, require_rjieba, require_tf, require_torch, require_vision, slow
-
+from transformers import (AutoConfig, PreTrainedTokenizerBase, is_tf_available,
+                          is_torch_available)
+from transformers.onnx import (EXTERNAL_DATA_FORMAT_SIZE_LIMIT, OnnxConfig,
+                               OnnxConfigWithPast, ParameterFormat,
+                               validate_model_outputs)
+from transformers.onnx.utils import (compute_effective_axis_dimension,
+                                     compute_serialized_parameters_size,
+                                     get_preprocessor)
+from transformers.testing_utils import (require_onnx, require_rjieba,
+                                        require_tf, require_torch,
+                                        require_vision, slow)
 
 if is_torch_available() or is_tf_available():
     from transformers.onnx.features import FeaturesManager
 
 if is_torch_available():
     import torch
-
     from transformers.models.deberta import modeling_deberta
 
 

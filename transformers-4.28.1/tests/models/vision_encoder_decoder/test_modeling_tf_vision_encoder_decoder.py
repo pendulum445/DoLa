@@ -21,47 +21,32 @@ import tempfile
 import unittest
 
 import numpy as np
-
-from transformers import is_tf_available, is_torch_available, is_vision_available
-from transformers.testing_utils import (
-    is_pt_tf_cross_test,
-    require_tf,
-    require_torch,
-    require_vision,
-    slow,
-    torch_device,
-)
+from transformers import (is_tf_available, is_torch_available,
+                          is_vision_available)
+from transformers.testing_utils import (is_pt_tf_cross_test, require_tf,
+                                        require_torch, require_vision, slow,
+                                        torch_device)
 from transformers.utils.generic import ModelOutput
 
 from ...test_modeling_tf_common import floats_tensor, ids_tensor
 from ..gpt2.test_modeling_tf_gpt2 import TFGPT2ModelTester
 from ..vit.test_modeling_tf_vit import TFViTModelTester
 
-
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        AutoConfig,
-        AutoFeatureExtractor,
-        AutoTokenizer,
-        TFAutoModel,
-        TFAutoModelForCausalLM,
-        TFGPT2LMHeadModel,
-        TFVisionEncoderDecoderModel,
-        TFViTModel,
-        VisionEncoderDecoderConfig,
-    )
+    from transformers import (AutoConfig, AutoFeatureExtractor, AutoTokenizer,
+                              TFAutoModel, TFAutoModelForCausalLM,
+                              TFGPT2LMHeadModel, TFVisionEncoderDecoderModel,
+                              TFViTModel, VisionEncoderDecoderConfig)
     from transformers.modeling_tf_outputs import TFBaseModelOutput
 
 if is_torch_available():
     import torch
-
-    from transformers import GPT2LMHeadModel, VisionEncoderDecoderModel, ViTModel
+    from transformers import (GPT2LMHeadModel, VisionEncoderDecoderModel,
+                              ViTModel)
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import ViTFeatureExtractor
 
 

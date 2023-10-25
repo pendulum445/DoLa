@@ -1,17 +1,16 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 from torch import nn
 from torch.nn import CrossEntropyLoss, MSELoss
-
 from transformers import RobertaConfig
-from transformers.file_utils import add_start_docstrings, add_start_docstrings_to_model_forward
+from transformers.file_utils import (add_start_docstrings,
+                                     add_start_docstrings_to_model_forward)
 from transformers.models.roberta.modeling_roberta import (
-    ROBERTA_INPUTS_DOCSTRING,
-    ROBERTA_START_DOCSTRING,
-    RobertaEmbeddings,
-)
+    ROBERTA_INPUTS_DOCSTRING, ROBERTA_START_DOCSTRING, RobertaEmbeddings)
 
-from .modeling_highway_bert import BertPreTrainedModel, DeeBertModel, HighwayException, entropy
+from .modeling_highway_bert import (BertPreTrainedModel, DeeBertModel,
+                                    HighwayException, entropy)
 
 
 @add_start_docstrings(

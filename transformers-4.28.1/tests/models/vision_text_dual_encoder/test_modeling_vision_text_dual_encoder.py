@@ -20,41 +20,32 @@ import tempfile
 import unittest
 
 import numpy as np
+from transformers.testing_utils import (is_pt_flax_cross_test, require_torch,
+                                        require_vision, slow, torch_device)
+from transformers.utils import (is_flax_available, is_torch_available,
+                                is_vision_available)
 
-from transformers.testing_utils import is_pt_flax_cross_test, require_torch, require_vision, slow, torch_device
-from transformers.utils import is_flax_available, is_torch_available, is_vision_available
-
-from ...test_modeling_common import floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ..bert.test_modeling_bert import BertModelTester
 from ..clip.test_modeling_clip import CLIPVisionModelTester
 from ..deit.test_modeling_deit import DeiTModelTester
 from ..roberta.test_modeling_roberta import RobertaModelTester
 from ..vit.test_modeling_vit import ViTModelTester
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        BertModel,
-        CLIPVisionModel,
-        DeiTModel,
-        RobertaModel,
-        VisionTextDualEncoderConfig,
-        VisionTextDualEncoderModel,
-        ViTModel,
-    )
+    from transformers import (BertModel, CLIPVisionModel, DeiTModel,
+                              RobertaModel, VisionTextDualEncoderConfig,
+                              VisionTextDualEncoderModel, ViTModel)
 
 if is_flax_available():
     from transformers import FlaxVisionTextDualEncoderModel
     from transformers.modeling_flax_pytorch_utils import (
-        convert_pytorch_state_dict_to_flax,
-        load_flax_weights_in_pytorch_model,
-    )
+        convert_pytorch_state_dict_to_flax, load_flax_weights_in_pytorch_model)
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import VisionTextDualEncoderProcessor
 
 

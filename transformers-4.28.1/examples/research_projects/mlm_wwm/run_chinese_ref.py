@@ -3,7 +3,6 @@ import json
 from typing import List
 
 from ltp import LTP
-
 from transformers.models.bert.tokenization_bert import BertTokenizer
 
 

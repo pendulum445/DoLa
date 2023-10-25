@@ -19,25 +19,12 @@ from pathlib import Path
 
 import transformers
 from transformers.commands.add_new_model_like import (
-    ModelPatterns,
-    _re_class_func,
-    add_content_to_file,
-    add_content_to_text,
-    clean_frameworks_in_init,
-    duplicate_doc_file,
-    duplicate_module,
-    filter_framework_files,
-    find_base_model_checkpoint,
-    get_model_files,
-    get_module_from_file,
-    parse_module_content,
-    replace_model_patterns,
-    retrieve_info_for_model,
-    retrieve_model_classes,
-    simplify_replacements,
-)
+    ModelPatterns, _re_class_func, add_content_to_file, add_content_to_text,
+    clean_frameworks_in_init, duplicate_doc_file, duplicate_module,
+    filter_framework_files, find_base_model_checkpoint, get_model_files,
+    get_module_from_file, parse_module_content, replace_model_patterns,
+    retrieve_info_for_model, retrieve_model_classes, simplify_replacements)
 from transformers.testing_utils import require_flax, require_tf, require_torch
-
 
 BERT_MODEL_FILES = {
     "src/transformers/models/bert/__init__.py",

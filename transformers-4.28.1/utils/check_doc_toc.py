@@ -18,7 +18,6 @@ from collections import defaultdict
 
 import yaml
 
-
 PATH_TO_TOC = "docs/source/en/_toctree.yml"
 
 

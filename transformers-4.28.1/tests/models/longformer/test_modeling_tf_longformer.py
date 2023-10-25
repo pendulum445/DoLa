@@ -17,26 +17,22 @@
 import unittest
 
 from transformers import is_tf_available
-from transformers.testing_utils import require_sentencepiece, require_tf, require_tokenizers, slow, tooslow
+from transformers.testing_utils import (require_sentencepiece, require_tf,
+                                        require_tokenizers, slow, tooslow)
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, ids_tensor, random_attention_mask
+from ...test_modeling_tf_common import (TFModelTesterMixin, ids_tensor,
+                                        random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        LongformerConfig,
-        TFLongformerForMaskedLM,
-        TFLongformerForMultipleChoice,
-        TFLongformerForQuestionAnswering,
-        TFLongformerForSequenceClassification,
-        TFLongformerForTokenClassification,
-        TFLongformerModel,
-        TFLongformerSelfAttention,
-    )
+    from transformers import (LongformerConfig, TFLongformerForMaskedLM,
+                              TFLongformerForMultipleChoice,
+                              TFLongformerForQuestionAnswering,
+                              TFLongformerForSequenceClassification,
+                              TFLongformerForTokenClassification,
+                              TFLongformerModel, TFLongformerSelfAttention)
     from transformers.tf_utils import shape_list
 
 

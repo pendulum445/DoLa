@@ -20,39 +20,24 @@ import tempfile
 import unittest
 
 from transformers import SpeechT5Config, SpeechT5HifiGanConfig
-from transformers.testing_utils import (
-    is_torch_available,
-    require_sentencepiece,
-    require_tokenizers,
-    require_torch,
-    require_torchaudio,
-    slow,
-    torch_device,
-)
+from transformers.testing_utils import (is_torch_available,
+                                        require_sentencepiece,
+                                        require_tokenizers, require_torch,
+                                        require_torchaudio, slow, torch_device)
 from transformers.utils import cached_property
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import (
-    ModelTesterMixin,
-    _config_zero_init,
-    floats_tensor,
-    ids_tensor,
-    random_attention_mask,
-)
+from ...test_modeling_common import (ModelTesterMixin, _config_zero_init,
+                                     floats_tensor, ids_tensor,
+                                     random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        SpeechT5ForSpeechToSpeech,
-        SpeechT5ForSpeechToText,
-        SpeechT5ForTextToSpeech,
-        SpeechT5HifiGan,
-        SpeechT5Model,
-        SpeechT5Processor,
-    )
+    from transformers import (SpeechT5ForSpeechToSpeech,
+                              SpeechT5ForSpeechToText, SpeechT5ForTextToSpeech,
+                              SpeechT5HifiGan, SpeechT5Model,
+                              SpeechT5Processor)
 
 
 def prepare_inputs_dict(

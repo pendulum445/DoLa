@@ -19,31 +19,26 @@ import inspect
 import unittest
 
 import numpy as np
-
 from transformers import Data2VecVisionConfig
-from transformers.file_utils import cached_property, is_tf_available, is_vision_available
+from transformers.file_utils import (cached_property, is_tf_available,
+                                     is_vision_available)
 from transformers.testing_utils import require_tf, require_vision, slow
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_tf_common import TFModelTesterMixin, floats_tensor, ids_tensor
+from ...test_modeling_tf_common import (TFModelTesterMixin, floats_tensor,
+                                        ids_tensor)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_tf_available():
     import tensorflow as tf
-
-    from transformers import (
-        TFData2VecVisionForImageClassification,
-        TFData2VecVisionForSemanticSegmentation,
-        TFData2VecVisionModel,
-    )
-    from transformers.models.data2vec.modeling_tf_data2vec_vision import (
-        TF_DATA2VEC_VISION_PRETRAINED_MODEL_ARCHIVE_LIST,
-    )
+    from transformers import (TFData2VecVisionForImageClassification,
+                              TFData2VecVisionForSemanticSegmentation,
+                              TFData2VecVisionModel)
+    from transformers.models.data2vec.modeling_tf_data2vec_vision import \
+        TF_DATA2VEC_VISION_PRETRAINED_MODEL_ARCHIVE_LIST
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import BeitFeatureExtractor
 
 

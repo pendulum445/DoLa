@@ -1,7 +1,6 @@
 import getopt
 import json
 import os
-
 # import numpy as np
 import sys
 from collections import OrderedDict
@@ -11,9 +10,7 @@ import numpy as np
 import torch
 from modeling_frcnn import GeneralizedRCNN
 from processing_image import Preprocess
-
 from utils import Config
-
 
 """
 USAGE:

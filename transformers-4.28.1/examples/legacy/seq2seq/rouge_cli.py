@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import fire
-
 from utils import calculate_rouge, save_json
 
 

@@ -19,30 +19,25 @@ import tempfile
 import unittest
 
 from transformers import SwitchTransformersConfig, is_torch_available
-from transformers.testing_utils import require_tokenizers, require_torch, require_torch_gpu, slow, torch_device
+from transformers.testing_utils import (require_tokenizers, require_torch,
+                                        require_torch_gpu, slow, torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, ids_tensor
 from ...test_pipeline_mixin import PipelineTesterMixin
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        AutoTokenizer,
-        SwitchTransformersEncoderModel,
-        SwitchTransformersForConditionalGeneration,
-        SwitchTransformersModel,
-        SwitchTransformersTop1Router,
-    )
-    from transformers.generation import BeamSampleDecoderOnlyOutput, BeamSampleEncoderDecoderOutput
+    from transformers import (AutoTokenizer, SwitchTransformersEncoderModel,
+                              SwitchTransformersForConditionalGeneration,
+                              SwitchTransformersModel,
+                              SwitchTransformersTop1Router)
+    from transformers.generation import (BeamSampleDecoderOnlyOutput,
+                                         BeamSampleEncoderDecoderOutput)
     from transformers.models.switch_transformers.modeling_switch_transformers import (
         SWITCH_TRANSFORMERS_PRETRAINED_MODEL_ARCHIVE_LIST,
-        load_balancing_loss_func,
-        router_z_loss_func,
-    )
+        load_balancing_loss_func, router_z_loss_func)
 
 
 class SwitchTransformersModelTester:

@@ -14,14 +14,9 @@
 
 from typing import TYPE_CHECKING
 
-from ...utils import (
-    OptionalDependencyNotAvailable,
-    _LazyModule,
-    is_flax_available,
-    is_torch_available,
-    is_vision_available,
-)
-
+from ...utils import (OptionalDependencyNotAvailable, _LazyModule,
+                      is_flax_available, is_torch_available,
+                      is_vision_available)
 
 _import_structure = {"configuration_beit": ["BEIT_PRETRAINED_CONFIG_ARCHIVE_MAP", "BeitConfig", "BeitOnnxConfig"]}
 
@@ -64,7 +59,8 @@ else:
     ]
 
 if TYPE_CHECKING:
-    from .configuration_beit import BEIT_PRETRAINED_CONFIG_ARCHIVE_MAP, BeitConfig, BeitOnnxConfig
+    from .configuration_beit import (BEIT_PRETRAINED_CONFIG_ARCHIVE_MAP,
+                                     BeitConfig, BeitOnnxConfig)
 
     try:
         if not is_vision_available():
@@ -81,14 +77,11 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_beit import (
-            BEIT_PRETRAINED_MODEL_ARCHIVE_LIST,
-            BeitForImageClassification,
-            BeitForMaskedImageModeling,
-            BeitForSemanticSegmentation,
-            BeitModel,
-            BeitPreTrainedModel,
-        )
+        from .modeling_beit import (BEIT_PRETRAINED_MODEL_ARCHIVE_LIST,
+                                    BeitForImageClassification,
+                                    BeitForMaskedImageModeling,
+                                    BeitForSemanticSegmentation, BeitModel,
+                                    BeitPreTrainedModel)
 
     try:
         if not is_flax_available():
@@ -96,12 +89,10 @@ if TYPE_CHECKING:
     except OptionalDependencyNotAvailable:
         pass
     else:
-        from .modeling_flax_beit import (
-            FlaxBeitForImageClassification,
-            FlaxBeitForMaskedImageModeling,
-            FlaxBeitModel,
-            FlaxBeitPreTrainedModel,
-        )
+        from .modeling_flax_beit import (FlaxBeitForImageClassification,
+                                         FlaxBeitForMaskedImageModeling,
+                                         FlaxBeitModel,
+                                         FlaxBeitPreTrainedModel)
 
 
 else:

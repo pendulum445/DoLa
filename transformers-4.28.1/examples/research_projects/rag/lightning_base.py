@@ -6,30 +6,17 @@ from typing import Any, Dict
 
 import pytorch_lightning as pl
 from pytorch_lightning.utilities import rank_zero_info
-
-from transformers import (
-    AdamW,
-    AutoConfig,
-    AutoModel,
-    AutoModelForPreTraining,
-    AutoModelForQuestionAnswering,
-    AutoModelForSeq2SeqLM,
-    AutoModelForSequenceClassification,
-    AutoModelForTokenClassification,
-    AutoModelWithLMHead,
-    AutoTokenizer,
-    PretrainedConfig,
-    PreTrainedTokenizer,
-)
+from transformers import (AdamW, AutoConfig, AutoModel,
+                          AutoModelForPreTraining,
+                          AutoModelForQuestionAnswering, AutoModelForSeq2SeqLM,
+                          AutoModelForSequenceClassification,
+                          AutoModelForTokenClassification, AutoModelWithLMHead,
+                          AutoTokenizer, PretrainedConfig, PreTrainedTokenizer)
 from transformers.optimization import (
-    Adafactor,
-    get_cosine_schedule_with_warmup,
+    Adafactor, get_cosine_schedule_with_warmup,
     get_cosine_with_hard_restarts_schedule_with_warmup,
-    get_linear_schedule_with_warmup,
-    get_polynomial_decay_schedule_with_warmup,
-)
+    get_linear_schedule_with_warmup, get_polynomial_decay_schedule_with_warmup)
 from transformers.utils.versions import require_version
-
 
 logger = logging.getLogger(__name__)
 

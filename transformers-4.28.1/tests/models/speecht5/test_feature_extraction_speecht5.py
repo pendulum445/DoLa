@@ -19,13 +19,12 @@ import random
 import unittest
 
 import numpy as np
-
 from transformers import BatchFeature, is_speech_available
 from transformers.testing_utils import require_torch, require_torchaudio
 from transformers.utils.import_utils import is_torch_available
 
-from ...test_sequence_feature_extraction_common import SequenceFeatureExtractionTestMixin
-
+from ...test_sequence_feature_extraction_common import \
+    SequenceFeatureExtractionTestMixin
 
 if is_speech_available():
     from transformers import SpeechT5FeatureExtractor

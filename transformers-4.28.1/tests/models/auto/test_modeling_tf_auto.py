@@ -17,56 +17,45 @@ import copy
 import tempfile
 import unittest
 
-from transformers import CONFIG_MAPPING, AutoConfig, BertConfig, GPT2Config, T5Config, TapasConfig, is_tf_available
-from transformers.testing_utils import (
-    DUMMY_UNKNOWN_IDENTIFIER,
-    SMALL_MODEL_IDENTIFIER,
-    RequestCounter,
-    require_tensorflow_probability,
-    require_tf,
-    slow,
-)
+from transformers import (CONFIG_MAPPING, AutoConfig, BertConfig, GPT2Config,
+                          T5Config, TapasConfig, is_tf_available)
+from transformers.testing_utils import (DUMMY_UNKNOWN_IDENTIFIER,
+                                        SMALL_MODEL_IDENTIFIER, RequestCounter,
+                                        require_tensorflow_probability,
+                                        require_tf, slow)
 
 from ..bert.test_modeling_bert import BertModelTester
 
-
 if is_tf_available():
-    from transformers import (
-        TFAutoModel,
-        TFAutoModelForCausalLM,
-        TFAutoModelForMaskedLM,
-        TFAutoModelForPreTraining,
-        TFAutoModelForQuestionAnswering,
-        TFAutoModelForSeq2SeqLM,
-        TFAutoModelForSequenceClassification,
-        TFAutoModelForTableQuestionAnswering,
-        TFAutoModelForTokenClassification,
-        TFAutoModelWithLMHead,
-        TFBertForMaskedLM,
-        TFBertForPreTraining,
-        TFBertForQuestionAnswering,
-        TFBertForSequenceClassification,
-        TFBertModel,
-        TFFunnelBaseModel,
-        TFFunnelModel,
-        TFGPT2LMHeadModel,
-        TFRobertaForMaskedLM,
-        TFT5ForConditionalGeneration,
-        TFTapasForQuestionAnswering,
-    )
+    from transformers import (TFAutoModel, TFAutoModelForCausalLM,
+                              TFAutoModelForMaskedLM,
+                              TFAutoModelForPreTraining,
+                              TFAutoModelForQuestionAnswering,
+                              TFAutoModelForSeq2SeqLM,
+                              TFAutoModelForSequenceClassification,
+                              TFAutoModelForTableQuestionAnswering,
+                              TFAutoModelForTokenClassification,
+                              TFAutoModelWithLMHead, TFBertForMaskedLM,
+                              TFBertForPreTraining, TFBertForQuestionAnswering,
+                              TFBertForSequenceClassification, TFBertModel,
+                              TFFunnelBaseModel, TFFunnelModel,
+                              TFGPT2LMHeadModel, TFRobertaForMaskedLM,
+                              TFT5ForConditionalGeneration,
+                              TFTapasForQuestionAnswering)
     from transformers.models.auto.modeling_tf_auto import (
-        TF_MODEL_FOR_CAUSAL_LM_MAPPING,
-        TF_MODEL_FOR_MASKED_LM_MAPPING,
+        TF_MODEL_FOR_CAUSAL_LM_MAPPING, TF_MODEL_FOR_MASKED_LM_MAPPING,
         TF_MODEL_FOR_PRETRAINING_MAPPING,
         TF_MODEL_FOR_QUESTION_ANSWERING_MAPPING,
         TF_MODEL_FOR_SEQUENCE_CLASSIFICATION_MAPPING,
-        TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING,
-        TF_MODEL_MAPPING,
-    )
-    from transformers.models.bert.modeling_tf_bert import TF_BERT_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.gpt2.modeling_tf_gpt2 import TF_GPT2_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.t5.modeling_tf_t5 import TF_T5_PRETRAINED_MODEL_ARCHIVE_LIST
-    from transformers.models.tapas.modeling_tf_tapas import TF_TAPAS_PRETRAINED_MODEL_ARCHIVE_LIST
+        TF_MODEL_FOR_TOKEN_CLASSIFICATION_MAPPING, TF_MODEL_MAPPING)
+    from transformers.models.bert.modeling_tf_bert import \
+        TF_BERT_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.gpt2.modeling_tf_gpt2 import \
+        TF_GPT2_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.t5.modeling_tf_t5 import \
+        TF_T5_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers.models.tapas.modeling_tf_tapas import \
+        TF_TAPAS_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class NewModelConfig(BertConfig):

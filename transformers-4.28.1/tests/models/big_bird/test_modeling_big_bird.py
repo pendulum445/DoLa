@@ -23,25 +23,20 @@ from transformers.models.big_bird.tokenization_big_bird import BigBirdTokenizer
 from transformers.testing_utils import require_torch, slow, torch_device
 
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        MODEL_FOR_PRETRAINING_MAPPING,
-        BigBirdForCausalLM,
-        BigBirdForMaskedLM,
-        BigBirdForMultipleChoice,
-        BigBirdForPreTraining,
-        BigBirdForQuestionAnswering,
-        BigBirdForSequenceClassification,
-        BigBirdForTokenClassification,
-        BigBirdModel,
-    )
-    from transformers.models.big_bird.modeling_big_bird import BIG_BIRD_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MODEL_FOR_PRETRAINING_MAPPING,
+                              BigBirdForCausalLM, BigBirdForMaskedLM,
+                              BigBirdForMultipleChoice, BigBirdForPreTraining,
+                              BigBirdForQuestionAnswering,
+                              BigBirdForSequenceClassification,
+                              BigBirdForTokenClassification, BigBirdModel)
+    from transformers.models.big_bird.modeling_big_bird import \
+        BIG_BIRD_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class BigBirdModelTester:

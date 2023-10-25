@@ -17,27 +17,23 @@
 import unittest
 
 from transformers import MegaConfig, is_torch_available
-from transformers.testing_utils import TestCasePlus, require_torch, slow, torch_device
+from transformers.testing_utils import (TestCasePlus, require_torch, slow,
+                                        torch_device)
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        MegaForCausalLM,
-        MegaForMaskedLM,
-        MegaForMultipleChoice,
-        MegaForQuestionAnswering,
-        MegaForSequenceClassification,
-        MegaForTokenClassification,
-        MegaModel,
-    )
-    from transformers.models.mega.modeling_mega import MEGA_PRETRAINED_MODEL_ARCHIVE_LIST
+    from transformers import (MegaForCausalLM, MegaForMaskedLM,
+                              MegaForMultipleChoice, MegaForQuestionAnswering,
+                              MegaForSequenceClassification,
+                              MegaForTokenClassification, MegaModel)
+    from transformers.models.mega.modeling_mega import \
+        MEGA_PRETRAINED_MODEL_ARCHIVE_LIST
 
 
 class MegaModelTester:

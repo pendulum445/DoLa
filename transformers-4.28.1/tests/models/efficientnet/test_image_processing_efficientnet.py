@@ -17,19 +17,17 @@
 import unittest
 
 import numpy as np
-
 from transformers.testing_utils import require_torch, require_vision
 from transformers.utils import is_torch_available, is_vision_available
 
-from ...test_image_processing_common import ImageProcessingSavingTestMixin, prepare_image_inputs
-
+from ...test_image_processing_common import (ImageProcessingSavingTestMixin,
+                                             prepare_image_inputs)
 
 if is_torch_available():
     import torch
 
 if is_vision_available():
     from PIL import Image
-
     from transformers import EfficientNetImageProcessor
 
 

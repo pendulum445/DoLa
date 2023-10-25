@@ -23,20 +23,15 @@ from transformers.utils import cached_property
 
 from ...generation.test_utils import GenerationTesterMixin
 from ...test_configuration_common import ConfigTester
-from ...test_modeling_common import ModelTesterMixin, floats_tensor, ids_tensor, random_attention_mask
+from ...test_modeling_common import (ModelTesterMixin, floats_tensor,
+                                     ids_tensor, random_attention_mask)
 from ...test_pipeline_mixin import PipelineTesterMixin
-
 
 if is_torch_available():
     import torch
-
-    from transformers import (
-        GPT_NEO_PRETRAINED_MODEL_ARCHIVE_LIST,
-        GPT2Tokenizer,
-        GPTNeoForCausalLM,
-        GPTNeoForSequenceClassification,
-        GPTNeoModel,
-    )
+    from transformers import (GPT_NEO_PRETRAINED_MODEL_ARCHIVE_LIST,
+                              GPT2Tokenizer, GPTNeoForCausalLM,
+                              GPTNeoForSequenceClassification, GPTNeoModel)
 
 
 class GPTNeoModelTester:

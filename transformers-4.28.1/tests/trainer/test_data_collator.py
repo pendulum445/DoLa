@@ -18,21 +18,13 @@ import tempfile
 import unittest
 
 import numpy as np
-
-from transformers import (
-    BertTokenizer,
-    DataCollatorForLanguageModeling,
-    DataCollatorForPermutationLanguageModeling,
-    DataCollatorForTokenClassification,
-    DataCollatorForWholeWordMask,
-    DataCollatorWithPadding,
-    default_data_collator,
-    is_tf_available,
-    is_torch_available,
-    set_seed,
-)
+from transformers import (BertTokenizer, DataCollatorForLanguageModeling,
+                          DataCollatorForPermutationLanguageModeling,
+                          DataCollatorForTokenClassification,
+                          DataCollatorForWholeWordMask,
+                          DataCollatorWithPadding, default_data_collator,
+                          is_tf_available, is_torch_available, set_seed)
 from transformers.testing_utils import require_tf, require_torch
-
 
 if is_torch_available():
     import torch

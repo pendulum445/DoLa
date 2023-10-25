@@ -23,40 +23,25 @@ import numpy as np
 import tensorflow as tf
 
 from ...activations_tf import get_tf_activation
-from ...utils import (
-    DUMMY_INPUTS,
-    MULTIPLE_CHOICE_DUMMY_INPUTS,
-    add_code_sample_docstrings,
-    add_start_docstrings,
-    add_start_docstrings_to_model_forward,
-)
 from ...modeling_tf_outputs import (
     TFBaseModelOutputWithPastAndCrossAttentions,
-    TFCausalLMOutputWithCrossAttentions,
-    TFMaskedLMOutput,
-    TFMultipleChoiceModelOutput,
-    TFQuestionAnsweringModelOutput,
-    TFSequenceClassifierOutput,
-    TFTokenClassifierOutput,
-)
-from ...modeling_tf_utils import (
-    TFCausalLanguageModelingLoss,
-    TFMaskedLanguageModelingLoss,
-    TFModelInputType,
-    TFMultipleChoiceLoss,
-    TFPreTrainedModel,
-    TFQuestionAnsweringLoss,
-    TFSequenceClassificationLoss,
-    TFSequenceSummary,
-    TFTokenClassificationLoss,
-    get_initializer,
-    keras_serializable,
-    unpack_inputs,
-)
+    TFCausalLMOutputWithCrossAttentions, TFMaskedLMOutput,
+    TFMultipleChoiceModelOutput, TFQuestionAnsweringModelOutput,
+    TFSequenceClassifierOutput, TFTokenClassifierOutput)
+from ...modeling_tf_utils import (TFCausalLanguageModelingLoss,
+                                  TFMaskedLanguageModelingLoss,
+                                  TFModelInputType, TFMultipleChoiceLoss,
+                                  TFPreTrainedModel, TFQuestionAnsweringLoss,
+                                  TFSequenceClassificationLoss,
+                                  TFSequenceSummary, TFTokenClassificationLoss,
+                                  get_initializer, keras_serializable,
+                                  unpack_inputs)
 from ...tf_utils import shape_list, stable_softmax
-from ...utils import logging
-from .configuration_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Config
-
+from ...utils import (DUMMY_INPUTS, MULTIPLE_CHOICE_DUMMY_INPUTS,
+                      add_code_sample_docstrings, add_start_docstrings,
+                      add_start_docstrings_to_model_forward, logging)
+from .configuration_{{cookiecutter.\
+    camelcase_modelname}}Config.lowercase_modelname}} import {{cookiecutter
 
 logger = logging.get_logger(__name__)
 
@@ -1650,30 +1635,19 @@ from typing import Optional, Tuple, Union
 import tensorflow as tf
 
 from ...activations_tf import get_tf_activation
-from ...utils import (
-    add_code_sample_docstrings,
-    add_start_docstrings,
-    add_start_docstrings_to_model_forward,
-    replace_return_docstrings,
-)
 from ...modeling_tf_outputs import (
-    TFBaseModelOutput,
-    TFBaseModelOutputWithPastAndCrossAttentions,
-    TFSeq2SeqLMOutput,
-    TFSeq2SeqModelOutput,
-)
-
+    TFBaseModelOutput, TFBaseModelOutputWithPastAndCrossAttentions,
+    TFSeq2SeqLMOutput, TFSeq2SeqModelOutput)
 # Public API
-from ...modeling_tf_utils import (
-    DUMMY_INPUTS,
-    TFPreTrainedModel,
-    keras_serializable,
-    unpack_inputs,
-)
+from ...modeling_tf_utils import (DUMMY_INPUTS, TFPreTrainedModel,
+                                  keras_serializable, unpack_inputs)
 from ...tf_utils import shape_list, stable_softmax
-from ...utils import ContextManagers, logging
-from .configuration_{{cookiecutter.lowercase_modelname}} import {{cookiecutter.camelcase_modelname}}Config
-
+from ...utils import (ContextManagers, add_code_sample_docstrings,
+                      add_start_docstrings,
+                      add_start_docstrings_to_model_forward, logging,
+                      replace_return_docstrings)
+from .configuration_{{cookiecutter.\
+    camelcase_modelname}}Config.lowercase_modelname}} import {{cookiecutter
 
 logger = logging.get_logger(__name__)
 

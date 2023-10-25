@@ -16,22 +16,17 @@
 
 import unittest
 
-from transformers.testing_utils import is_torch_available, require_torch, tooslow
+from transformers.testing_utils import (is_torch_available, require_torch,
+                                        tooslow)
 
 from ...generation.test_utils import torch_device
 from ...test_configuration_common import ConfigTester
 from ...test_modeling_common import ModelTesterMixin, ids_tensor
 
-
 if is_torch_available():
     import torch
-
-    from transformers import (
-        CpmAntConfig,
-        CpmAntForCausalLM,
-        CpmAntModel,
-        CpmAntTokenizer,
-    )
+    from transformers import (CpmAntConfig, CpmAntForCausalLM, CpmAntModel,
+                              CpmAntTokenizer)
 
 
 @require_torch

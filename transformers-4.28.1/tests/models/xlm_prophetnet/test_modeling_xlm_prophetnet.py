@@ -19,11 +19,10 @@ import unittest
 from transformers import is_torch_available
 from transformers.testing_utils import require_torch, slow, torch_device
 
-
 if is_torch_available():
     import torch
-
-    from transformers import XLMProphetNetForConditionalGeneration, XLMProphetNetTokenizer
+    from transformers import (XLMProphetNetForConditionalGeneration,
+                              XLMProphetNetTokenizer)
 
 
 @require_torch

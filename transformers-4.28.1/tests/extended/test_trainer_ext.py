@@ -22,26 +22,17 @@ from typing import Tuple
 from unittest.mock import patch
 
 from parameterized import parameterized
-
-from transformers.testing_utils import (
-    CaptureStderr,
-    ExtendSysPath,
-    TestCasePlus,
-    execute_subprocess_async,
-    get_gpu_count,
-    get_torch_dist_unique_port,
-    require_apex,
-    require_bitsandbytes,
-    require_fairscale,
-    require_torch,
-    require_torch_gpu,
-    require_torch_multi_gpu,
-    require_torch_non_multi_gpu,
-    slow,
-)
+from transformers.testing_utils import (CaptureStderr, ExtendSysPath,
+                                        TestCasePlus, execute_subprocess_async,
+                                        get_gpu_count,
+                                        get_torch_dist_unique_port,
+                                        require_apex, require_bitsandbytes,
+                                        require_fairscale, require_torch,
+                                        require_torch_gpu,
+                                        require_torch_multi_gpu,
+                                        require_torch_non_multi_gpu, slow)
 from transformers.trainer_callback import TrainerState
 from transformers.trainer_utils import set_seed
-
 
 bindir = os.path.abspath(os.path.dirname(__file__))
 with ExtendSysPath(f"{bindir}/../../examples/pytorch/translation"):

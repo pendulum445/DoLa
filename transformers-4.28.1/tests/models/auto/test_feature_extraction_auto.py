@@ -19,22 +19,16 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from transformers import (
-    CONFIG_MAPPING,
-    FEATURE_EXTRACTOR_MAPPING,
-    AutoConfig,
-    AutoFeatureExtractor,
-    Wav2Vec2Config,
-    Wav2Vec2FeatureExtractor,
-)
+from transformers import (CONFIG_MAPPING, FEATURE_EXTRACTOR_MAPPING,
+                          AutoConfig, AutoFeatureExtractor, Wav2Vec2Config,
+                          Wav2Vec2FeatureExtractor)
 from transformers.testing_utils import DUMMY_UNKNOWN_IDENTIFIER, get_tests_dir
-
 
 sys.path.append(str(Path(__file__).parent.parent.parent.parent / "utils"))
 
 from test_module.custom_configuration import CustomConfig  # noqa E402
-from test_module.custom_feature_extraction import CustomFeatureExtractor  # noqa E402
-
+from test_module.custom_feature_extraction import \
+    CustomFeatureExtractor  # noqa E402
 
 SAMPLE_FEATURE_EXTRACTION_CONFIG_DIR = get_tests_dir("fixtures")
 SAMPLE_FEATURE_EXTRACTION_CONFIG = get_tests_dir("fixtures/dummy_feature_extractor_config.json")

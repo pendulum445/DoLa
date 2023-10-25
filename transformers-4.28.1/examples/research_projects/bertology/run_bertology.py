@@ -26,25 +26,16 @@ from datetime import datetime
 
 import numpy as np
 import torch
+import transformers
 from torch import nn
 from torch.utils.data import DataLoader, SequentialSampler, Subset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
-
-import transformers
-from transformers import (
-    AutoConfig,
-    AutoModelForSequenceClassification,
-    AutoTokenizer,
-    GlueDataset,
-    default_data_collator,
-    glue_compute_metrics,
-    glue_output_modes,
-    glue_processors,
-    set_seed,
-)
+from transformers import (AutoConfig, AutoModelForSequenceClassification,
+                          AutoTokenizer, GlueDataset, default_data_collator,
+                          glue_compute_metrics, glue_output_modes,
+                          glue_processors, set_seed)
 from transformers.trainer_utils import is_main_process
-
 
 logger = logging.getLogger(__name__)
 
