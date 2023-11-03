@@ -224,7 +224,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
-                        default="huggyllama/llama-7b")
+                        default="/data/lyj/hf_models/llama-2-7b-hf")
     parser.add_argument("--num-gpus", type=str, default="1")
     parser.add_argument("--max_gpu_memory", type=int, default=27)
     parser.add_argument("--device",
@@ -232,7 +232,7 @@ if __name__ == "__main__":
                         choices=["cuda", "cpu"],
                         default="cuda")
     parser.add_argument("--data-path", type=str, default="./tfqa")
-    parser.add_argument("--output-path", type=str, default="./tfqa_result")
+    parser.add_argument("--output-path", type=str, default="./tfqa_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
     parser.add_argument("--early-exit-layers", type=str, default="-1")
     parser.add_argument("--parallel", action="store_true")
@@ -325,8 +325,6 @@ if __name__ == "__main__":
             scores_false = []
 
             generate_kwargs = dict(
-                max_new_tokens=args.max_new_tokens,
-                repetition_penalty=args.repetition_penalty,
                 mode=mode,
                 mature_layer=mature_layer,
                 premature_layer=premature_layer,

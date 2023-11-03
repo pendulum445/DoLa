@@ -1,4 +1,6 @@
 /__pycache__/
+/.idea/
 /.vscode/
 *.json
+*.log
 demo.py

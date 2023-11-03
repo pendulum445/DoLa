@@ -139,7 +139,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
-                        default="/data/lyj/hf_models/bloom-560m")
+                        default="/data/lyj/hf_models/bloomz-7b1")
     parser.add_argument("--num-gpus", type=str, default="1")
     parser.add_argument("--max_gpu_memory", type=int, default=27)
     parser.add_argument("--device",
@@ -223,12 +223,6 @@ if __name__ == "__main__":
         for i in range(3):
             answers_false.append(' ' + sample[f'contradiction_{i}'])
         generate_kwargs = dict(
-            max_new_tokens=args.max_new_tokens,
-            do_sample=args.do_sample,
-            top_p=args.top_p,
-            top_k=args.top_k,
-            temperature=args.temperature,
-            repetition_penalty=args.repetition_penalty,
             mode=mode,
             mature_layer=mature_layer,
             premature_layer=premature_layer,
@@ -262,9 +256,9 @@ if __name__ == "__main__":
         result_dict['is_correct'].append(is_cor)
         result_dict['model_completion'].append([answer_true_log_prob] +
                                                answer_false_log_probs)
-        print(f'Num of total question: {len(answers)}, '
-              f'correct num: {sum(answers)}, '
-              f'correct rate: {float(sum(answers))/len(answers)}.')
+    print(f'Num of total question: {len(answers)}, '
+          f'correct num: {sum(answers)}, '
+          f'correct rate: {float(sum(answers)) / len(answers)}.')
     if mode == "dola" and args.debug:
         total_tokens = sum(premature_layer_dist.values())
         if total_tokens > 0:
@@ -279,4 +273,4 @@ if __name__ == "__main__":
         args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f)
-    print(f"{float(sum(answers))/len(answers)}")
+    print(f"{float(sum(answers)) / len(answers)}")
