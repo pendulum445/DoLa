@@ -3,6 +3,7 @@ import re
 import ssl
 import urllib.request
 
+import numpy as np
 import torch
 
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")

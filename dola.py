@@ -1,5 +1,8 @@
+from typing import Any, Tuple, Union
+
 import torch
 import torch.nn.functional as F
+from torch import Tensor
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.generation.stopping_criteria import (LLamaQaStoppingCriteria,
                                                        StoppingCriteriaList)
@@ -83,7 +86,7 @@ class DoLa:
                  verbose: bool = True,
                  remove_stop_words: bool = False,
                  relative_top: float = 0.1,
-                 **kwargs):
+                 **kwargs) -> tuple[str, dict | None]:
         if candidate_premature_layers is None:
             candidate_premature_layers: list[int] = []
         input_ids: torch.Tensor = self.tokenizer(
@@ -168,7 +171,7 @@ class DoLa:
                  mode: str = 'baseline',
                  relative_top: float = 0.1,
                  relative_top_value: float = -1000.0,
-                 post_softmax: bool = True):
+                 post_softmax: bool = True) -> tuple[float, dict] | Any:
         input_text: str = input_text1 + input_text2
         input_ids: torch.Tensor = self.tokenizer(
             input_text, return_tensors="pt").input_ids.to(self.device)
@@ -181,8 +184,7 @@ class DoLa:
             # skip tokens in the prompt -- we only care about the answer
             outputs = outputs[prefix_ids.shape[-1] - 1:-1, :]
             # get log probs for each token in the answer
-            log_probs: torch.Tensor = outputs[range(outputs.shape[0]),
-                                              continue_ids].sum().item()
+            return outputs[range(outputs.shape[0]), continue_ids].sum().item()
         elif mode == 'dola-static':
             dict_outputs, outputs = self.model(
                 input_ids=input_ids,
@@ -196,6 +198,7 @@ class DoLa:
                 0, prefix_ids.shape[-1] - 1:-1, :]
             final_logits: torch.Tensor = dict_outputs[mature_layer][
                 0, prefix_ids.shape[-1] - 1:-1, :]
+            # noinspection DuplicatedCode
             final_logits = final_logits.log_softmax(dim=-1)
             base_logits = base_logits.log_softmax(dim=-1)
             diff_logits: torch.Tensor = final_logits - base_logits
@@ -206,8 +209,8 @@ class DoLa:
                     final_logits, relative_top)
                 diff_logits = torch.where(relative_top_mask,
                                           relative_top_value, diff_logits)
-            log_probs: torch.Tensor = diff_logits[range(diff_logits.shape[0]),
-                                                  continue_ids].sum().item()
+            return diff_logits[range(diff_logits.shape[0]),
+                               continue_ids].sum().item()
         elif mode == 'dola':
             premature_layer_dist: dict = {
                 it: 0
@@ -271,6 +274,7 @@ class DoLa:
                                                  prefix_ids.shape[-1] - 1 + i]
             final_logits: torch.Tensor = dict_outputs[mature_layer][
                 0, prefix_ids.shape[-1] - 1:-1]
+            # noinspection DuplicatedCode
             final_logits = final_logits.log_softmax(dim=-1)
             base_logits = base_logits.log_softmax(dim=-1)
             diff_logits: torch.Tensor = final_logits - base_logits
@@ -281,6 +285,6 @@ class DoLa:
                     final_logits, relative_top)
                 diff_logits = torch.where(relative_top_mask,
                                           relative_top_value, diff_logits)
-            log_probs: torch.Tensor = diff_logits[range(diff_logits.shape[0]),
-                                                  continue_ids].sum().item()
-        return log_probs, (premature_layer_dist if mode == 'dola' else None)
+            log_probs: float = diff_logits[range(diff_logits.shape[0]),
+                                           continue_ids].sum().item()
+            return log_probs, premature_layer_dist

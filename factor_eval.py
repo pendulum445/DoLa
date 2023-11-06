@@ -56,7 +56,7 @@ def load_csv(file_path):
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser()
+    parser: ArgumentParser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
                         default="/data/lyj/hf_models/bloom-560m")
@@ -92,29 +92,31 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)
     args = parser.parse_args()
-    model_name = args.model_name
-    num_gpus = args.num_gpus
-    device = args.device
+    model_name: str = args.model_name
+    num_gpus: int = args.num_gpus
+    device: str = args.device
     # Get test file
-    fp = args.data_path
+    fp: str = args.data_path
     if not os.path.exists(fp):
         raise ValueError(f"Test file {fp} does not exist.")
-    list_data_dict = load_csv(fp)
+    list_data_dict: list = load_csv(fp)
     # noinspection DuplicatedCode
     if args.parallel:
-        chunk_size = len(list_data_dict) // args.total_shard
+        chunk_size: int = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
                                         chunk_size]
     if args.debug:
         list_data_dict = list_data_dict[:10]
-    llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
+    llm: Dola = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
     llm.set_stop_words(["Q:", "\end{code}"])
-    early_exit_layers = [int(x) for x in args.early_exit_layers.split(',')]
+    early_exit_layers: list[int] = [
+        int(x) for x in args.early_exit_layers.split(',')
+    ]
     # noinspection DuplicatedCode
     if len(early_exit_layers) == 1:
         print("MODE: naive decoding from the last layer", flush=True)
-        mode = "baseline"
+        mode: str = "baseline"
         mature_layer = None
         premature_layer = None
         candidate_premature_layers = None
@@ -122,9 +124,9 @@ if __name__ == "__main__":
         print(
             f"MODE: DoLa-static decoding with mature layer: {early_exit_layers[1]} and premature layer: {early_exit_layers[0]}"
         )
-        mode = "dola-static"
-        mature_layer = early_exit_layers[1]
-        premature_layer = early_exit_layers[0]
+        mode: str = "dola-static"
+        mature_layer: int = early_exit_layers[1]
+        premature_layer: int = early_exit_layers[0]
         candidate_premature_layers = None
     else:
         # noinspection DuplicatedCode
@@ -132,9 +134,9 @@ if __name__ == "__main__":
             f"MODE: DoLa decoding with mature layer: {early_exit_layers[-1]} and premature layers: {early_exit_layers[:-1]}"
         )
         mode = "dola"
-        mature_layer = early_exit_layers[-1]
+        mature_layer: int = early_exit_layers[-1]
         premature_layer = None
-        candidate_premature_layers = early_exit_layers[:-1]
+        candidate_premature_layers: list[int] = early_exit_layers[:-1]
         premature_layer_dist = {it: 0 for it in candidate_premature_layers}
     answers = []
     result_dict = {
