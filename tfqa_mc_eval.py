@@ -191,7 +191,9 @@ if __name__ == "__main__":
                         choices=["cuda", "cpu"],
                         default="cuda")
     parser.add_argument("--data-path", type=str, default="./tfqa")
-    parser.add_argument("--output-path", type=str, default="./tfqa_result.json")
+    parser.add_argument("--output-path",
+                        type=str,
+                        default="./tfqa_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
     parser.add_argument("--early-exit-layers", type=str, default="-1")
     parser.add_argument("--parallel", action="store_true")
@@ -236,7 +238,7 @@ if __name__ == "__main__":
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
-                                                   chunk_size]
+                                        chunk_size]
 
     llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
     stop_word_list = ["Q:"]
@@ -362,6 +364,6 @@ if __name__ == "__main__":
     model_tag = model_name.split(
         '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
     output_file = args.output_path if args.shard_id is None else (
-            args.output_path + "_" + str(args.shard_id) + ".json")
+        args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f)

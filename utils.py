@@ -3,6 +3,8 @@ import re
 import ssl
 import urllib.request
 
+import torch
+
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
 INVALID_ANS = "[invalid]"
 
@@ -48,3 +50,17 @@ def is_correct(model_answer, answer):
     gt_answer = extract_answer_from_output(answer)
     assert gt_answer != INVALID_ANS
     return model_answer == gt_answer
+
+
+def get_relative_top_filter(scores: torch.Tensor,
+                            relative_top: float = 0.1,
+                            min_tokens_to_keep: int = 1) -> torch.Tensor:
+    scores_normalized: torch.Tensor = scores.log_softmax(dim=-1)
+    sorted_logits, sorted_indices = torch.sort(scores_normalized,
+                                               descending=True)
+    min_thresh: torch.Tensor = sorted_logits[..., min_tokens_to_keep - 1]
+    probs_max: torch.Tensor = torch.max(scores_normalized, dim=-1).values
+    probs_thresh: torch.Tensor = probs_max + np.log(relative_top)
+    probs_thresh = torch.min(min_thresh, probs_thresh)
+    probs_thresh = probs_thresh.unsqueeze(-1)
+    return torch.Tensor(scores_normalized < probs_thresh)

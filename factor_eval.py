@@ -104,7 +104,9 @@ if __name__ == "__main__":
                         type=str,
                         default="./wiki_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
-    parser.add_argument("--early-exit-layers", type=str, default="0,2,4,6,8,10,12,14,16,24")
+    parser.add_argument("--early-exit-layers",
+                        type=str,
+                        default="0,2,4,6,8,10,12,14,16,24")
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
     parser.add_argument("--shard-id", type=int, default=None)
@@ -133,7 +135,7 @@ if __name__ == "__main__":
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
-                                                   chunk_size]
+                                        chunk_size]
     if args.debug:
         list_data_dict = list_data_dict[:10]
     llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
@@ -223,7 +225,7 @@ if __name__ == "__main__":
     model_tag = model_name.split(
         '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
     output_file = args.output_path if args.shard_id is None else (
-            args.output_path + "_" + str(args.shard_id) + ".json")
+        args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f)
     print(f"{float(sum(answers)) / len(answers)}")
