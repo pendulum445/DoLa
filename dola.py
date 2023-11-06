@@ -25,6 +25,135 @@ class DoLa:
         self.max_gpu_memory: int = max_gpu_memory
         self.model, self.tokenizer = self.load_model(model_name)
 
+    def __llm_score_baseline(self, input_ids: torch.Tensor,
+                             prefix_ids: torch.Tensor,
+                             continue_ids: torch.Tensor) -> float:
+        outputs: torch.Tensor = self.model(input_ids)[0].squeeze(0)
+        outputs = outputs.log_softmax(-1)  # logits to log probs
+        # skip tokens in the prompt -- we only care about the answer
+        outputs = outputs[prefix_ids.shape[-1] - 1:-1, :]
+        # get log probs for each token in the answer
+        return outputs[range(outputs.shape[0]), continue_ids].sum().item()
+
+    def __llm_score_dola_static(self,
+                                input_ids: torch.Tensor,
+                                prefix_ids: torch.Tensor,
+                                continue_ids: torch.Tensor,
+                                mature_layer=None,
+                                premature_layer=None,
+                                relative_top: float = 0.1,
+                                relative_top_value: float = -1000.0,
+                                post_softmax: bool = True) -> float:
+        dict_outputs, outputs = self.model(
+            input_ids=input_ids,
+            return_dict=True,
+            output_attentions=False,
+            output_hidden_states=False,
+            early_exit_layers=[premature_layer, mature_layer],
+        )
+        assert premature_layer is not None
+        base_logits: torch.Tensor = dict_outputs[premature_layer][
+            0, prefix_ids.shape[-1] - 1:-1, :]
+        final_logits: torch.Tensor = dict_outputs[mature_layer][
+            0, prefix_ids.shape[-1] - 1:-1, :]
+        # noinspection DuplicatedCode
+        final_logits = final_logits.log_softmax(dim=-1)
+        base_logits = base_logits.log_softmax(dim=-1)
+        diff_logits: torch.Tensor = final_logits - base_logits
+        if post_softmax:
+            diff_logits = diff_logits.log_softmax(dim=-1)
+        if relative_top > 0.0:
+            relative_top_mask: torch.Tensor = get_relative_top_filter(
+                final_logits, relative_top)
+            diff_logits = torch.where(relative_top_mask, relative_top_value,
+                                      diff_logits)
+        return diff_logits[range(diff_logits.shape[0]),
+                           continue_ids].sum().item()
+
+    def __llm_score_dola(self,
+                         input_ids: torch.Tensor,
+                         prefix_ids: torch.Tensor,
+                         continue_ids: torch.Tensor,
+                         mature_layer=None,
+                         candidate_premature_layers=None,
+                         relative_top: float = 0.1,
+                         relative_top_value: float = -1000.0,
+                         post_softmax: bool = True) -> tuple[float, dict]:
+        premature_layer_dist: dict = {
+            it: 0
+            for it in candidate_premature_layers
+        }
+        premature_layers: list[int] = []
+        dict_outputs, outputs = self.model(
+            input_ids=input_ids,
+            return_dict=True,
+            output_attentions=False,
+            output_hidden_states=False,
+            early_exit_layers=candidate_premature_layers + [mature_layer],
+        )
+        for seq_i in range(prefix_ids.shape[-1] - 1, input_ids.shape[-1] - 1):
+            # Pick the less like layer to contrast with
+            # 1. Stacking all premature_layers into a new dimension
+            stacked_premature_layers: torch.Tensor = torch.stack([
+                dict_outputs[i][:, seq_i, :]
+                for i in candidate_premature_layers
+            ],
+                                                                 dim=0)
+            # 2. Calculate the softmax values for mature_layer and all premature_layers
+            softmax_mature_layer: torch.Tensor = F.softmax(
+                dict_outputs[mature_layer][:, seq_i, :],
+                dim=-1)  # shape: (batch_size, num_features)
+            softmax_premature_layers: torch.Tensor = F.softmax(
+                stacked_premature_layers, dim=-1
+            )  # shape: (num_premature_layers, batch_size, num_features)
+            # 3. Calculate M, the average distribution
+            M: torch.Tensor = 0.5 * (
+                softmax_mature_layer[None, :, :] + softmax_premature_layers
+            )  # shape: (num_premature_layers, batch_size, num_features)
+            # 4. Calculate log-softmax for the KL divergence
+            log_softmax_mature_layer: torch.Tensor = F.log_softmax(
+                dict_outputs[mature_layer][:, seq_i, :],
+                dim=-1)  # shape: (batch_size, num_features)
+            log_softmax_premature_layers: torch.Tensor = F.log_softmax(
+                stacked_premature_layers, dim=-1
+            )  # shape: (num_premature_layers, batch_size, num_features)
+            # 5. Calculate the KL divergences and then the JS divergences
+            kl1: torch.Tensor = F.kl_div(
+                log_softmax_mature_layer[None, :, :], M,
+                reduction='none').mean(
+                    -1)  # shape: (num_premature_layers, batch_size)
+            kl2: torch.Tensor = F.kl_div(
+                log_softmax_premature_layers, M, reduction='none').mean(
+                    -1)  # shape: (num_premature_layers, batch_size)
+            js_divs: torch.Tensor = 0.5 * (
+                kl1 + kl2)  # shape: (num_premature_layers, batch_size)
+            # 6. Reduce the batchmean
+            js_divs = js_divs.mean(-1)  # shape: (num_premature_layers,)
+            premature_layer: int = candidate_premature_layers[int(
+                js_divs.argmax().cpu().item())]
+            premature_layer_dist[premature_layer] += 1
+            premature_layers.append(premature_layer)
+        base_logits: torch.Tensor = torch.zeros_like(
+            dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
+        for i, l in enumerate(premature_layers):
+            base_logits[i] = dict_outputs[l][0, prefix_ids.shape[-1] - 1 + i]
+        final_logits: torch.Tensor = dict_outputs[mature_layer][
+            0, prefix_ids.shape[-1] - 1:-1]
+        # noinspection DuplicatedCode
+        final_logits = final_logits.log_softmax(dim=-1)
+        base_logits = base_logits.log_softmax(dim=-1)
+        diff_logits: torch.Tensor = final_logits - base_logits
+        if post_softmax:
+            diff_logits = diff_logits.log_softmax(dim=-1)
+        if relative_top > 0.0:
+            relative_top_mask: torch.Tensor = get_relative_top_filter(
+                final_logits, relative_top)
+            diff_logits = torch.where(relative_top_mask, relative_top_value,
+                                      diff_logits)
+        log_probs: float = diff_logits[range(diff_logits.shape[0]),
+                                       continue_ids].sum().item()
+        return log_probs, premature_layer_dist
+
     def load_model(
             self,
             model_name: str) -> tuple[AutoModelForCausalLM, AutoTokenizer]:
@@ -171,7 +300,7 @@ class DoLa:
                  mode: str = 'baseline',
                  relative_top: float = 0.1,
                  relative_top_value: float = -1000.0,
-                 post_softmax: bool = True) -> tuple[float, dict] | Any:
+                 post_softmax: bool = True) -> float | tuple[float, dict]:
         input_text: str = input_text1 + input_text2
         input_ids: torch.Tensor = self.tokenizer(
             input_text, return_tensors="pt").input_ids.to(self.device)
@@ -179,112 +308,17 @@ class DoLa:
             input_text1, return_tensors="pt").input_ids.to(self.device)
         continue_ids: torch.Tensor = input_ids[0, prefix_ids.shape[-1]:]
         if mode == 'baseline':
-            outputs: torch.Tensor = self.model(input_ids)[0].squeeze(0)
-            outputs = outputs.log_softmax(-1)  # logits to log probs
-            # skip tokens in the prompt -- we only care about the answer
-            outputs = outputs[prefix_ids.shape[-1] - 1:-1, :]
-            # get log probs for each token in the answer
-            return outputs[range(outputs.shape[0]), continue_ids].sum().item()
+            return self.__llm_score_baseline(input_ids, prefix_ids,
+                                             continue_ids)
         elif mode == 'dola-static':
-            dict_outputs, outputs = self.model(
-                input_ids=input_ids,
-                return_dict=True,
-                output_attentions=False,
-                output_hidden_states=False,
-                early_exit_layers=[premature_layer, mature_layer],
-            )
-            assert premature_layer is not None
-            base_logits: torch.Tensor = dict_outputs[premature_layer][
-                0, prefix_ids.shape[-1] - 1:-1, :]
-            final_logits: torch.Tensor = dict_outputs[mature_layer][
-                0, prefix_ids.shape[-1] - 1:-1, :]
-            # noinspection DuplicatedCode
-            final_logits = final_logits.log_softmax(dim=-1)
-            base_logits = base_logits.log_softmax(dim=-1)
-            diff_logits: torch.Tensor = final_logits - base_logits
-            if post_softmax:
-                diff_logits = diff_logits.log_softmax(dim=-1)
-            if relative_top > 0.0:
-                relative_top_mask: torch.Tensor = get_relative_top_filter(
-                    final_logits, relative_top)
-                diff_logits = torch.where(relative_top_mask,
-                                          relative_top_value, diff_logits)
-            return diff_logits[range(diff_logits.shape[0]),
-                               continue_ids].sum().item()
+            return self.__llm_score_dola_static(input_ids, prefix_ids,
+                                                continue_ids, mature_layer,
+                                                premature_layer, relative_top,
+                                                relative_top_value,
+                                                post_softmax)
         elif mode == 'dola':
-            premature_layer_dist: dict = {
-                it: 0
-                for it in candidate_premature_layers
-            }
-            premature_layers: list[int] = []
-            dict_outputs, outputs = self.model(
-                input_ids=input_ids,
-                return_dict=True,
-                output_attentions=False,
-                output_hidden_states=False,
-                early_exit_layers=candidate_premature_layers + [mature_layer],
-            )
-            for seq_i in range(prefix_ids.shape[-1] - 1,
-                               input_ids.shape[-1] - 1):
-                # Pick the less like layer to contrast with
-                # 1. Stacking all premature_layers into a new dimension
-                stacked_premature_layers: torch.Tensor = torch.stack([
-                    dict_outputs[i][:, seq_i, :]
-                    for i in candidate_premature_layers
-                ],
-                                                                     dim=0)
-                # 2. Calculate the softmax values for mature_layer and all premature_layers
-                softmax_mature_layer: torch.Tensor = F.softmax(
-                    dict_outputs[mature_layer][:, seq_i, :],
-                    dim=-1)  # shape: (batch_size, num_features)
-                softmax_premature_layers: torch.Tensor = F.softmax(
-                    stacked_premature_layers, dim=-1
-                )  # shape: (num_premature_layers, batch_size, num_features)
-                # 3. Calculate M, the average distribution
-                M: torch.Tensor = 0.5 * (
-                    softmax_mature_layer[None, :, :] + softmax_premature_layers
-                )  # shape: (num_premature_layers, batch_size, num_features)
-                # 4. Calculate log-softmax for the KL divergence
-                log_softmax_mature_layer: torch.Tensor = F.log_softmax(
-                    dict_outputs[mature_layer][:, seq_i, :],
-                    dim=-1)  # shape: (batch_size, num_features)
-                log_softmax_premature_layers: torch.Tensor = F.log_softmax(
-                    stacked_premature_layers, dim=-1
-                )  # shape: (num_premature_layers, batch_size, num_features)
-                # 5. Calculate the KL divergences and then the JS divergences
-                kl1: torch.Tensor = F.kl_div(
-                    log_softmax_mature_layer[None, :, :], M,
-                    reduction='none').mean(
-                        -1)  # shape: (num_premature_layers, batch_size)
-                kl2: torch.Tensor = F.kl_div(
-                    log_softmax_premature_layers, M, reduction='none').mean(
-                        -1)  # shape: (num_premature_layers, batch_size)
-                js_divs: torch.Tensor = 0.5 * (
-                    kl1 + kl2)  # shape: (num_premature_layers, batch_size)
-                # 6. Reduce the batchmean
-                js_divs = js_divs.mean(-1)  # shape: (num_premature_layers,)
-                premature_layer: int = candidate_premature_layers[int(
-                    js_divs.argmax().cpu().item())]
-                premature_layer_dist[premature_layer] += 1
-                premature_layers.append(premature_layer)
-            base_logits: torch.Tensor = torch.zeros_like(
-                dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
-            for i, l in enumerate(premature_layers):
-                base_logits[i] = dict_outputs[l][0,
-                                                 prefix_ids.shape[-1] - 1 + i]
-            final_logits: torch.Tensor = dict_outputs[mature_layer][
-                0, prefix_ids.shape[-1] - 1:-1]
-            # noinspection DuplicatedCode
-            final_logits = final_logits.log_softmax(dim=-1)
-            base_logits = base_logits.log_softmax(dim=-1)
-            diff_logits: torch.Tensor = final_logits - base_logits
-            if post_softmax:
-                diff_logits = diff_logits.log_softmax(dim=-1)
-            if relative_top > 0.0:
-                relative_top_mask: torch.Tensor = get_relative_top_filter(
-                    final_logits, relative_top)
-                diff_logits = torch.where(relative_top_mask,
-                                          relative_top_value, diff_logits)
-            log_probs: float = diff_logits[range(diff_logits.shape[0]),
-                                           continue_ids].sum().item()
-            return log_probs, premature_layer_dist
+            return self.__llm_score_dola(input_ids, prefix_ids, continue_ids,
+                                         mature_layer,
+                                         candidate_premature_layers,
+                                         relative_top, relative_top_value,
+                                         post_softmax)

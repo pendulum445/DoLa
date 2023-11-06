@@ -1,5 +1,5 @@
 # Ref: https://github.com/kojima-takeshi188/zero_shot_cot
-
+import argparse
 import json
 import os
 import random
@@ -23,7 +23,7 @@ DEBUG = True
 ANSWER_TRIGGER = "The answer is"
 
 
-def load_csv(file_path):
+def load_csv(file_path: str):
     # Format of each line:
     # {'instruction': ..., 'input': ..., 'output':...}
     """
@@ -40,11 +40,11 @@ def load_csv(file_path):
     list_data_dict: list[dict] = []
     df = pd.read_csv(file_path)
     if 'news' in file_path:
-        prefix_type = 'full_prefix'
+        prefix_type: str = 'full_prefix'
     else:
-        prefix_type = 'turncated_prefixes'
+        prefix_type: str = 'turncated_prefixes'
     for idx in range(len(df)):
-        item = dict(
+        item: dict = dict(
             prefix=df[prefix_type][idx],
             completion=df['completion'][idx],
             contradiction_0=df['contradiction_0'][idx],
@@ -55,7 +55,7 @@ def load_csv(file_path):
     return list_data_dict
 
 
-if __name__ == "__main__":
+def get_parser_args() -> argparse.Namespace:
     parser: ArgumentParser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
     parser.add_argument("--early-exit-layers",
                         type=str,
-                        default="0,2,4,6,8,10,12,14,16,24")
+                        default="0,2,4,6,8,10,12,14,16,18,20,22,24")
     # noinspection DuplicatedCode
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
@@ -88,10 +88,15 @@ if __name__ == "__main__":
     # noinspection DuplicatedCode
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
-    parser.add_argument("--debug", action="store_true")
+    # parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args: argparse.Namespace = get_parser_args()
     model_name: str = args.model_name
     num_gpus: int = args.num_gpus
     device: str = args.device
@@ -99,7 +104,7 @@ if __name__ == "__main__":
     fp: str = args.data_path
     if not os.path.exists(fp):
         raise ValueError(f"Test file {fp} does not exist.")
-    list_data_dict: list = load_csv(fp)
+    list_data_dict: list[dict] = load_csv(fp)
     # noinspection DuplicatedCode
     if args.parallel:
         chunk_size: int = len(list_data_dict) // args.total_shard
@@ -108,7 +113,7 @@ if __name__ == "__main__":
                                         chunk_size]
     if args.debug:
         list_data_dict = list_data_dict[:10]
-    llm: Dola = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
+    llm: DoLa = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
     llm.set_stop_words(["Q:", "\end{code}"])
     early_exit_layers: list[int] = [
         int(x) for x in args.early_exit_layers.split(',')
@@ -117,41 +122,44 @@ if __name__ == "__main__":
     if len(early_exit_layers) == 1:
         print("MODE: naive decoding from the last layer", flush=True)
         mode: str = "baseline"
-        mature_layer = None
-        premature_layer = None
-        candidate_premature_layers = None
+        mature_layer: int | None = None
+        premature_layer: int | None = None
+        candidate_premature_layers: list[int] | None = None
     elif len(early_exit_layers) == 2:
         print(
             f"MODE: DoLa-static decoding with mature layer: {early_exit_layers[1]} and premature layer: {early_exit_layers[0]}"
         )
         mode: str = "dola-static"
-        mature_layer: int = early_exit_layers[1]
-        premature_layer: int = early_exit_layers[0]
-        candidate_premature_layers = None
+        mature_layer: int | None = early_exit_layers[1]
+        premature_layer: int | None = early_exit_layers[0]
+        candidate_premature_layers: list[int] | None = None
     else:
         # noinspection DuplicatedCode
         print(
             f"MODE: DoLa decoding with mature layer: {early_exit_layers[-1]} and premature layers: {early_exit_layers[:-1]}"
         )
-        mode = "dola"
-        mature_layer: int = early_exit_layers[-1]
-        premature_layer = None
-        candidate_premature_layers: list[int] = early_exit_layers[:-1]
-        premature_layer_dist = {it: 0 for it in candidate_premature_layers}
-    answers = []
-    result_dict = {
+        mode: str = "dola"
+        mature_layer: int | None = early_exit_layers[-1]
+        premature_layer: int | None = None
+        candidate_premature_layers: list[int] | None = early_exit_layers[:-1]
+        premature_layer_dist: dict = {
+            it: 0
+            for it in candidate_premature_layers
+        }
+    answers: list[bool] = []
+    result_dict: dict = {
         'is_correct': [],
         'model_answer': [],
         'model_completion': [],
         'full_input_text': []
     }
     for sample in tqdm(list_data_dict):
-        context = sample['prefix']
-        answer_true = ' ' + sample['completion']
-        answers_false = []
+        context: str = sample['prefix']
+        answer_true: str = ' ' + sample['completion']
+        answers_false: list[str] = []
         for i in range(3):
             answers_false.append(' ' + sample[f'contradiction_{i}'])
-        generate_kwargs = dict(
+        generate_kwargs: dict = dict(
             mode=mode,
             mature_layer=mature_layer,
             premature_layer=premature_layer,
@@ -163,7 +171,7 @@ if __name__ == "__main__":
         if mode == "dola":
             for k, v in c_dist.items():
                 premature_layer_dist[k] += v
-        answer_false_log_probs = []
+        answer_false_log_probs: list[float] = []
         for answer_false in answers_false:
             answer_false_log_prob, c_dist = llm.lm_score(
                 context, answer_false, **generate_kwargs)
@@ -176,7 +184,7 @@ if __name__ == "__main__":
             for answer_false_log_prob in answer_false_log_probs:
                 print(f'{answer_false_log_prob}', end=' ')
             print()
-        is_cor = True
+        is_cor: bool = True
         for answer_false_log_prob in answer_false_log_probs:
             if answer_true_log_prob < answer_false_log_prob:
                 is_cor = False

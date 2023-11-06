@@ -5,6 +5,7 @@ import urllib.request
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
 INVALID_ANS = "[invalid]"
