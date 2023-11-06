@@ -138,44 +138,6 @@ def build_prompt(input_text, n_shot, cot_flag, shuffle):
     return input_text_prompt
 
 
-def clean_answer(model_pred):
-    model_pred = model_pred.lower()
-    preds = model_pred.split(ANSWER_TRIGGER.lower())
-    answer_flag = True if len(preds) > 1 else False
-    if answer_flag:
-        # Pick first answer with flag
-        pred = preds[1]
-    else:
-        # Pick last number without flag
-        pred = preds[-1]
-
-    pred = pred.replace(",", "")
-    pred = [s for s in re.findall(r'-?\d+\.?\d*', pred)]
-
-    if len(pred) == 0:
-        return utils.INVALID_ANS
-
-    if answer_flag:
-        # choose the first element in list
-        pred = pred[0]
-    else:
-        # choose the last element in list
-        pred = pred[-1]
-
-    # (For arithmetic tasks) if a word ends with period, it will be omitted ...
-    if pred[-1] == ".":
-        pred = pred[:-1]
-
-    return pred
-
-
-def set_seed(seed):
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-name",
@@ -211,7 +173,7 @@ if __name__ == "__main__":
     device = args.device
 
     # Get test file
-    if not '.jsonl' in args.data_path:
+    if '.jsonl' not in args.data_path:
         fp = os.path.join(args.data_path, 'gsm8k_test.jsonl')
     elif os.path.exists(args.data_path):
         fp = args.data_path
@@ -264,7 +226,10 @@ if __name__ == "__main__":
         mature_layer = early_exit_layers[-1]
         premature_layer = None
         candidate_premature_layers = early_exit_layers[:-1]
-        premature_layer_dist = {l: 0 for l in candidate_premature_layers}
+        premature_layer_dist = {
+            layer: 0
+            for layer in candidate_premature_layers
+        }
         if args.repetition_penalty is None:
             args.repetition_penalty = 1.2
     answers = []

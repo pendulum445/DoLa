@@ -26,7 +26,7 @@ ANSWER_TRIGGER = "The answer is"
 def load_csv(file_path):
     # Format of each line:
     # {'instruction': ..., 'input': ..., 'output':...}
-    '''
+    """
     Data format:
 
     ,full_prefix,doc_id,completion,contradiction_0,contradiction_1,contradiction_2,longest_completions,turncated_prefixes
@@ -36,8 +36,8 @@ def load_csv(file_path):
     While the global pandemic last year caused a major shakeup in Hollywood, Netflix should not rest on its laurels. With a variety of rivals on the rise, it’s unlikely that it can continue to rely on its current performance. Despite the competition, the company has made a number of impactful moves across the board, including clamping down on password sharing. And in the coming years, Netflix should continue to grow and compete with new competitors.
     With more competitors entering the streaming space, Netflix is likely to face a more difficult time keeping its current market share. Disney has been investing heavily in the service and Amazon is expected to do the same. Both companies expect to add 35-40 million subscribers per year through 2024. Despite the competition, Netflix still remains the top streaming service. Its lack of original content has hurt its numbers in the last few quarters. Its only big original hit in the US was Cobra Kai, which only got four seasons. "
 
-    '''
-    list_data_dict = []
+    """
+    list_data_dict: list[dict] = []
     df = pd.read_csv(file_path)
     if 'news' in file_path:
         prefix_type = 'full_prefix'
@@ -53,39 +53,6 @@ def load_csv(file_path):
         )
         list_data_dict.append(item)
     return list_data_dict
-
-
-def clean_answer(model_pred):
-    model_pred = model_pred.lower()
-    preds = model_pred.split(ANSWER_TRIGGER.lower())
-    answer_flag = True if len(preds) > 1 else False
-    if answer_flag:
-        # Pick first answer with flag
-        pred = preds[1]
-    else:
-        # Pick last number without flag
-        pred = preds[-1]
-    pred = pred.replace(",", "")
-    pred = [s for s in re.findall(r'-?\d+\.?\d*', pred)]
-    if len(pred) == 0:
-        return utils.INVALID_ANS
-    if answer_flag:
-        # choose the first element in list
-        pred = pred[0]
-    else:
-        # choose the last element in list
-        pred = pred[-1]
-    # (For arithmetic tasks) if a word ends with period, it will be omitted ...
-    if pred[-1] == ".":
-        pred = pred[:-1]
-    return pred
-
-
-def set_seed(seed):
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed(seed)
 
 
 if __name__ == "__main__":
@@ -107,6 +74,7 @@ if __name__ == "__main__":
     parser.add_argument("--early-exit-layers",
                         type=str,
                         default="0,2,4,6,8,10,12,14,16,24")
+    # noinspection DuplicatedCode
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
     parser.add_argument("--shard-id", type=int, default=None)
@@ -117,6 +85,7 @@ if __name__ == "__main__":
     parser.add_argument("--repetition_penalty", type=float, default=1.0)
     parser.add_argument("--relative_top", type=float, default=0.1)
     parser.add_argument("--relative_top_value", type=float, default=-1000.0)
+    # noinspection DuplicatedCode
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
     parser.add_argument("--debug", action="store_true")
@@ -131,6 +100,7 @@ if __name__ == "__main__":
     if not os.path.exists(fp):
         raise ValueError(f"Test file {fp} does not exist.")
     list_data_dict = load_csv(fp)
+    # noinspection DuplicatedCode
     if args.parallel:
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
@@ -141,6 +111,7 @@ if __name__ == "__main__":
     llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
     llm.set_stop_words(["Q:", "\end{code}"])
     early_exit_layers = [int(x) for x in args.early_exit_layers.split(',')]
+    # noinspection DuplicatedCode
     if len(early_exit_layers) == 1:
         print("MODE: naive decoding from the last layer", flush=True)
         mode = "baseline"
@@ -156,6 +127,7 @@ if __name__ == "__main__":
         premature_layer = early_exit_layers[0]
         candidate_premature_layers = None
     else:
+        # noinspection DuplicatedCode
         print(
             f"MODE: DoLa decoding with mature layer: {early_exit_layers[-1]} and premature layers: {early_exit_layers[:-1]}"
         )
@@ -214,6 +186,7 @@ if __name__ == "__main__":
     print(f'Num of total question: {len(answers)}, '
           f'correct num: {sum(answers)}, '
           f'correct rate: {float(sum(answers)) / len(answers)}.')
+    # noinspection DuplicatedCode
     if mode == "dola" and args.debug:
         total_tokens = sum(premature_layer_dist.values())
         if total_tokens > 0:
