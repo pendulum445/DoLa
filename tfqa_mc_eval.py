@@ -7,8 +7,6 @@ import gzip
 import json
 import os
 import re
-import ssl
-import urllib.request
 
 import numpy as np
 import pandas as pd
@@ -16,6 +14,7 @@ import torch
 import transformers
 from tqdm import tqdm
 
+import utils
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
@@ -76,46 +75,6 @@ def load_csv(file_path, is_gzip=False):
             list_data.append(data)
 
     return list_data
-
-
-def download_url(url: str, folder='folder'):
-    """
-    Downloads the content of an url to a folder. Modified from \
-    https://github.com/pyg-team/pytorch_geometric/tree/master/torch_geometric
-
-    Args:
-        url (string): The url of target file.
-        folder (string): The target folder.
-
-    Returns:
-        string: File path of downloaded files.
-    """
-
-    file = url.rpartition('/')[2]
-    file = file if file[0] == '?' else file.split('?')[0]
-    path = os.path.join(folder, file)
-    if os.path.exists(path):
-        print(f'File {file} exists, use existing file.')
-        return path
-
-    print(f'Downloading {url}')
-    os.makedirs(folder, exist_ok=True)
-    ctx = ssl._create_unverified_context()
-    data = urllib.request.urlopen(url, context=ctx)
-    with open(path, 'wb') as f:
-        f.write(data.read())
-
-    return path
-
-
-def extract_answer_from_output(completion):
-    match = ANS_RE.search(completion)
-    if match:
-        match_str = match.group(1).strip()
-        match_str = match_str.replace(",", "")
-        return match_str
-    else:
-        return INVALID_ANS
 
 
 def is_correct(model_answer, answer):
@@ -264,7 +223,7 @@ if __name__ == "__main__":
     '''
     fp = os.path.join(args.data_path, 'TruthfulQA.csv')
     if not os.path.exists(fp):
-        download_url(
+        utils.download_url(
             'https://raw.githubusercontent.com/sylinrl/TruthfulQA/main/TruthfulQA.csv',
             args.data_path)
 
@@ -277,7 +236,7 @@ if __name__ == "__main__":
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
-                                        chunk_size]
+                                                   chunk_size]
 
     llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
     stop_word_list = ["Q:"]
@@ -362,6 +321,7 @@ if __name__ == "__main__":
             if np.isnan(scores['MC1']) or np.isnan(scores['MC2']) or np.isnan(
                     scores['MC3']):
                 import ipdb
+
                 ipdb.set_trace()
 
             result_dict['model_scores'].append(scores)
@@ -370,14 +330,14 @@ if __name__ == "__main__":
             result_dict['total_mc1'] += scores['MC1']
             result_dict['total_mc2'] += scores['MC2']
             result_dict['total_mc3'] += scores['MC3']
-            if DEBUG:
-                print(f'Full input_text:\n{input_text}\n\n')
+            # if DEBUG:
+            #     print(f'Full input_text:\n{input_text}\n\n')
             print(f'Question: {sample}\n\n'
                   f'Model Scores: {scores}\n\n')
             print(
-                f'Avergaed MC1: {result_dict["total_mc1"]/len(result_dict["question"])}'
-                f' MC2: {result_dict["total_mc2"]/len(result_dict["question"])}'
-                f' MC3: {result_dict["total_mc3"]/len(result_dict["question"])}\n\n'
+                f'Avergaed MC1: {result_dict["total_mc1"] / len(result_dict["question"])}'
+                f' MC2: {result_dict["total_mc2"] / len(result_dict["question"])}'
+                f' MC3: {result_dict["total_mc3"] / len(result_dict["question"])}\n\n'
             )
 
     if mode == "dola" and args.debug:
@@ -402,6 +362,6 @@ if __name__ == "__main__":
     model_tag = model_name.split(
         '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
     output_file = args.output_path if args.shard_id is None else (
-        args.output_path + "_" + str(args.shard_id) + ".json")
+            args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f)

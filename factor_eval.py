@@ -4,8 +4,6 @@ import json
 import os
 import random
 import re
-import ssl
-import urllib.request
 from argparse import ArgumentParser
 
 import numpy as np
@@ -14,12 +12,10 @@ import torch
 import transformers
 from tqdm import tqdm
 
+import utils
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
-
-ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
-INVALID_ANS = "[invalid]"
 
 N_SHOT = 8
 COT_FLAG = True
@@ -59,49 +55,6 @@ def load_csv(file_path):
     return list_data_dict
 
 
-def download_url(url: str, folder='folder'):
-    """
-    Downloads the content of an url to a folder. Modified from \
-    https://github.com/pyg-team/pytorch_geometric/tree/master/torch_geometric
-
-    Args:
-        url (string): The url of target file.
-        folder (string): The target folder.
-
-    Returns:
-        string: File path of downloaded files.
-    """
-    file = url.rpartition('/')[2]
-    file = file if file[0] == '?' else file.split('?')[0]
-    path = os.path.join(folder, file)
-    if os.path.exists(path):
-        print(f'File {file} exists, use existing file.')
-        return path
-    print(f'Downloading {url}')
-    os.makedirs(folder, exist_ok=True)
-    ctx = ssl._create_unverified_context()
-    data = urllib.request.urlopen(url, context=ctx)
-    with open(path, 'wb') as f:
-        f.write(data.read())
-    return path
-
-
-def extract_answer_from_output(completion):
-    match = ANS_RE.search(completion)
-    if match:
-        match_str = match.group(1).strip()
-        match_str = match_str.replace(",", "")
-        return match_str
-    else:
-        return INVALID_ANS
-
-
-def is_correct(model_answer, answer):
-    gt_answer = extract_answer_from_output(answer)
-    assert gt_answer != INVALID_ANS
-    return model_answer == gt_answer
-
-
 def clean_answer(model_pred):
     model_pred = model_pred.lower()
     preds = model_pred.split(ANSWER_TRIGGER.lower())
@@ -115,7 +68,7 @@ def clean_answer(model_pred):
     pred = pred.replace(",", "")
     pred = [s for s in re.findall(r'-?\d+\.?\d*', pred)]
     if len(pred) == 0:
-        return INVALID_ANS
+        return utils.INVALID_ANS
     if answer_flag:
         # choose the first element in list
         pred = pred[0]
@@ -139,19 +92,19 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
-                        default="/data/lyj/hf_models/bloomz-7b1")
+                        default="/data/lyj/hf_models/bloom-560m")
     parser.add_argument("--num-gpus", type=str, default="1")
     parser.add_argument("--max_gpu_memory", type=int, default=27)
     parser.add_argument("--device",
                         type=str,
                         choices=["cuda", "cpu"],
-                        default="cuda")
+                        default="cpu")
     parser.add_argument("--data-path", type=str, default="./wiki_factor.csv")
     parser.add_argument("--output-path",
                         type=str,
                         default="./wiki_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
-    parser.add_argument("--early-exit-layers", type=str, default="-1")
+    parser.add_argument("--early-exit-layers", type=str, default="0,2,4,6,8,10,12,14,16,24")
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
     parser.add_argument("--shard-id", type=int, default=None)
@@ -180,7 +133,7 @@ if __name__ == "__main__":
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
-                                        chunk_size]
+                                                   chunk_size]
     if args.debug:
         list_data_dict = list_data_dict[:10]
     llm = DoLa(model_name, device, num_gpus, args.max_gpu_memory)
@@ -270,7 +223,7 @@ if __name__ == "__main__":
     model_tag = model_name.split(
         '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
     output_file = args.output_path if args.shard_id is None else (
-        args.output_path + "_" + str(args.shard_id) + ".json")
+            args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f)
     print(f"{float(sum(answers)) / len(answers)}")

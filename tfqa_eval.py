@@ -7,19 +7,15 @@ import gzip
 import json
 import os
 import re
-import ssl
-import urllib.request
 
 import pandas as pd
 import transformers
 from tqdm import tqdm
 
+import utils
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
-
-ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
-INVALID_ANS = "[invalid]"
 
 N_SHOT = 7
 COT_FLAG = True
@@ -39,49 +35,9 @@ def load_csv(file_path, is_gzip=False):
     return list_data
 
 
-def download_url(url: str, folder='folder'):
-    """
-    Downloads the content of an url to a folder. Modified from \
-    https://github.com/pyg-team/pytorch_geometric/tree/master/torch_geometric
-
-    Args:
-        url (string): The url of target file.
-        folder (string): The target folder.
-
-    Returns:
-        string: File path of downloaded files.
-    """
-
-    file = url.rpartition('/')[2]
-    file = file if file[0] == '?' else file.split('?')[0]
-    path = os.path.join(folder, file)
-    if os.path.exists(path):
-        print(f'File {file} exists, use existing file.')
-        return path
-
-    print(f'Downloading {url}')
-    os.makedirs(folder, exist_ok=True)
-    ctx = ssl._create_unverified_context()
-    data = urllib.request.urlopen(url, context=ctx)
-    with open(path, 'wb') as f:
-        f.write(data.read())
-
-    return path
-
-
-def extract_answer_from_output(completion):
-    match = ANS_RE.search(completion)
-    if match:
-        match_str = match.group(1).strip()
-        match_str = match_str.replace(",", "")
-        return match_str
-    else:
-        return INVALID_ANS
-
-
 def is_correct(model_answer, answer):
     gt_answer = answer
-    assert gt_answer != INVALID_ANS
+    assert gt_answer != utils.INVALID_ANS
     return model_answer == gt_answer
 
 
@@ -165,7 +121,7 @@ if __name__ == "__main__":
     '''
     fp = os.path.join(args.data_path, 'TruthfulQA.csv')
     if not os.path.exists(fp):
-        download_url(
+        utils.download_url(
             'https://raw.githubusercontent.com/sylinrl/TruthfulQA/main/TruthfulQA.csv',
             args.data_path)
 

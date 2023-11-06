@@ -1,12 +1,10 @@
 # Ref: https://github.com/kojima-takeshi188/zero_shot_cot
 
 import argparse
+import gzip
 import json
 import os
 import random
-import re
-import ssl
-import urllib.request
 import zipfile
 
 import numpy as np
@@ -14,12 +12,10 @@ import torch
 import transformers
 from tqdm import tqdm
 
+import utils
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
-
-ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
-INVALID_ANS = "[invalid]"
 
 N_SHOT = 6
 COT_FLAG = True
@@ -50,49 +46,9 @@ def load_jsonl(file_path, is_gzip=False):
     return list_data_dict
 
 
-def download_url(url: str, folder='folder'):
-    """
-    Downloads the content of an url to a folder. Modified from \
-    https://github.com/pyg-team/pytorch_geometric/tree/master/torch_geometric
-
-    Args:
-        url (string): The url of target file.
-        folder (string): The target folder.
-
-    Returns:
-        string: File path of downloaded files.
-    """
-
-    file = url.rpartition('/')[2]
-    file = file if file[0] == '?' else file.split('?')[0]
-    path = os.path.join(folder, file)
-    if os.path.exists(path):
-        print(f'File {file} exists, use existing file.')
-        return path
-
-    print(f'Downloading {url}')
-    os.makedirs(folder, exist_ok=True)
-    ctx = ssl._create_unverified_context()
-    data = urllib.request.urlopen(url, context=ctx)
-    with open(path, 'wb') as f:
-        f.write(data.read())
-
-    return path
-
-
-def extract_answer_from_output(completion):
-    match = ANS_RE.search(completion)
-    if match:
-        match_str = match.group(1).strip()
-        match_str = match_str.replace(",", "")
-        return match_str
-    else:
-        return INVALID_ANS
-
-
 def is_correct(model_answer, answer):
     gt_answer = answer
-    assert gt_answer != INVALID_ANS
+    assert gt_answer != utils.INVALID_ANS
     return model_answer == gt_answer
 
 
@@ -253,7 +209,7 @@ if __name__ == "__main__":
     '''
     fp = os.path.join(args.data_path, 'strategyqa_train.json')
     if not os.path.exists(fp):
-        download_url(
+        utils.download_url(
             'https://storage.googleapis.com/ai2i/strategyqa/data/strategyqa_dataset.zip',
             args.data_path)
 
@@ -269,7 +225,7 @@ if __name__ == "__main__":
         chunk_size = len(list_data_dict) // args.total_shard
         list_data_dict = list_data_dict[args.shard_id *
                                         chunk_size:(args.shard_id + 1) *
-                                        chunk_size]
+                                                   chunk_size]
 
     if args.debug:
         list_data_dict = list_data_dict[:10]
@@ -362,7 +318,7 @@ if __name__ == "__main__":
 
         print(f'Num of total question: {len(answers)}, '
               f'correct num: {sum(answers)}, '
-              f'correct rate: {float(sum(answers))/len(answers)}.')
+              f'correct rate: {float(sum(answers)) / len(answers)}.')
 
     if mode == "dola" and args.debug:
         total_tokens = sum(premature_layer_dist.values())
@@ -375,7 +331,7 @@ if __name__ == "__main__":
     model_tag = model_name.split(
         '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
     output_file = args.output_path if args.shard_id is None else (
-        args.output_path + "_" + str(args.shard_id) + ".json")
+            args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f)
-    print(f"{float(sum(answers))/len(answers)}")
+    print(f"{float(sum(answers)) / len(answers)}")

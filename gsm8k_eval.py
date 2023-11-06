@@ -2,24 +2,21 @@
 # Ref: https://github.com/alibaba/FederatedScope/blob/dev/llm/federatedscope/llm/eval/eval_for_gsm8k/eval.py
 
 import argparse
+import gzip
 import json
 import os
 import random
 import re
-import ssl
-import urllib.request
 
 import numpy as np
 import torch
 import transformers
 from tqdm import tqdm
 
+import utils
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
-
-ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
-INVALID_ANS = "[invalid]"
 
 N_SHOT = 8
 COT_FLAG = True
@@ -48,52 +45,6 @@ def load_jsonl(file_path,
             item = new_item
             list_data_dict.append(item)
     return list_data_dict
-
-
-def download_url(url: str, folder='folder'):
-    """
-    Downloads the content of an url to a folder. Modified from \
-    https://github.com/pyg-team/pytorch_geometric/tree/master/torch_geometric
-
-    Args:
-        url (string): The url of target file.
-        folder (string): The target folder.
-
-    Returns:
-        string: File path of downloaded files.
-    """
-
-    file = url.rpartition('/')[2]
-    file = file if file[0] == '?' else file.split('?')[0]
-    path = os.path.join(folder, file)
-    if os.path.exists(path):
-        print(f'File {file} exists, use existing file.')
-        return path
-
-    print(f'Downloading {url}')
-    os.makedirs(folder, exist_ok=True)
-    ctx = ssl._create_unverified_context()
-    data = urllib.request.urlopen(url, context=ctx)
-    with open(path, 'wb') as f:
-        f.write(data.read())
-
-    return path
-
-
-def extract_answer_from_output(completion):
-    match = ANS_RE.search(completion)
-    if match:
-        match_str = match.group(1).strip()
-        match_str = match_str.replace(",", "")
-        return match_str
-    else:
-        return INVALID_ANS
-
-
-def is_correct(model_answer, answer):
-    gt_answer = extract_answer_from_output(answer)
-    assert gt_answer != INVALID_ANS
-    return model_answer == gt_answer
 
 
 def create_demo_text(n_shot=8, cot_flag=True, shuffle=False):
@@ -202,7 +153,7 @@ def clean_answer(model_pred):
     pred = [s for s in re.findall(r'-?\d+\.?\d*', pred)]
 
     if len(pred) == 0:
-        return INVALID_ANS
+        return utils.INVALID_ANS
 
     if answer_flag:
         # choose the first element in list
@@ -267,7 +218,7 @@ if __name__ == "__main__":
     else:
         raise ValueError(f"Invalid data path: {args.data_path}")
     if not os.path.exists(fp):
-        download_url(
+        utils.download_url(
             'https://raw.githubusercontent.com/openai/'
             'grade-school-math/2909d34ef28520753df82a2234c357259d254aa8/'
             'grade_school_math/data/test.jsonl', args.data_path)
@@ -343,7 +294,7 @@ if __name__ == "__main__":
             for k, v in c_dist.items():
                 premature_layer_dist[k] += v
         model_answer = clean_answer(model_completion)
-        is_cor = is_correct(model_answer, sample['output'])
+        is_cor = utils.is_correct(model_answer, sample['output'])
         answers.append(is_cor)
         result_dict['is_correct'].append(is_cor)
         result_dict['model_answer'].append(model_answer)
@@ -352,7 +303,7 @@ if __name__ == "__main__":
         if DEBUG:
             print(f'Full input_text:\n{input_text}\n\n')
         print(f'Question: {sample["instruction"]}\n\n'
-              f'Answers: {extract_answer_from_output(sample["output"])}\n\n'
+              f'Answers: {utils.extract_answer_from_output(sample["output"])}\n\n'
               f'Model Answers: {model_answer}\n\n'
               f'Model Completion: {model_completion}\n\n'
               f'Is correct: {is_cor}\n\n')

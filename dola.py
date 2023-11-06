@@ -8,15 +8,22 @@ from transformers.generation.stopping_criteria import (LLamaQaStoppingCriteria,
 
 class DoLa:
 
-    def __init__(self, model_name, device, num_gpus, max_gpu_memory=27):
-        self.model_name = model_name
-        self.device = device
-        self.num_gpus = num_gpus
+    def __init__(self,
+                 model_name: str,
+                 device: str,
+                 num_gpus: int,
+                 max_gpu_memory: int = 27):
+        self.stop_words = None
         self.stopping_criteria = None
-        self.max_gpu_memory = max_gpu_memory
+        self.model_name: str = model_name
+        self.device: str = device
+        self.num_gpus: int = num_gpus
+        self.max_gpu_memory: int = max_gpu_memory
         self.model, self.tokenizer = self.load_model(model_name)
 
-    def load_model(self, model_name):
+    def load_model(
+            self,
+            model_name: str) -> tuple[AutoModelForCausalLM, AutoTokenizer]:
         if self.device == "cuda":
             kwargs = {
                 "torch_dtype": torch.float16,
@@ -35,25 +42,25 @@ class DoLa:
                         },
                     })
         elif self.device == "cpu":
-            kwargs = {}
+            kwargs: dict = {}
         else:
             raise ValueError(f"Invalid device: {self.device}")
-        tokenizer = AutoTokenizer.from_pretrained(
+        tokenizer: AutoTokenizer = AutoTokenizer.from_pretrained(
             model_name if 'vicuna' not in
-            model_name else 'huggyllama/llama-7b')
-        model = AutoModelForCausalLM.from_pretrained(model_name,
-                                                     low_cpu_mem_usage=True,
-                                                     **kwargs)
+                          model_name else 'huggyllama/llama-7b')
+        model: AutoModelForCausalLM = AutoModelForCausalLM.from_pretrained(
+            model_name, low_cpu_mem_usage=True, **kwargs)
         if self.device == "cuda" and self.num_gpus == 1:
             model.cuda()
         return model, tokenizer
 
-    def set_stop_words(self, stop_words):
-        self.stop_words = stop_words
+    def set_stop_words(self, stop_words: list[str]) -> None:
+        self.stop_words: list[str] = stop_words
         self.stopping_criteria = StoppingCriteriaList()
-        list_stop_word_ids = []
+        list_stop_word_ids: list = []
         for stop_word in self.stop_words:
-            stop_word_ids = self.tokenizer.encode('\n' + stop_word)[3:]
+            stop_word_ids: list[int] = self.tokenizer.encode('\n' +
+                                                             stop_word)[3:]
             list_stop_word_ids.append(stop_word_ids)
             print("Added stop word: ",
                   stop_word,
@@ -65,24 +72,24 @@ class DoLa:
 
     @torch.no_grad()
     def generate(self,
-                 input_text,
-                 max_new_tokens=256,
-                 top_p=0.95,
-                 top_k=0,
-                 temperature=0.8,
+                 input_text: str,
+                 max_new_tokens: int = 256,
+                 top_p: float = 0.95,
+                 top_k: int = 0,
+                 temperature: float = 0.8,
                  mature_layer=None,
                  premature_layer=None,
                  candidate_premature_layers=[],
-                 mode='baseline',
-                 verbose=True,
-                 remove_stop_words=False,
-                 relative_top=0.1,
+                 mode: str = 'baseline',
+                 verbose: bool = True,
+                 remove_stop_words: bool = False,
+                 relative_top: float = 0.1,
                  **kwargs):
-        input_ids = self.tokenizer(
+        input_ids: torch.Tensor = self.tokenizer(
             input_text, return_tensors="pt").input_ids.to(self.device)
-        max_len = input_ids.shape[-1] + max_new_tokens
+        max_len: int = input_ids.shape[-1] + max_new_tokens
         if mode == 'baseline':
-            outputs = self.model.generate(
+            outputs: torch.Tensor = self.model.generate(
                 input_ids,
                 max_length=max_len,
                 num_return_sequences=1,
@@ -188,7 +195,7 @@ class DoLa:
             outputs = outputs[prefix_ids.shape[-1] - 1:-1, :]
             # get log probs for each token in the answer
             log_probs = outputs[range(outputs.shape[0]),
-                                continue_ids].sum().item()
+            continue_ids].sum().item()
         elif mode == 'dola-static':
             dict_outputs, outputs = self.model(
                 input_ids=input_ids,
@@ -199,10 +206,10 @@ class DoLa:
             )
             assert premature_layer is not None
             base_logits = dict_outputs[premature_layer][0,
-                                                        prefix_ids.shape[-1] -
-                                                        1:-1, :]
+                          prefix_ids.shape[-1] -
+                          1:-1, :]
             final_logits = dict_outputs[mature_layer][0, prefix_ids.shape[-1] -
-                                                      1:-1, :]
+                                                         1:-1, :]
             final_logits = final_logits.log_softmax(dim=-1)
             base_logits = base_logits.log_softmax(dim=-1)
             diff_logits = final_logits - base_logits
@@ -214,7 +221,7 @@ class DoLa:
                 diff_logits = torch.where(relative_top_mask,
                                           relative_top_value, diff_logits)
             log_probs = diff_logits[range(diff_logits.shape[0]),
-                                    continue_ids].sum().item()
+            continue_ids].sum().item()
         elif mode == 'dola':
             premature_layer_dist = {it: 0 for it in candidate_premature_layers}
             premature_layers = []
@@ -233,7 +240,7 @@ class DoLa:
                     dict_outputs[i][:, seq_i, :]
                     for i in candidate_premature_layers
                 ],
-                                                       dim=0)
+                    dim=0)
                 # 2. Calculate the softmax values for mature_layer and all premature_layers
                 softmax_mature_layer = F.softmax(
                     dict_outputs[mature_layer][:, seq_i, :],
@@ -243,7 +250,7 @@ class DoLa:
                 )  # shape: (num_premature_layers, batch_size, num_features)
                 # 3. Calculate M, the average distribution
                 M = 0.5 * (
-                    softmax_mature_layer[None, :, :] + softmax_premature_layers
+                        softmax_mature_layer[None, :, :] + softmax_premature_layers
                 )  # shape: (num_premature_layers, batch_size, num_features)
                 # 4. Calculate log-softmax for the KL divergence
                 log_softmax_mature_layer = F.log_softmax(
@@ -256,10 +263,10 @@ class DoLa:
                 kl1 = F.kl_div(
                     log_softmax_mature_layer[None, :, :], M,
                     reduction='none').mean(
-                        -1)  # shape: (num_premature_layers, batch_size)
+                    -1)  # shape: (num_premature_layers, batch_size)
                 kl2 = F.kl_div(
                     log_softmax_premature_layers, M, reduction='none').mean(
-                        -1)  # shape: (num_premature_layers, batch_size)
+                    -1)  # shape: (num_premature_layers, batch_size)
                 js_divs = 0.5 * (kl1 + kl2
                                  )  # shape: (num_premature_layers, batch_size)
                 # 6. Reduce the batchmean
@@ -272,9 +279,9 @@ class DoLa:
                 dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
             for i, l in enumerate(premature_layers):
                 base_logits[i] = dict_outputs[l][0,
-                                                 prefix_ids.shape[-1] - 1 + i]
+                prefix_ids.shape[-1] - 1 + i]
             final_logits = dict_outputs[mature_layer][0, prefix_ids.shape[-1] -
-                                                      1:-1]
+                                                         1:-1]
             final_logits = final_logits.log_softmax(dim=-1)
             base_logits = base_logits.log_softmax(dim=-1)
             diff_logits = final_logits - base_logits
@@ -286,5 +293,5 @@ class DoLa:
                 diff_logits = torch.where(relative_top_mask,
                                           relative_top_value, diff_logits)
             log_probs = diff_logits[range(diff_logits.shape[0]),
-                                    continue_ids].sum().item()
+            continue_ids].sum().item()
         return log_probs, (premature_layer_dist if mode == 'dola' else None)
