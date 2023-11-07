@@ -82,6 +82,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--relative_top", type=float, default=0.1)
     parser.add_argument("--relative_top_value", type=float, default=-1000.0)
     # noinspection DuplicatedCode
+    parser.add_argument("--adj_layer_jsd", action="store_true")
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
     # parser.add_argument("--debug", action="store_true")
@@ -89,6 +90,11 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)
     return parser.parse_args()
+
+
+def get_substring(s: str) -> str:
+    last_slash_index: int = s.rindex('/')
+    return s[last_slash_index + 1:]
 
 
 if __name__ == "__main__":
@@ -161,7 +167,8 @@ if __name__ == "__main__":
             premature_layer=premature_layer,
             candidate_premature_layers=candidate_premature_layers,
             relative_top=args.relative_top,
-            relative_top_value=args.relative_top_value)
+            relative_top_value=args.relative_top_value,
+            use_adj_layer_jsd=args.adj_layer_jsd)
         answer_true_log_prob, c_dist = llm.lm_score(context, answer_true,
                                                     **generate_kwargs)
         if mode == "dola":
@@ -189,7 +196,11 @@ if __name__ == "__main__":
         result_dict['is_correct'].append(is_cor)
         result_dict['model_completion'].append([answer_true_log_prob] +
                                                answer_false_log_probs)
-    print(f'Num of total question: {len(answers)}, '
+    print(f'model name: {model_name}')
+    print(f'dataset: {get_substring(args.data_path)}')
+    print(f'mode: {mode}')
+    print(f'early exit layers: {early_exit_layers if mode == "dola" else "-"}')
+    print(f'result: Num of total question: {len(answers)}, '
           f'correct num: {sum(answers)}, '
           f'correct rate: {float(sum(answers)) / len(answers)}.')
     # noinspection DuplicatedCode
@@ -207,4 +218,3 @@ if __name__ == "__main__":
         args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f, indent=4)
-    print(f"{float(sum(answers)) / len(answers)}")
