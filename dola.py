@@ -1,13 +1,10 @@
-from typing import Any, Tuple, Union
-
 import torch
 import torch.nn.functional as F
-from torch import Tensor
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.generation.stopping_criteria import (LLamaQaStoppingCriteria,
                                                        StoppingCriteriaList)
 
-from utils import get_relative_top_filter, js_div
+from utils import get_relative_top_filter
 
 
 class DoLa:

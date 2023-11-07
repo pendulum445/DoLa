@@ -2,17 +2,13 @@
 import argparse
 import json
 import os
-import random
-import re
 from argparse import ArgumentParser
 
-import numpy as np
 import pandas as pd
 import torch
 import transformers
 from tqdm import tqdm
 
-import utils
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
