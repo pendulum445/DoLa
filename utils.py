@@ -66,14 +66,3 @@ def get_relative_top_filter(scores: torch.Tensor,
     probs_thresh = torch.min(min_thresh, probs_thresh)
     probs_thresh = probs_thresh.unsqueeze(-1)
     return torch.Tensor(scores_normalized < probs_thresh)
-
-
-def js_div(p: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
-    softmax_p: torch.Tensor = p.softmax(dim=-1)
-    softmax_q: torch.Tensor = q.softmax(dim=-1)
-    M: torch.Tensor = 0.5 * (softmax_p + softmax_q)
-    log_softmax_p: torch.Tensor = torch.log(softmax_p)
-    log_softmax_q: torch.Tensor = torch.log(softmax_q)
-    kl1: torch.Tensor = F.kl_div(log_softmax_p, M, reduction='none').mean(-1)
-    kl2: torch.Tensor = F.kl_div(log_softmax_q, M, reduction='none').mean(-1)
-    return 0.5 * (kl1 + kl2)

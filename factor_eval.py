@@ -69,7 +69,7 @@ def get_parser_args() -> argparse.Namespace:
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
     parser.add_argument("--early-exit-layers",
                         type=str,
-                        default="0,2,4,6,8,10,12,14,32")
+                        default="0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32")
     # noinspection DuplicatedCode
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
@@ -82,10 +82,10 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--relative_top", type=float, default=0.1)
     parser.add_argument("--relative_top_value", type=float, default=-1000.0)
     # noinspection DuplicatedCode
-    parser.add_argument("--adj_layer_jsd", action="store_true")
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
     # parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--adj_layer_jsd", type=bool, default=True)
     parser.add_argument("--debug", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)

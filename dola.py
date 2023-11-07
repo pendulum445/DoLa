@@ -1,10 +1,11 @@
+from math import log
 import torch
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.generation.stopping_criteria import (LLamaQaStoppingCriteria,
                                                        StoppingCriteriaList)
 
-from utils import get_relative_top_filter, js_div
+from utils import get_relative_top_filter
 
 
 class DoLa:
@@ -144,7 +145,8 @@ class DoLa:
             candidate_premature_layers=None,
             relative_top: float = 0.1,
             relative_top_value: float = -1000.0,
-            post_softmax: bool = True) -> tuple[float, dict]:
+            post_softmax: bool = True,
+            draw_adj_layer_jsd: bool = False) -> tuple[float, dict]:
         early_exit_layers: list[int] = candidate_premature_layers + [
             mature_layer
         ]
@@ -160,12 +162,46 @@ class DoLa:
             for it in candidate_premature_layers
         }
         premature_layers: list[int] = []
+        """
+        softmax_mature_layer: torch.Tensor = F.softmax(
+                dict_outputs[mature_layer][:, seq_i, :], dim=-1)
+        softmax_premature_layers: torch.Tensor = F.softmax(
+            stacked_premature_layers, dim=-1)
+        M: torch.Tensor = 0.5 * (softmax_mature_layer[None, :, :] +
+                                    softmax_premature_layers)
+        log_softmax_mature_layer: torch.Tensor = F.log_softmax(
+            dict_outputs[mature_layer][:, seq_i, :], dim=-1)
+        log_softmax_premature_layers: torch.Tensor = F.log_softmax(
+            stacked_premature_layers, dim=-1)
+        kl1: torch.Tensor = F.kl_div(log_softmax_mature_layer[None, :, :],
+                                        M,
+                                        reduction='none').mean(-1)
+        kl2: torch.Tensor = F.kl_div(log_softmax_premature_layers,
+                                        M,
+                                        reduction='none').mean(-1)
+        js_divs: torch.Tensor = 0.5 * (kl1 + kl2).mean(-1)
+        """
         for seq_i in range(prefix_ids.shape[-1] - 1, input_ids.shape[-1] - 1):
             adj_layer_jsd_list: list[torch.Tensor] = []
             for i in range(len(early_exit_layers) - 1):
-                adj_layer_jsd: torch.Tensor = js_div(
-                    dict_outputs[early_exit_layers[i]][:, seq_i, :],
-                    dict_outputs[early_exit_layers[i + 1]][:, seq_i, :])
+                softmax_p: torch.Tensor = F.softmax(
+                    dict_outputs[early_exit_layers[i]][:, seq_i, :], dim=-1)
+                softmax_q: torch.Tensor = F.softmax(
+                    dict_outputs[early_exit_layers[i + 1]][:, seq_i, :],
+                    dim=-1)
+                m: torch.Tensor = 0.5 * (softmax_p + softmax_q)
+                log_softmax_p: torch.Tensor = F.log_softmax(
+                    dict_outputs[early_exit_layers[i]][:, seq_i, :], dim=-1)
+                log_softmax_q: torch.Tensor = F.log_softmax(
+                    dict_outputs[early_exit_layers[i + 1]][:, seq_i, :],
+                    dim=-1)
+                kl_p_m: torch.Tensor = F.kl_div(log_softmax_p[None, :, :],
+                                                m,
+                                                reduction='none').mean(-1)
+                kl_q_m: torch.Tensor = F.kl_div(log_softmax_q[None, :, :],
+                                                m,
+                                                reduction='none').mean(-1)
+                adj_layer_jsd: torch.Tensor = 0.5 * (kl_p_m + kl_q_m).mean(-1)
                 adj_layer_jsd_list.append(adj_layer_jsd)
             adj_layer_jsd_stack: torch.Tensor = torch.stack(adj_layer_jsd_list,
                                                             dim=0)
@@ -329,17 +365,19 @@ class DoLa:
         return output_str, (premature_layer_dist if mode == 'dola' else None)
 
     @torch.no_grad()
-    def lm_score(self,
-                 input_text1: str,
-                 input_text2: str,
-                 mature_layer=None,
-                 premature_layer=None,
-                 candidate_premature_layers=None,
-                 mode: str = 'baseline',
-                 relative_top: float = 0.1,
-                 relative_top_value: float = -1000.0,
-                 post_softmax: bool = True,
-                 use_adj_layer_jsd: bool = False) -> tuple[float, None | dict]:
+    def lm_score(
+            self,
+            input_text1: str,
+            input_text2: str,
+            mature_layer=None,
+            premature_layer=None,
+            candidate_premature_layers=None,
+            mode: str = 'baseline',
+            relative_top: float = 0.1,
+            relative_top_value: float = -1000.0,
+            post_softmax: bool = True,
+            use_adj_layer_jsd: bool = False,
+            draw_adj_layer_jsd: bool = False) -> tuple[float, None | dict]:
         input_text: str = input_text1 + input_text2
         input_ids: torch.Tensor = self.tokenizer(
             input_text, return_tensors="pt").input_ids.to(self.device)
@@ -356,14 +394,11 @@ class DoLa:
                                                 relative_top_value,
                                                 post_softmax)
         elif mode == 'dola':
-            if use_adj_layer_jsd:
-                return self.__llm_score_dola_adj_layer_jsd(
-                    input_ids, prefix_ids, continue_ids, mature_layer,
-                    candidate_premature_layers, relative_top,
-                    relative_top_value, post_softmax)
-            else:
-                return self.__llm_score_dola(input_ids, prefix_ids,
-                                             continue_ids, mature_layer,
-                                             candidate_premature_layers,
-                                             relative_top, relative_top_value,
-                                             post_softmax)
+            return self.__llm_score_dola_adj_layer_jsd(
+                input_ids, prefix_ids, continue_ids, mature_layer,
+                candidate_premature_layers, relative_top, relative_top_value,
+                post_softmax, draw_adj_layer_jsd
+            ) if use_adj_layer_jsd else self.__llm_score_dola(
+                input_ids, prefix_ids, continue_ids, mature_layer,
+                candidate_premature_layers, relative_top, relative_top_value,
+                post_softmax)
