@@ -104,3 +104,10 @@ def set_seed(seed):
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
+
+
+def js_div(P: torch.Tensor, Q: torch.Tensor) -> torch.Tensor:
+    M: torch.Tensor = 0.5 * (P + Q)
+    kl_div_P_M: torch.Tensor = F.kl_div(P.log(), M, reduction='sum')
+    kl_div_Q_M: torch.Tensor = F.kl_div(Q.log(), M, reduction='sum')
+    return 0.5 * (kl_div_P_M + kl_div_Q_M)
