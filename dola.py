@@ -1,4 +1,3 @@
-from math import log
 import torch
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -162,25 +161,6 @@ class DoLa:
             for it in candidate_premature_layers
         }
         premature_layers: list[int] = []
-        """
-        softmax_mature_layer: torch.Tensor = F.softmax(
-                dict_outputs[mature_layer][:, seq_i, :], dim=-1)
-        softmax_premature_layers: torch.Tensor = F.softmax(
-            stacked_premature_layers, dim=-1)
-        M: torch.Tensor = 0.5 * (softmax_mature_layer[None, :, :] +
-                                    softmax_premature_layers)
-        log_softmax_mature_layer: torch.Tensor = F.log_softmax(
-            dict_outputs[mature_layer][:, seq_i, :], dim=-1)
-        log_softmax_premature_layers: torch.Tensor = F.log_softmax(
-            stacked_premature_layers, dim=-1)
-        kl1: torch.Tensor = F.kl_div(log_softmax_mature_layer[None, :, :],
-                                        M,
-                                        reduction='none').mean(-1)
-        kl2: torch.Tensor = F.kl_div(log_softmax_premature_layers,
-                                        M,
-                                        reduction='none').mean(-1)
-        js_divs: torch.Tensor = 0.5 * (kl1 + kl2).mean(-1)
-        """
         for seq_i in range(prefix_ids.shape[-1] - 1, input_ids.shape[-1] - 1):
             adj_layer_jsd_list: list[torch.Tensor] = []
             for i in range(len(early_exit_layers) - 1):
