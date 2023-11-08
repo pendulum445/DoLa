@@ -55,13 +55,13 @@ def get_parser_args() -> argparse.Namespace:
     parser: ArgumentParser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
-                        default="/data/lyj/hf_models/llama-2-7b-hf")
-    parser.add_argument("--num-gpus", type=int, default=2)
+                        default="/data/lyj/hf_models/bloom-560m")
+    parser.add_argument("--num-gpus", type=int, default=4)
     parser.add_argument("--max_gpu_memory", type=int, default=27)
     parser.add_argument("--device",
                         type=str,
                         choices=["cuda", "cpu"],
-                        default="cuda")
+                        default="cpu")
     parser.add_argument("--data-path", type=str, default="./wiki_factor.csv")
     parser.add_argument("--output-path",
                         type=str,
@@ -69,7 +69,7 @@ def get_parser_args() -> argparse.Namespace:
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
     parser.add_argument("--early-exit-layers",
                         type=str,
-                        default="0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32")
+                        default="0,2,4,6,8,10,12,14,16,18,20,22,24")
     # noinspection DuplicatedCode
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
@@ -85,7 +85,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
     # parser.add_argument("--debug", action="store_true")
-    parser.add_argument("--adj_layer_jsd", type=bool, default=True)
+    parser.add_argument("--adj_layer_jsd", type=bool, default=False)
     parser.add_argument("--debug", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)

@@ -1,10 +1,11 @@
+import numpy as np
 import torch
 import torch.nn.functional as F
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.generation.stopping_criteria import (LLamaQaStoppingCriteria,
                                                        StoppingCriteriaList)
 
-from utils import get_relative_top_filter
+from utils import get_relative_top_filter, plot_colored_table
 
 
 class DoLa:
@@ -74,7 +75,8 @@ class DoLa:
                          candidate_premature_layers=None,
                          relative_top: float = 0.1,
                          relative_top_value: float = -1000.0,
-                         post_softmax: bool = True) -> tuple[float, dict]:
+                         post_softmax: bool = True,
+                         draw_jsd_table: bool = True) -> tuple[float, dict]:
         premature_layer_dist: dict = {
             it: 0
             for it in candidate_premature_layers
@@ -87,6 +89,10 @@ class DoLa:
             output_hidden_states=False,
             early_exit_layers=candidate_premature_layers + [mature_layer],
         )
+        col_labels: list[str] = []
+        row_labels: list[str] = [str(i)
+                                 for i in candidate_premature_layers][::-1]
+        jsd_list: list[np.ndarray] = []
         for seq_i in range(prefix_ids.shape[-1] - 1, input_ids.shape[-1] - 1):
             stacked_premature_layers: torch.Tensor = torch.stack([
                 dict_outputs[i][:, seq_i, :]
@@ -109,18 +115,23 @@ class DoLa:
             kl2: torch.Tensor = F.kl_div(log_softmax_premature_layers,
                                          M,
                                          reduction='none').mean(-1)
-            js_divs: torch.Tensor = 0.5 * (kl1 + kl2).mean(-1)
+            js_divs: torch.Tensor = 0.5 * (kl1 + kl2).mean(-1) * 1e5
             premature_layer: int = candidate_premature_layers[int(
                 js_divs.argmax().cpu().item())]
             premature_layer_dist[premature_layer] += 1
             premature_layers.append(premature_layer)
+            col_labels.append(self.tokenizer.convert_ids_to_tokens(seq_i))
+            jsd_list.append(js_divs.cpu().numpy())
+        if draw_jsd_table:
+            plot_colored_table(
+                np.vstack(jsd_list).T[::-1, :], row_labels, col_labels)
         base_logits: torch.Tensor = torch.zeros_like(
             dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
         for i, layer in enumerate(premature_layers):
             base_logits[i] = dict_outputs[layer][0,
                                                  prefix_ids.shape[-1] - 1 + i]
-        final_logits: torch.Tensor = dict_outputs[mature_layer][
-            0, prefix_ids.shape[-1] - 1:-1].log_softmax(dim=-1)
+        final_logits: torch.Tensor = F.log_softmax(
+            dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1], dim=-1)
         # noinspection DuplicatedCode
         base_logits = base_logits.log_softmax(dim=-1)
         diff_logits: torch.Tensor = final_logits - base_logits

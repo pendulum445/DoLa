@@ -3,9 +3,13 @@ import re
 import ssl
 import urllib.request
 
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn.functional as F
+from matplotlib.table import Table
+from sympy import N
 
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
 INVALID_ANS = "[invalid]"
@@ -66,3 +70,26 @@ def get_relative_top_filter(scores: torch.Tensor,
     probs_thresh = torch.min(min_thresh, probs_thresh)
     probs_thresh = probs_thresh.unsqueeze(-1)
     return torch.Tensor(scores_normalized < probs_thresh)
+
+
+def plot_colored_table(data: np.ndarray,
+                       row_labels: list[str],
+                       col_labels: list[str],
+                       fig_name: str = 'table.png'):
+    fig, ax = plt.subplots()
+    plt.ylabel('i-th early layer')
+    plt.xlabel('Output')
+    table_data: list[list[str]] = [['{:.2f}'.format(value) for value in row]
+                                   for row in data]
+    table = ax.table(cellText=table_data,
+                     loc='center',
+                     cellLoc='center',
+                     rowLabels=row_labels,
+                     colLabels=col_labels,
+                     cellColours=plt.cm.Purples(np.array(data) / np.max(data)))
+    table.auto_set_font_size(False)
+    table.set_fontsize(8)
+    table.auto_set_column_width(col=list(range(len(table_data[0]))))
+    table.auto_set_column_width(col=[-1])  # 最后一列宽度自适应
+    ax.axis('off')  # 不显示坐标轴
+    plt.savefig(fig_name, dpi=300, bbox_inches='tight')
