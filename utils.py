@@ -88,7 +88,7 @@ def plot_colored_table(data: np.ndarray,
                      colLabels=col_labels,
                      cellColours=plt.cm.Purples(np.array(data) / np.max(data)))
     table.auto_set_font_size(False)
-    table.set_fontsize(8)
+    table.set_fontsize(6)
     table.auto_set_column_width(col=list(range(len(table_data[0]))))
     table.auto_set_column_width(col=[-1])  # 最后一列宽度自适应
     ax.axis('off')  # 不显示坐标轴

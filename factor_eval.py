@@ -5,7 +5,6 @@ import os
 from argparse import ArgumentParser
 
 import pandas as pd
-import torch
 import transformers
 from tqdm import tqdm
 
@@ -55,21 +54,20 @@ def get_parser_args() -> argparse.Namespace:
     parser: ArgumentParser = ArgumentParser()
     parser.add_argument("--model-name",
                         type=str,
-                        default="/data/lyj/hf_models/bloom-560m")
+                        default="/data/lyj/hf_models/llama-2-7b-hf")
     parser.add_argument("--num-gpus", type=int, default=4)
     parser.add_argument("--max_gpu_memory", type=int, default=27)
     parser.add_argument("--device",
                         type=str,
                         choices=["cuda", "cpu"],
-                        default="cpu")
+                        default="cuda")
     parser.add_argument("--data-path", type=str, default="./wiki_factor.csv")
     parser.add_argument("--output-path",
                         type=str,
                         default="./wiki_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
-    parser.add_argument("--early-exit-layers",
-                        type=str,
-                        default="0,2,4,6,8,10,12,14,16,18,20,22,24")
+    parser.add_argument("--early-exit-layers", type=str, default="0")
+    # default="0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32")
     # noinspection DuplicatedCode
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
@@ -86,6 +84,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--do_shuffle", action="store_true")
     # parser.add_argument("--debug", action="store_true")
     parser.add_argument("--adj_layer_jsd", type=bool, default=False)
+    parser.add_argument("--draw_jsd_table", type=bool, default=False)
     parser.add_argument("--debug", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)
@@ -149,7 +148,7 @@ if __name__ == "__main__":
             for it in candidate_premature_layers
         }
     answers: list[bool] = []
-    result_dict: dict = {
+    result_dict: dict[str, list] = {
         'is_correct': [],
         'model_answer': [],
         'model_completion': [],
@@ -168,7 +167,8 @@ if __name__ == "__main__":
             candidate_premature_layers=candidate_premature_layers,
             relative_top=args.relative_top,
             relative_top_value=args.relative_top_value,
-            use_adj_layer_jsd=args.adj_layer_jsd)
+            use_adj_layer_jsd=args.adj_layer_jsd,
+            draw_jsd_table=args.draw_jsd_table)
         answer_true_log_prob, c_dist = llm.lm_score(context, answer_true,
                                                     **generate_kwargs)
         if mode == "dola":

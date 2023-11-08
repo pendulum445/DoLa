@@ -76,7 +76,7 @@ class DoLa:
                          relative_top: float = 0.1,
                          relative_top_value: float = -1000.0,
                          post_softmax: bool = True,
-                         draw_jsd_table: bool = True) -> tuple[float, dict]:
+                         draw_jsd_table: bool = False) -> tuple[float, dict]:
         premature_layer_dist: dict = {
             it: 0
             for it in candidate_premature_layers
@@ -120,7 +120,9 @@ class DoLa:
                 js_divs.argmax().cpu().item())]
             premature_layer_dist[premature_layer] += 1
             premature_layers.append(premature_layer)
-            col_labels.append(self.tokenizer.convert_ids_to_tokens(seq_i))
+            col_labels.append(
+                self.tokenizer.convert_ids_to_tokens(
+                    input_ids[-1][seq_i].item()))
             jsd_list.append(js_divs.cpu().numpy())
         if draw_jsd_table:
             plot_colored_table(
@@ -368,10 +370,11 @@ class DoLa:
             relative_top_value: float = -1000.0,
             post_softmax: bool = True,
             use_adj_layer_jsd: bool = False,
-            draw_adj_layer_jsd: bool = False) -> tuple[float, None | dict]:
-        input_text: str = input_text1 + input_text2
+            draw_adj_layer_jsd: bool = False,
+            draw_jsd_table: bool = False) -> tuple[float, None | dict]:
         input_ids: torch.Tensor = self.tokenizer(
-            input_text, return_tensors="pt").input_ids.to(self.device)
+            input_text1 + input_text2,
+            return_tensors="pt").input_ids.to(self.device)
         prefix_ids: torch.Tensor = self.tokenizer(
             input_text1, return_tensors="pt").input_ids.to(self.device)
         continue_ids: torch.Tensor = input_ids[0, prefix_ids.shape[-1]:]
@@ -392,4 +395,4 @@ class DoLa:
             ) if use_adj_layer_jsd else self.__llm_score_dola(
                 input_ids, prefix_ids, continue_ids, mature_layer,
                 candidate_premature_layers, relative_top, relative_top_value,
-                post_softmax)
+                post_softmax, draw_jsd_table)
