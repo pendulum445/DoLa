@@ -1,0 +1,403 @@
+Added stop word:  Q: with the ids [29984, 29901]
+Added stop word:  \end{code} with the ids [29905, 355, 29912, 401, 29913]
+MODE: DoLa decoding with mature layer: 32 and premature layers: [0, 2, 4, 6, 8, 10, 12, 14]
+> /data/mxy/DoLa/dola.py(175)lm_score()
+-> for seq_i in range(prefix_ids.shape[-1] - 1, input_ids.shape[-1] - 1):
+(Pdb) *** NameError: name 'seq_i' is not defined
+(Pdb) > /data/mxy/DoLa/dola.py(178)lm_score()
+-> stacked_premature_layers = torch.stack([dict_outputs[i][:, seq_i, :] for i in candidate_premature_layers], dim=0)
+(Pdb) 1198
+(Pdb) > /data/mxy/DoLa/dola.py(181)lm_score()
+-> softmax_mature_layer = F.softmax(dict_outputs[mature_layer][:, seq_i, :], dim=-1)  # shape: (batch_size, num_features)
+(Pdb) tensor([[[-1.2803e-04, -2.1496e-03,  2.8114e-03,  ..., -1.5059e-03,
+          -1.0195e-03, -5.9319e-04]],
+
+        [[-1.9653e-02,  1.5466e-01,  3.8361e-02,  ..., -6.9214e-02,
+          -6.0822e-02, -3.3997e-02]],
+
+        [[ 2.8076e-03,  1.9836e-01,  4.6326e-02,  ..., -1.1768e-01,
+          -2.7298e-02, -4.9561e-02]],
+
+        ...,
+
+        [[-1.1798e-01, -5.6366e-02,  2.4219e-01,  ..., -4.8804e-01,
+          -2.4634e-01, -1.8689e-01]],
+
+        [[-1.4633e-02,  6.1707e-02,  2.0386e-01,  ..., -5.1904e-01,
+           4.1931e-02, -1.4880e-01]],
+
+        [[ 7.4341e-02,  6.9641e-02,  7.1350e-02,  ..., -3.4351e-01,
+          -1.0754e-01, -1.1676e-01]]], device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([8, 1, 32000])
+(Pdb) tensor([[[-0.0069, -0.0734, -0.0005,  ..., -0.0082,  0.0075, -0.0071],
+         [-0.0030, -0.0041,  0.0028,  ..., -0.0117, -0.0190, -0.0135],
+         [ 0.0043,  0.0186,  0.0023,  ...,  0.0115,  0.0058,  0.0074],
+         ...,
+         [-0.0015, -0.0057, -0.0028,  ..., -0.0040,  0.0008, -0.0014],
+         [ 0.0130,  0.0787, -0.0078,  ..., -0.0089, -0.0292, -0.0076],
+         [ 0.0020,  0.0029, -0.0010,  ..., -0.0022,  0.0047, -0.0030]]],
+       device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([1, 1253, 32000])
+(Pdb) > /data/mxy/DoLa/dola.py(182)lm_score()
+-> softmax_premature_layers = F.softmax(stacked_premature_layers, dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
+(Pdb) > /data/mxy/DoLa/dola.py(185)lm_score()
+-> M = 0.5 * (softmax_mature_layer[None, :, :] + softmax_premature_layers)  # shape: (num_premature_layers, batch_size, num_features)
+(Pdb) 180  	                    # 2. Calculate the softmax values for mature_layer and all premature_layers
+181  	                    softmax_mature_layer = F.softmax(dict_outputs[mature_layer][:, seq_i, :], dim=-1)  # shape: (batch_size, num_features)
+182  	                    softmax_premature_layers = F.softmax(stacked_premature_layers, dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
+183  	
+184  	                    # 3. Calculate M, the average distribution
+185  ->	                    M = 0.5 * (softmax_mature_layer[None, :, :] + softmax_premature_layers)  # shape: (num_premature_layers, batch_size, num_features)
+186  	
+187  	                    # 4. Calculate log-softmax for the KL divergence
+188  	                    log_softmax_mature_layer = F.log_softmax(dict_outputs[mature_layer][:, seq_i, :], dim=-1)  # shape: (batch_size, num_features)
+189  	                    log_softmax_premature_layers = F.log_softmax(stacked_premature_layers, dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
+190  	
+(Pdb) tensor([[0., 0., 0.,  ..., 0., 0., 0.]], device='cuda:0', dtype=torch.float16)
+(Pdb) tensor([[[-12.8281,  -7.3867,  -0.4673,  ...,  -6.7734,  -8.0156,  -7.5000],
+         [ -6.4531,   2.7031,   4.7461,  ...,   4.3750,   0.5249,   3.3926],
+         [-12.6406, -10.6250,  -3.8965,  ...,  -8.6797, -11.3750,  -9.1016],
+         ...,
+         [ -7.5469, -10.7734,   3.3906,  ...,  -1.3486,  -5.5117,  -1.9736],
+         [ -1.4551,  -0.0952,   8.1719,  ...,  -1.4658,  -2.2129,  -1.1045],
+         [-11.0547, -14.9141,   4.9844,  ...,  -4.2305,  -7.0859,  -9.4766]]],
+       device='cuda:0', dtype=torch.float16)
+(Pdb) tensor([[-5.3516, -8.5000, -1.2881,  ..., -2.9883, -3.8535, -5.5859]],
+       device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([1, 32000])
+(Pdb) *** SyntaxError: unexpected EOF while parsing
+(Pdb) tensor([[[3.1233e-05, 3.1173e-05, 3.1352e-05,  ..., 3.1233e-05,
+          3.1233e-05, 3.1233e-05]],
+
+        [[3.1292e-05, 3.7253e-05, 3.3200e-05,  ..., 2.9802e-05,
+          3.0041e-05, 3.0875e-05]],
+
+        [[3.2067e-05, 3.8981e-05, 3.3498e-05,  ..., 2.8431e-05,
+          3.1114e-05, 3.0398e-05]],
+
+        ...,
+
+        [[2.9743e-05, 3.1590e-05, 4.2617e-05,  ..., 2.0504e-05,
+          2.6166e-05, 2.7776e-05]],
+
+        [[3.0994e-05, 3.3498e-05, 3.8624e-05,  ..., 1.8716e-05,
+          3.2842e-05, 2.7120e-05]],
+
+        [[3.2902e-05, 3.2723e-05, 3.2783e-05,  ..., 2.1636e-05,
+          2.7418e-05, 2.7180e-05]]], device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([8, 1, 32000])
+(Pdb) tensor([[[0., 0., 0.,  ..., 0., 0., 0.]]], device='cuda:0',
+       dtype=torch.float16)
+(Pdb) tensor([[0., 0., 0.,  ..., 0., 0., 0.]], device='cuda:0', dtype=torch.float16)
+(Pdb) > /data/mxy/DoLa/dola.py(188)lm_score()
+-> log_softmax_mature_layer = F.log_softmax(dict_outputs[mature_layer][:, seq_i, :], dim=-1)  # shape: (batch_size, num_features)
+(Pdb) *** NameError: name 'm' is not defined
+(Pdb) tensor([[[1.5616e-05, 1.5616e-05, 1.5676e-05,  ..., 1.5616e-05,
+          1.5616e-05, 1.5616e-05]],
+
+        [[1.5616e-05, 1.8597e-05, 1.6570e-05,  ..., 1.4901e-05,
+          1.5020e-05, 1.5438e-05]],
+
+        [[1.6034e-05, 1.9491e-05, 1.6749e-05,  ..., 1.4186e-05,
+          1.5557e-05, 1.5199e-05]],
+
+        ...,
+
+        [[1.4901e-05, 1.5795e-05, 2.1338e-05,  ..., 1.0252e-05,
+          1.3113e-05, 1.3888e-05]],
+
+        [[1.5497e-05, 1.6749e-05, 1.9312e-05,  ..., 9.3579e-06,
+          1.6451e-05, 1.3590e-05]],
+
+        [[1.6451e-05, 1.6332e-05, 1.6391e-05,  ..., 1.0848e-05,
+          1.3709e-05, 1.3590e-05]]], device='cuda:0', dtype=torch.float16)
+(Pdb) > /data/mxy/DoLa/dola.py(189)lm_score()
+-> log_softmax_premature_layers = F.log_softmax(stacked_premature_layers, dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
+(Pdb) > /data/mxy/DoLa/dola.py(192)lm_score()
+-> kl1 = F.kl_div(log_softmax_mature_layer[None, :, :], M, reduction='none').mean(-1)  # shape: (num_premature_layers, batch_size)
+(Pdb) tensor([[-22.2188, -25.3750, -18.1562,  ..., -19.8594, -20.7188, -22.4531]],
+       device='cuda:0', dtype=torch.float16)
+(Pdb) tensor([[[-10.3750, -10.3750, -10.3672,  ..., -10.3750, -10.3750, -10.3750]],
+
+        [[-10.3750, -10.1953, -10.3125,  ..., -10.4219, -10.4141, -10.3828]],
+
+        [[-10.3516, -10.1562, -10.3047,  ..., -10.4688, -10.3750, -10.3984]],
+
+        ...,
+
+        [[-10.4219, -10.3594, -10.0625,  ..., -10.7969, -10.5547, -10.4922]],
+
+        [[-10.3828, -10.3047, -10.1641,  ..., -10.8828, -10.3281, -10.5156]],
+
+        [[-10.3203, -10.3281, -10.3281,  ..., -10.7422, -10.5078, -10.5156]]],
+       device='cuda:0', dtype=torch.float16)
+(Pdb) > /data/mxy/DoLa/dola.py(193)lm_score()
+-> kl2 = F.kl_div(log_softmax_premature_layers, M, reduction='none').mean(-1)  # shape: (num_premature_layers, batch_size)
+(Pdb) > /data/mxy/DoLa/dola.py(194)lm_score()
+-> js_divs = 0.5 * (kl1 + kl2)  # shape: (num_premature_layers, batch_size)
+(Pdb) tensor([[0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001]], device='cuda:0', dtype=torch.float16)
+(Pdb) tensor([[[1.7405e-04, 2.2340e-04, 1.1122e-04,  ..., 1.3733e-04,
+          1.5068e-04, 1.7786e-04]],
+
+        [[1.7405e-04, 2.6941e-04, 1.1849e-04,  ..., 1.3030e-04,
+          1.4436e-04, 1.7560e-04]],
+
+        [[1.7917e-04, 2.8324e-04, 1.1981e-04,  ..., 1.2350e-04,
+          1.5008e-04, 1.7250e-04]],
+
+        ...,
+
+        [[1.6558e-04, 2.2614e-04, 1.5795e-04,  ..., 8.5831e-05,
+          1.2434e-04, 1.5652e-04]],
+
+        [[1.7262e-04, 2.4092e-04, 1.4114e-04,  ..., 7.7486e-05,
+          1.5974e-04, 1.5283e-04]],
+
+        [[1.8430e-04, 2.3437e-04, 1.1694e-04,  ..., 9.1434e-05,
+          1.3041e-04, 1.5283e-04]]], device='cuda:0', dtype=torch.float16)
+(Pdb) tensor([[[-1.0848e-05, -1.0848e-05, -1.0967e-05,  ..., -1.0848e-05,
+          -1.0848e-05, -1.0848e-05]],
+
+        [[-1.0848e-05, -1.2994e-05, -1.1563e-05,  ..., -1.0252e-05,
+          -1.0371e-05, -1.0729e-05]],
+
+        [[-1.1086e-05, -1.3351e-05, -1.1563e-05,  ..., -9.7752e-06,
+          -1.0848e-05, -1.0610e-05]],
+
+        ...,
+
+        [[-1.0252e-05, -1.0967e-05, -1.4782e-05,  ..., -7.0930e-06,
+          -9.0599e-06, -9.6560e-06]],
+
+        [[-1.0729e-05, -1.1563e-05, -1.3232e-05,  ..., -6.4969e-06,
+          -1.1325e-05, -9.4175e-06]],
+
+        [[-1.1444e-05, -1.1325e-05, -1.1325e-05,  ..., -7.4506e-06,
+          -9.5367e-06, -9.4175e-06]]], device='cuda:0', dtype=torch.float16)
+(Pdb) > /data/mxy/DoLa/dola.py(197)lm_score()
+-> js_divs = js_divs.mean(-1)  # shape: (num_premature_layers,)
+(Pdb) tensor([[0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001],
+        [0.0001]], device='cuda:0', dtype=torch.float16)
+(Pdb) tensor(0, device='cuda:0')
+(Pdb) 0
+(Pdb) {0: 0, 2: 0, 4: 0, 6: 0, 8: 0, 10: 0, 12: 0, 14: 0}
+(Pdb) []
+(Pdb) > /data/mxy/DoLa/dola.py(198)lm_score()
+-> premature_layer = candidate_premature_layers[int(js_divs.argmax().cpu().item())]
+(Pdb) > /data/mxy/DoLa/dola.py(199)lm_score()
+-> premature_layer_dist[premature_layer] += 1
+(Pdb) 0
+(Pdb) [0, 2, 4, 6, 8, 10, 12, 14]
+(Pdb) > /data/mxy/DoLa/dola.py(201)lm_score()
+-> premature_layers.append(premature_layer)
+(Pdb) > /data/mxy/DoLa/dola.py(175)lm_score()
+-> for seq_i in range(prefix_ids.shape[-1] - 1, input_ids.shape[-1] - 1):
+(Pdb) [0]
+(Pdb) {0: 1, 2: 0, 4: 0, 6: 0, 8: 0, 10: 0, 12: 0, 14: 0}
+(Pdb) *** Blank or comment
+(Pdb) *** SyntaxError: invalid syntax
+(Pdb) Breakpoint 1 at /data/mxy/DoLa/dola.py:203
+(Pdb) > /data/mxy/DoLa/dola.py(203)lm_score()
+-> base_logits = torch.zeros_like(dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
+(Pdb) > /data/mxy/DoLa/dola.py(204)lm_score()
+-> for i, l in enumerate(premature_layers):
+(Pdb) tensor([[0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.]], device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([54, 32000])
+(Pdb) {0: tensor([[[-0.0069, -0.0734, -0.0005,  ..., -0.0082,  0.0075, -0.0071],
+         [-0.0030, -0.0041,  0.0028,  ..., -0.0117, -0.0190, -0.0135],
+         [ 0.0043,  0.0186,  0.0023,  ...,  0.0115,  0.0058,  0.0074],
+         ...,
+         [-0.0015, -0.0057, -0.0028,  ..., -0.0040,  0.0008, -0.0014],
+         [ 0.0130,  0.0787, -0.0078,  ..., -0.0089, -0.0292, -0.0076],
+         [ 0.0020,  0.0029, -0.0010,  ..., -0.0022,  0.0047, -0.0030]]],
+       device='cuda:0', dtype=torch.float16), 2: tensor([[[ 3.4625e+01,  3.2250e+01, -6.3906e+00,  ...,  3.6125e+01,
+           4.4656e+01,  3.2969e+01],
+         [-6.8016e-03,  1.7273e-01, -5.7220e-02,  ...,  3.2532e-02,
+           2.4780e-02, -2.3880e-02],
+         [ 1.8539e-02,  1.6724e-01, -4.2023e-02,  ..., -4.4525e-02,
+           5.5908e-02,  1.9196e-02],
+         ...,
+         [-2.4277e-02, -8.8440e-02,  2.1591e-02,  ..., -3.6133e-02,
+          -1.1757e-02, -4.5532e-02],
+         [ 6.0320e-04,  1.5320e-01,  2.7725e-02,  ..., -2.6627e-02,
+          -1.0635e-02,  4.7951e-03],
+         [ 2.3254e-02,  6.9397e-02,  2.7954e-02,  ..., -3.5767e-02,
+           4.8584e-02, -4.4983e-02]]], device='cuda:0', dtype=torch.float16), 4: tensor([[[ 3.4562e+01,  3.2312e+01, -6.4062e+00,  ...,  3.6250e+01,
+           4.4844e+01,  3.3188e+01],
+         [-3.0613e-03,  2.9492e-01, -8.4229e-02,  ...,  4.0741e-02,
+          -1.6464e-02,  1.2238e-02],
+         [-9.6741e-03,  2.9468e-01, -6.8542e-02,  ..., -8.1787e-02,
+           1.6321e-01,  4.5044e-02],
+         ...,
+         [-3.1952e-02, -9.8145e-02,  1.2030e-01,  ..., -1.1249e-01,
+          -1.8295e-02, -5.1331e-02],
+         [-3.1769e-02,  8.1726e-02,  3.7323e-02,  ..., -3.1464e-02,
+          -4.2633e-02, -1.1041e-01],
+         [ 5.6824e-02,  1.3025e-01,  5.1270e-02,  ..., -6.6650e-02,
+           6.7444e-02, -7.8613e-02]]], device='cuda:0', dtype=torch.float16), 6: tensor([[[ 3.4781e+01,  3.2562e+01, -5.8359e+00,  ...,  3.6406e+01,
+           4.5344e+01,  3.3469e+01],
+         [-1.2146e-01,  1.1934e+00, -3.1250e-01,  ...,  2.2888e-01,
+          -2.1484e-01,  6.9702e-02],
+         [-4.1138e-02,  5.5078e-01, -2.1973e-01,  ..., -3.3569e-02,
+           1.3660e-01,  3.0273e-02],
+         ...,
+         [ 5.4962e-02, -2.4585e-01,  2.0447e-01,  ..., -4.1901e-02,
+          -2.7985e-02, -5.6396e-02],
+         [ 8.0872e-02,  2.7130e-02,  6.9397e-02,  ...,  1.0760e-01,
+           2.7313e-02, -1.6467e-01],
+         [ 1.6272e-01,  2.0020e-01,  2.2351e-01,  ..., -4.3091e-02,
+           1.3245e-01, -1.0217e-01]]], device='cuda:0', dtype=torch.float16), 8: tensor([[[ 3.4688e+01,  3.2438e+01, -5.6406e+00,  ...,  3.6312e+01,
+           4.5219e+01,  3.3438e+01],
+         [-9.3933e-02,  2.0352e+00,  9.9182e-02,  ...,  8.0383e-02,
+          -3.5889e-01,  7.5684e-02],
+         [-6.0913e-02,  1.2881e+00, -1.1938e-01,  ..., -2.1387e-01,
+          -3.4485e-02,  1.8127e-01],
+         ...,
+         [ 1.3660e-01, -8.6792e-02,  2.6611e-02,  ...,  9.8633e-02,
+           6.7017e-02, -5.0873e-02],
+         [ 1.3281e-01,  3.0420e-01, -3.4271e-02,  ..., -1.5495e-02,
+          -1.1591e-01, -1.6113e-01],
+         [ 2.4487e-01,  3.8281e-01,  2.2266e-01,  ..., -2.1042e-02,
+           4.0234e-01, -4.5052e-03]]], device='cuda:0', dtype=torch.float16), 10: tensor([[[ 3.4500e+01,  3.2281e+01, -5.4258e+00,  ...,  3.6156e+01,
+           4.5219e+01,  3.3344e+01],
+         [-1.3696e-01,  2.7520e+00,  1.5210e-01,  ..., -8.8318e-02,
+          -6.1719e-01,  8.0185e-03],
+         [-1.8335e-01,  9.8438e-01, -1.9031e-01,  ..., -2.4146e-01,
+           8.2581e-02,  3.2251e-01],
+         ...,
+         [ 2.3877e-01,  4.1443e-02,  1.0254e-01,  ...,  2.4695e-01,
+           2.7832e-01, -5.2399e-02],
+         [ 2.0300e-01,  4.8218e-01, -5.2277e-02,  ..., -4.2816e-02,
+           5.9113e-02, -5.0751e-02],
+         [ 2.7002e-01,  2.1643e-01,  2.7954e-01,  ..., -9.0759e-02,
+           3.3398e-01, -1.3391e-01]]], device='cuda:0', dtype=torch.float16), 12: tensor([[[ 3.4312e+01,  3.2062e+01, -5.2344e+00,  ...,  3.5906e+01,
+           4.5156e+01,  3.3281e+01],
+         [-5.7648e-02,  3.0820e+00,  1.4368e-01,  ..., -1.2976e-01,
+          -5.2002e-01,  5.7678e-02],
+         [-1.8640e-01,  1.1064e+00, -2.1936e-01,  ..., -3.2812e-01,
+           2.1350e-01,  4.5532e-01],
+         ...,
+         [ 2.4036e-01, -2.6221e-01,  3.3374e-01,  ...,  2.4796e-04,
+           1.7175e-01, -7.3364e-02],
+         [ 3.1128e-01,  3.9404e-01, -2.2852e-01,  ..., -1.0858e-01,
+          -2.3877e-01, -2.1469e-02],
+         [ 2.6685e-01, -2.2803e-01,  1.9788e-01,  ..., -2.1225e-02,
+           4.1064e-01,  4.2076e-03]]], device='cuda:0', dtype=torch.float16), 14: tensor([[[ 3.4219e+01,  3.2094e+01, -5.0977e+00,  ...,  3.5719e+01,
+           4.5125e+01,  3.3250e+01],
+         [-5.7709e-02,  3.2754e+00,  1.6772e-01,  ..., -3.4741e-01,
+          -5.7227e-01,  3.2349e-01],
+         [-2.8882e-01,  9.7021e-01, -1.8665e-01,  ..., -6.7090e-01,
+           1.6528e-01,  3.8257e-01],
+         ...,
+         [ 1.5381e-01, -7.8369e-01,  2.1228e-01,  ..., -7.5562e-02,
+           4.2572e-02,  1.1206e-01],
+         [ 6.7749e-02, -1.8396e-01, -1.1261e-01,  ...,  1.6342e-02,
+          -2.5488e-01, -1.3147e-01],
+         [ 2.7515e-01, -3.8086e-01,  2.6221e-01,  ...,  7.0343e-03,
+           5.9473e-01, -1.1316e-01]]], device='cuda:0', dtype=torch.float16), 32: tensor([[[-12.8281,  -7.3867,  -0.4673,  ...,  -6.7734,  -8.0156,  -7.5000],
+         [ -6.4531,   2.7031,   4.7461,  ...,   4.3750,   0.5249,   3.3926],
+         [-12.6406, -10.6250,  -3.8965,  ...,  -8.6797, -11.3750,  -9.1016],
+         ...,
+         [ -7.5469, -10.7734,   3.3906,  ...,  -1.3486,  -5.5117,  -1.9736],
+         [ -1.4551,  -0.0952,   8.1719,  ...,  -1.4658,  -2.2129,  -1.1045],
+         [-11.0547, -14.9141,   4.9844,  ...,  -4.2305,  -7.0859,  -9.4766]]],
+       device='cuda:0', dtype=torch.float16)}
+(Pdb) True
+(Pdb) 0.1
+(Pdb) 199  	                    premature_layer_dist[premature_layer] += 1
+200  	
+201  	                    premature_layers.append(premature_layer)
+202  	
+203 B	                base_logits = torch.zeros_like(dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
+204  ->	                for i, l in enumerate(premature_layers):
+205  	                   base_logits[i] = dict_outputs[l][0, prefix_ids.shape[-1] - 1 + i]
+206  	                final_logits = dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1]
+207  	                final_logits = final_logits.log_softmax(dim=-1)
+208  	                base_logits = base_logits.log_softmax(dim=-1)
+209  	                diff_logits = final_logits - base_logits
+(Pdb) Breakpoint 2 at /data/mxy/DoLa/dola.py:206
+(Pdb) > /data/mxy/DoLa/dola.py(206)lm_score()
+-> final_logits = dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1]
+(Pdb) tensor([[-1.2803e-04, -2.1496e-03,  2.8114e-03,  ..., -1.5059e-03,
+         -1.0195e-03, -5.9319e-04],
+        [ 5.9395e-03,  3.1128e-02, -1.3206e-02,  ..., -9.1171e-03,
+          5.0125e-03,  9.5673e-03],
+        [-1.6190e-02,  5.8136e-03,  1.5068e-02,  ..., -4.9469e-02,
+         -5.6648e-04,  1.0941e-02],
+        ...,
+        [-3.7003e-03, -4.6539e-04,  2.3232e-03,  ...,  1.1520e-03,
+         -5.1994e-03,  2.9926e-03],
+        [-1.5402e-03, -5.6572e-03, -2.8381e-03,  ..., -3.9825e-03,
+          8.2922e-04, -1.4086e-03],
+        [ 2.0300e-01,  4.8218e-01, -5.2277e-02,  ..., -4.2816e-02,
+          5.9113e-02, -5.0751e-02]], device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([54, 32000])
+(Pdb) 201  	                    premature_layers.append(premature_layer)
+202  	
+203 B	                base_logits = torch.zeros_like(dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1])
+204  	                for i, l in enumerate(premature_layers):
+205  	                   base_logits[i] = dict_outputs[l][0, prefix_ids.shape[-1] - 1 + i]
+206 B->	                final_logits = dict_outputs[mature_layer][0, prefix_ids.shape[-1] - 1:-1]
+207  	                final_logits = final_logits.log_softmax(dim=-1)
+208  	                base_logits = base_logits.log_softmax(dim=-1)
+209  	                diff_logits = final_logits - base_logits
+210  	                if post_softmax:
+211  	                    diff_logits = diff_logits.log_softmax(dim=-1)
+(Pdb) [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 12, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 10]
+(Pdb) > /data/mxy/DoLa/dola.py(207)lm_score()
+-> final_logits = final_logits.log_softmax(dim=-1)
+(Pdb) tensor([[ -5.3516,  -8.5000,  -1.2881,  ...,  -2.9883,  -3.8535,  -5.5859],
+        [-10.8125, -14.9922,  -0.9609,  ...,  -5.7227,  -8.3047,  -6.9766],
+        [  1.7188,   2.4121,   6.5820,  ...,   5.7695,   2.4004,   4.5820],
+        ...,
+        [ -3.2500,  -7.1250,   6.7188,  ...,   1.0732,  -1.4658,  -0.1126],
+        [ -7.5469, -10.7734,   3.3906,  ...,  -1.3486,  -5.5117,  -1.9736],
+        [ -1.4551,  -0.0952,   8.1719,  ...,  -1.4658,  -2.2129,  -1.1045]],
+       device='cuda:0', dtype=torch.float16)
+(Pdb) torch.Size([54, 32000])
+(Pdb) 0.1
+(Pdb) -1000.0
+(Pdb) *** NameError: name 'pdiff_logits' is not defined
+(Pdb) *** NameError: name 'diff_logits' is not defined
+(Pdb) Breakpoint 3 at /data/mxy/DoLa/dola.py:217
+(Pdb) > /data/mxy/DoLa/dola.py(217)lm_score()
+-> log_probs = diff_logits[range(diff_logits.shape[0]), continue_ids].sum().item()
+(Pdb) 54
+(Pdb) > /data/mxy/DoLa/dola.py(219)lm_score()
+-> return log_probs, (premature_layer_dist if mode == 'dola' else None)
+(Pdb) -4046.0
+(Pdb) tensor([-1.0000e+03, -2.4375e+00, -1.5015e-02, -6.6528e-02, -3.9948e-02,
+        -1.6174e-02, -1.0000e+03, -9.8779e-01, -2.5684e+00, -1.8359e-01,
+        -6.4551e-01, -9.8145e-02, -3.2104e-01, -1.6037e-02, -2.0218e-03,
+        -4.0092e-03, -5.9784e-02, -3.1719e+00, -1.0000e+03, -4.3164e+00,
+        -2.3254e-01, -7.5635e-01, -6.6467e-02, -1.1289e-04, -1.7217e+00,
+        -2.4922e+00, -1.7979e+00, -1.0000e+03, -1.2415e-01, -1.8555e-02,
+        -2.6367e-01, -9.7900e-01, -3.4629e+00, -1.1849e-04, -2.0349e-01,
+        -1.8478e-02, -3.1152e-01, -1.4326e+00, -1.5420e+00, -2.1172e+00,
+        -1.3154e+00, -1.5320e-01, -1.4917e-01, -2.9980e-01, -1.9541e+00,
+        -1.3555e+00, -1.4551e+00, -7.7588e-01, -3.0918e+00, -5.7080e-01,
+        -8.9453e-01, -3.7305e-01, -1.4209e+00, -5.8740e-01], device='cuda:0',
+       dtype=torch.float16)
+(Pdb) tensor(-4046., device='cuda:0', dtype=torch.float16)
+(Pdb) *** AttributeError: 'Tensor' object has no attribute 'items'
+(Pdb) -4046.0
+(Pdb) 
