@@ -358,20 +358,19 @@ class DoLa:
         return output_str, (premature_layer_dist if mode == 'dola' else None)
 
     @torch.no_grad()
-    def lm_score(
-            self,
-            input_text1: str,
-            input_text2: str,
-            mature_layer=None,
-            premature_layer=None,
-            candidate_premature_layers=None,
-            mode: str = 'baseline',
-            relative_top: float = 0.1,
-            relative_top_value: float = -1000.0,
-            post_softmax: bool = True,
-            use_adj_layer_jsd: bool = False,
-            draw_adj_layer_jsd: bool = False,
-            draw_jsd_table: bool = False) -> tuple[float, None | dict]:
+    def lm_score(self,
+                 input_text1: str,
+                 input_text2: str,
+                 mature_layer=None,
+                 premature_layer=None,
+                 candidate_premature_layers=None,
+                 mode: str = 'baseline',
+                 relative_top: float = 0.1,
+                 relative_top_value: float = -1000.0,
+                 post_softmax: bool = True,
+                 use_adj_layer_jsd: bool = False,
+                 draw_adj_layer_jsd: bool = False,
+                 draw_jsd_table: bool = False) -> tuple[float, None | dict]:
         input_ids: torch.Tensor = self.tokenizer(
             input_text1 + input_text2,
             return_tensors="pt").input_ids.to(self.device)

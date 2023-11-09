@@ -66,7 +66,10 @@ def get_parser_args() -> argparse.Namespace:
                         type=str,
                         default="./wiki_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
-    parser.add_argument("--early-exit-layers", type=str, default="0")
+    parser.add_argument(
+        "--early-exit-layers",
+        type=str,
+        default="0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32")
     # default="0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32")
     # noinspection DuplicatedCode
     parser.add_argument("--parallel", action="store_true")
@@ -83,7 +86,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
     # parser.add_argument("--debug", action="store_true")
-    parser.add_argument("--adj_layer_jsd", type=bool, default=False)
+    parser.add_argument("--adj_layer_jsd", type=bool, default=True)
     parser.add_argument("--draw_jsd_table", type=bool, default=False)
     parser.add_argument("--debug", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=42)

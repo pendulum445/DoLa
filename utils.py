@@ -5,11 +5,7 @@ import urllib.request
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import torch
-import torch.nn.functional as F
-from matplotlib.table import Table
-from sympy import N
 
 ANS_RE = re.compile(r"#### (\-?[0-9\.\,]+)")
 INVALID_ANS = "[invalid]"
