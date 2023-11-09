@@ -39,28 +39,21 @@ from .beam_constraints import DisjunctiveConstraint, PhrasalConstraint
 from .beam_search import (BeamScorer, BeamSearchScorer,
                           ConstrainedBeamSearchScorer)
 from .configuration_utils import GenerationConfig
-from .logits_process import (EncoderNoRepeatNGramLogitsProcessor,
-                             EncoderRepetitionPenaltyLogitsProcessor,
-                             EpsilonLogitsWarper, EtaLogitsWarper,
-                             ExponentialDecayLengthPenalty,
-                             ForcedBOSTokenLogitsProcessor,
-                             ForcedEOSTokenLogitsProcessor,
-                             ForceTokensLogitsProcessor,
-                             HammingDiversityLogitsProcessor,
-                             InfNanRemoveLogitsProcessor, LogitNormalization,
-                             LogitsProcessorList, MinLengthLogitsProcessor,
-                             MinNewTokensLengthLogitsProcessor,
-                             NoBadWordsLogitsProcessor,
-                             NoRepeatNGramLogitsProcessor,
-                             PrefixConstrainedLogitsProcessor,
-                             RepetitionPenaltyLogitsProcessor,
-                             SuppressTokensAtBeginLogitsProcessor,
-                             SuppressTokensLogitsProcessor,
-                             TemperatureLogitsWarper, TopKLogitsWarper,
-                             TopPLogitsWarper, TypicalLogitsWarper)
-from .stopping_criteria import (LLamaQaStoppingCriteria, MaxLengthCriteria,
-                                MaxTimeCriteria, StoppingCriteria,
-                                StoppingCriteriaList,
+from .logits_process import (
+    EncoderNoRepeatNGramLogitsProcessor,
+    EncoderRepetitionPenaltyLogitsProcessor, EpsilonLogitsWarper,
+    EtaLogitsWarper, ExponentialDecayLengthPenalty,
+    ForcedBOSTokenLogitsProcessor, ForcedEOSTokenLogitsProcessor,
+    ForceTokensLogitsProcessor, HammingDiversityLogitsProcessor,
+    InfNanRemoveLogitsProcessor, LogitNormalization, LogitsProcessorList,
+    MinLengthLogitsProcessor, MinNewTokensLengthLogitsProcessor,
+    NoBadWordsLogitsProcessor, NoRepeatNGramLogitsProcessor,
+    PrefixConstrainedLogitsProcessor, RepetitionPenaltyLogitsProcessor,
+    SuppressTokensAtBeginLogitsProcessor, SuppressTokensLogitsProcessor,
+    TemperatureLogitsWarper, TopKLogitsWarper, TopPLogitsWarper,
+    TypicalLogitsWarper)
+from .stopping_criteria import (MaxLengthCriteria, MaxTimeCriteria,
+                                StoppingCriteria, StoppingCriteriaList,
                                 validate_stopping_criteria)
 
 if TYPE_CHECKING:
@@ -96,6 +89,7 @@ class GreedySearchDecoderOnlyOutput(ModelOutput):
     attentions: Optional[Tuple[Tuple[torch.FloatTensor]]] = None
     hidden_states: Optional[Tuple[Tuple[torch.FloatTensor]]] = None
     premature_layer_dist: Optional[Dict[int, int]] = None
+    js_divs: Optional[list[tuple[torch.Tensor, torch.Tensor]]] = None
 
 
 @dataclass
@@ -1175,6 +1169,7 @@ class GenerationMixin:
         student_model=None,
         streamer: Optional["BaseStreamer"] = None,
         adj_layer_jsd: Optional[bool] = None,
+        return_jsd: Optional[bool] = None,
         **kwargs,
     ) -> Union[GenerateOutput, torch.LongTensor]:
         r"""
@@ -1502,6 +1497,7 @@ class GenerationMixin:
                 relative_top=relative_top,
                 streamer=streamer,
                 adj_layer_jsd=adj_layer_jsd,
+                return_jsd=return_jsd,
                 **model_kwargs,
             )
 
@@ -2604,6 +2600,7 @@ class GenerationMixin:
         synced_gpus: Optional[bool] = False,
         streamer: Optional["BaseStreamer"] = None,
         adj_layer_jsd: Optional[bool] = False,
+        return_jsd: Optional[bool] = False,
         **model_kwargs,
     ) -> Union[GreedySearchOutput, torch.LongTensor]:
         r"""
@@ -2753,17 +2750,15 @@ class GenerationMixin:
 
         if base_layer is not None and candidate_premature_layers is None:
             early_exit_layers = [base_layer, mature_layer]
-            num_base_layers = 1
             premature_layer_dist = {}
         elif candidate_premature_layers is not None:
             early_exit_layers = candidate_premature_layers + [mature_layer]
-            num_base_layers = len(candidate_premature_layers)
             premature_layer_dist = {l: 0 for l in candidate_premature_layers}
         else:
             raise ValueError(
                 "You must specify either `base_layer` or `candidate_premature_layers`"
             )
-
+        js_divs: list[tuple[torch.Tensor, torch.Tensor]] = []
         while True:
             if synced_gpus:
                 # Under synced_gpus the `forward` call must continue until all gpus complete their sequence.
@@ -2822,13 +2817,12 @@ class GenerationMixin:
                     kl_q_m: torch.Tensor = F.kl_div(log_softmax_q[None, :, :],
                                                     m,
                                                     reduction='none').mean(-1)
-                    adj_layer_jsd: torch.Tensor = 0.5 * (kl_p_m +
-                                                         kl_q_m).mean(-1)
+                    adj_layer_jsd: torch.Tensor = 1e5 * 0.5 * (kl_p_m +
+                                                               kl_q_m).mean(-1)
                     adj_layer_jsd_list.append(adj_layer_jsd)
-                adj_layer_jsd_stack: torch.Tensor = torch.stack(
-                    adj_layer_jsd_list, dim=0)
-                premature_layer: int = early_exit_layers[
-                    int(adj_layer_jsd_stack.argmax().cpu().item())]
+                js_div = torch.stack(adj_layer_jsd_list, dim=0)
+                premature_layer: int = early_exit_layers[int(
+                    js_div.argmax().cpu().item())]
                 premature_layer_dist[premature_layer] += 1
                 base_logits: torch.Tensor = dict_outputs[
                     premature_layer][:, -1, :]
@@ -2879,13 +2873,13 @@ class GenerationMixin:
                 kl2 = F.kl_div(
                     log_softmax_premature_layers, M, reduction='none').mean(
                         -1)  # shape: (num_premature_layers, batch_size)
-                js_divs = 0.5 * (kl1 + kl2
-                                 )  # shape: (num_premature_layers, batch_size)
+                js_div = 1e5 * 0.5 * (
+                    kl1 + kl2)  # shape: (num_premature_layers, batch_size)
 
                 # 6. Reduce the batchmean
-                js_divs = js_divs.mean(-1)  # shape: (num_premature_layers,)
+                js_div = js_div.mean(-1)  # shape: (num_premature_layers,)
                 premature_layer = candidate_premature_layers[int(
-                    js_divs.argmax().cpu().item())]
+                    js_div.argmax().cpu().item())]
                 premature_layer_dist[premature_layer] += 1
 
                 base_logits = dict_outputs[premature_layer][:, -1, :]
@@ -2929,7 +2923,7 @@ class GenerationMixin:
                     )
                 next_tokens = next_tokens * unfinished_sequences + pad_token_id * (
                     1 - unfinished_sequences)
-
+            js_divs.append([next_tokens, js_div])
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
             if streamer is not None:
@@ -2974,6 +2968,7 @@ class GenerationMixin:
                     attentions=decoder_attentions,
                     hidden_states=decoder_hidden_states,
                     premature_layer_dist=premature_layer_dist,
+                    js_divs=js_divs if return_jsd else None,
                 )
         else:
             return input_ids

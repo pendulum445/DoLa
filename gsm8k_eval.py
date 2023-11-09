@@ -229,8 +229,12 @@ def get_parser_args() -> argparse.Namespace:
                         type=str,
                         choices=["cuda", "cpu"],
                         default="cuda")
-    parser.add_argument("--data-path", type=str, default="./gsm8k/gsm8k_test.jsonl")
-    parser.add_argument("--output-path", type=str, default="./gsm8k_result.json")
+    parser.add_argument("--data-path",
+                        type=str,
+                        default="./gsm8k/gsm8k_test.jsonl")
+    parser.add_argument("--output-path",
+                        type=str,
+                        default="./gsm8k_result.json")
     # parallel mode (split the dataset into multiple parts, inference by separate processes)
     parser.add_argument(
         "--early-exit-layers",
@@ -251,6 +255,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)
     parser.add_argument("--adj_layer_jsd", action="store_true")
+    parser.add_argument("--draw_jsd_table", action="store_true")
     return parser.parse_args()
 
 
@@ -338,7 +343,8 @@ if __name__ == "__main__":
             premature_layer=premature_layer,
             candidate_premature_layers=candidate_premature_layers,
             relative_top=args.relative_top,
-            adj_layer_jsd=args.adj_layer_jsd)
+            adj_layer_jsd=args.adj_layer_jsd,
+            draw_jsd_table=args.draw_jsd_table)
         model_completion, c_dist = llm.generate(input_text, **generate_kwargs)
         if mode == "dola":
             for k, v in c_dist.items():
