@@ -86,7 +86,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--do_sample", action="store_true")
     parser.add_argument("--do_shuffle", action="store_true")
     # parser.add_argument("--debug", action="store_true")
-    parser.add_argument("--adj_layer_jsd", type=bool, default=True)
+    parser.add_argument("--adj_layer_jsd", type=bool, default=False)
     parser.add_argument("--draw_jsd_table", type=bool, default=False)
     parser.add_argument("--debug", type=bool, default=False)
     parser.add_argument("--seed", type=int, default=42)
@@ -214,10 +214,7 @@ if __name__ == "__main__":
                 print('Premature layer {0} was used {1} times, {2}%'.format(
                     it, premature_layer_dist[it],
                     round(premature_layer_dist[it] / total_tokens * 100, 2)))
-    # save results to a json file
-    model_tag = model_name.split(
-        '/')[-1] if model_name[-1] != '/' else model_name.split('/')[-2]
-    output_file = args.output_path if args.shard_id is None else (
+    output_file: str = args.output_path if args.shard_id is None else (
         args.output_path + "_" + str(args.shard_id) + ".json")
     with open(output_file, 'w') as f:
         json.dump(result_dict, f, indent=4)

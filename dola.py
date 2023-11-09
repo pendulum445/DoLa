@@ -283,6 +283,7 @@ class DoLa:
                  verbose: bool = True,
                  remove_stop_words: bool = False,
                  relative_top: float = 0.1,
+                 adj_layer_jsd: bool = False,
                  **kwargs) -> tuple[str, dict | None]:
         if candidate_premature_layers is None:
             candidate_premature_layers: list[int] = []
@@ -338,6 +339,7 @@ class DoLa:
                 mature_layer=mature_layer,
                 premature_layer=None,
                 candidate_premature_layers=candidate_premature_layers,
+                adj_layer_jsd=adj_layer_jsd,
                 **kwargs,
             )
             premature_layer_dist = outputs.premature_layer_dist
