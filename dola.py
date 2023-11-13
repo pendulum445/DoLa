@@ -345,26 +345,24 @@ class DoLa:
                 **kwargs,
             )
             premature_layer_dist = outputs.premature_layer_dist
-            if draw_jsd_table:
-                row_labels: list[str] = []
-                for i in candidate_premature_layers:
-                    row_labels.append(str(i))
-                col_labels: list[str] = []
-                js_divs: list[tuple[torch.Tensor,
-                                    torch.Tensor]] = outputs.js_divs
-                jsd_list: list[torch.Tensor] = []
-                for t in js_divs:
-                    col_labels.append(
-                        self.tokenizer.convert_ids_to_tokens(t[0].item()))
-                    jsd_list.append(t[1].cpu().numpy())
-                plot_colored_table(np.vstack(jsd_list).T[::-1, :],
-                                   row_labels,
-                                   col_labels,
-                                   fig_name='jsd_table.png')
         # skip the tokens in the input prompt
         gen_sequences = outputs.sequences[:, input_ids.shape[-1]:][0, :]
         output_str: str = self.tokenizer.decode(gen_sequences,
                                                 skip_special_tokens=True)
+        if draw_jsd_table:
+            row_labels: list[str] = []
+            for i in candidate_premature_layers:
+                row_labels.append(str(i))
+            col_labels: list[str] = []
+            js_divs: list[tuple[torch.Tensor, torch.Tensor]] = outputs.js_divs
+            jsd_list: list[torch.Tensor] = []
+            for t in js_divs:
+                col_labels.append(
+                    self.tokenizer.convert_ids_to_tokens(t[0].item()))
+                jsd_list.append(t[1].cpu().numpy())
+            plot_colored_table(
+                np.vstack(jsd_list).T[::-1, :], row_labels, col_labels,
+                input_text, output_str)
         if verbose:
             print('MODEL OUTPUT: \n{0}'.format(output_str))
         if remove_stop_words:
