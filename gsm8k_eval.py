@@ -256,6 +256,10 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--retry", type=int, default=1)
     parser.add_argument("--adj_layer_jsd", action="store_true")
     parser.add_argument("--draw_jsd_table", action="store_true")
+    parser.add_argument("--cal_div_method",
+                        type=str,
+                        default="js",
+                        choices=["js", "kl"])
     return parser.parse_args()
 
 
@@ -344,7 +348,8 @@ if __name__ == "__main__":
             candidate_premature_layers=candidate_premature_layers,
             relative_top=args.relative_top,
             adj_layer_jsd=args.adj_layer_jsd,
-            draw_jsd_table=args.draw_jsd_table)
+            draw_jsd_table=args.draw_jsd_table,
+            cal_div_method=args.cal_div_method)
         model_completion, c_dist = llm.generate(input_text, **generate_kwargs)
         if mode == "dola":
             for k, v in c_dist.items():
