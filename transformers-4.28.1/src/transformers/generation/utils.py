@@ -1217,6 +1217,7 @@ class GenerationMixin:
         adj_layer_jsd: Optional[bool] = None,
         return_jsd: Optional[bool] = None,
         cal_div_method: str = 'js',
+        align: Optional[bool] = False,
         **kwargs,
     ) -> Union[GenerateOutput, torch.LongTensor]:
         r"""
@@ -1546,6 +1547,7 @@ class GenerationMixin:
                 adj_layer_jsd=adj_layer_jsd,
                 return_jsd=return_jsd,
                 cal_div_method=cal_div_method,
+                align=align,
                 **model_kwargs,
             )
 
@@ -2650,6 +2652,7 @@ class GenerationMixin:
         adj_layer_jsd: Optional[bool] = False,
         return_jsd: Optional[bool] = False,
         cal_div_method: str = 'js',
+        align: Optional[bool] = False,
         **model_kwargs,
     ) -> Union[GreedySearchOutput, torch.LongTensor]:
         r"""
@@ -2894,6 +2897,8 @@ class GenerationMixin:
                 premature_layer_dist[premature_layer] += 1
                 base_logits = dict_outputs[premature_layer][:, -1, :]
                 final_logits = dict_outputs[mature_layer][:, -1, :]
+                if align:
+                    base_logits += final_logits.mean() - base_logits.mean()
                 if relative_top > 0.0:
                     final_logits = self.relative_top_filter(
                         final_logits, relative_top)

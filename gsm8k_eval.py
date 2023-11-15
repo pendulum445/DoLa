@@ -259,6 +259,7 @@ def get_parser_args() -> argparse.Namespace:
                         type=str,
                         default="js",
                         choices=["js", "kl"])
+    parser.add_argument("--align", action="store_true")
     return parser.parse_args()
 
 
@@ -348,7 +349,9 @@ if __name__ == "__main__":
             relative_top=args.relative_top,
             adj_layer_jsd=args.adj_layer_jsd,
             draw_jsd_table=args.draw_jsd_table,
-            cal_div_method=args.cal_div_method)
+            cal_div_method=args.cal_div_method,
+            align=args.align    
+        )
         model_completion, c_dist = llm.generate(input_text, **generate_kwargs)
         if mode == "dola":
             for k, v in c_dist.items():

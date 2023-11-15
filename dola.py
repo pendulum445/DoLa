@@ -286,6 +286,7 @@ class DoLa:
                  adj_layer_jsd: bool = False,
                  draw_jsd_table: bool = False,
                  cal_div_method: str = 'js',
+                 align: bool = False,
                  **kwargs) -> tuple[str, dict | None]:
         if candidate_premature_layers is None:
             candidate_premature_layers: list[int] = []
@@ -344,6 +345,7 @@ class DoLa:
                 adj_layer_jsd=adj_layer_jsd,
                 return_jsd=draw_jsd_table,
                 cal_div_method=cal_div_method,
+                align=align,
                 **kwargs,
             )
             premature_layer_dist = outputs.premature_layer_dist
