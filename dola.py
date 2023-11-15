@@ -363,8 +363,7 @@ class DoLa:
                     self.tokenizer.convert_ids_to_tokens(t[0].item()))
                 jsd_list.append(t[1].cpu().numpy())
             plot_colored_table(
-                np.vstack(jsd_list).T[::-1, :], row_labels, col_labels,
-                input_text, output_str)
+                np.vstack(jsd_list).T[::-1, :], row_labels, col_labels)
         if verbose:
             print('MODEL OUTPUT: \n{0}'.format(output_str))
         if remove_stop_words:

@@ -2869,9 +2869,9 @@ class GenerationMixin:
                     adj_layer_jsd: torch.Tensor = 1e5 * 0.5 * (kl_p_m +
                                                                kl_q_m).mean(-1)
                     adj_layer_jsd_list.append(adj_layer_jsd)
-                js_div = torch.stack(adj_layer_jsd_list, dim=0)
+                div = torch.stack(adj_layer_jsd_list, dim=0)
                 premature_layer: int = early_exit_layers[int(
-                    js_div.argmax().cpu().item())]
+                    div.argmax().cpu().item())]
                 premature_layer_dist[premature_layer] += 1
                 base_logits: torch.Tensor = dict_outputs[
                     premature_layer][:, -1, :]
@@ -2886,11 +2886,11 @@ class GenerationMixin:
                 logits: torch.Tensor = final_logits - base_logits
                 next_token_logits: torch.Tensor = logits
             else:
-                js_div: torch.Tensor = cal_div(dict_outputs,
-                                               candidate_premature_layers,
-                                               mature_layer, 'js')
+                div: torch.Tensor = cal_div(dict_outputs,
+                                            candidate_premature_layers,
+                                            mature_layer, cal_div_method)
                 premature_layer = candidate_premature_layers[int(
-                    js_div.argmax().cpu().item())]
+                    div.argmax().cpu().item())]
                 premature_layer_dist[premature_layer] += 1
                 base_logits = dict_outputs[premature_layer][:, -1, :]
                 final_logits = dict_outputs[mature_layer][:, -1, :]
@@ -2933,7 +2933,7 @@ class GenerationMixin:
                     )
                 next_tokens = next_tokens * unfinished_sequences + pad_token_id * (
                     1 - unfinished_sequences)
-            js_divs.append([next_tokens, js_div])
+            js_divs.append([next_tokens, div])
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
             if streamer is not None:

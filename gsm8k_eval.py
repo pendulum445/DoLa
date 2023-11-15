@@ -22,7 +22,6 @@ INVALID_ANS = "[invalid]"
 
 N_SHOT = 8
 COT_FLAG = True
-DEBUG = True
 ANSWER_TRIGGER = "The answer is"
 
 
@@ -361,7 +360,7 @@ if __name__ == "__main__":
         result_dict['model_answer'].append(model_answer)
         result_dict['model_completion'].append(model_completion)
         result_dict['full_input_text'].append(input_text)
-        if DEBUG:
+        if args.debug:
             print(f'Full input_text:\n{input_text}\n\n')
             print(
                 f'Question: {sample["instruction"]}\n\n'
