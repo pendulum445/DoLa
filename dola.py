@@ -280,7 +280,7 @@ class DoLa:
                  premature_layer=None,
                  candidate_premature_layers=None,
                  mode: str = 'baseline',
-                 verbose: bool = True,
+                 verbose: bool = False,
                  remove_stop_words: bool = False,
                  relative_top: float = 0.1,
                  adj_layer_jsd: bool = False,
