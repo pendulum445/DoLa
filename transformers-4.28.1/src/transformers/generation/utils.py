@@ -1218,6 +1218,7 @@ class GenerationMixin:
         return_jsd: Optional[bool] = None,
         cal_div_method: str = 'js',
         align: Optional[bool] = False,
+        exit_out: Optional[bool] = False,
         **kwargs,
     ) -> Union[GenerateOutput, torch.LongTensor]:
         r"""
@@ -1548,6 +1549,7 @@ class GenerationMixin:
                 return_jsd=return_jsd,
                 cal_div_method=cal_div_method,
                 align=align,
+                exit_out=exit_out,
                 **model_kwargs,
             )
 
@@ -2653,6 +2655,7 @@ class GenerationMixin:
         return_jsd: Optional[bool] = False,
         cal_div_method: str = 'js',
         align: Optional[bool] = False,
+        exit_out: Optional[bool] = False,
         **model_kwargs,
     ) -> Union[GreedySearchOutput, torch.LongTensor]:
         r"""
@@ -2872,7 +2875,7 @@ class GenerationMixin:
                     adj_layer_jsd: torch.Tensor = 1e5 * 0.5 * (kl_p_m +
                                                                kl_q_m).mean(-1)
                     adj_layer_jsd_list.append(adj_layer_jsd)
-                div = torch.stack(adj_layer_jsd_list, dim=0)
+                div = torch.tensor(adj_layer_jsd_list)
                 premature_layer: int = early_exit_layers[int(
                     div.argmax().cpu().item())]
                 premature_layer_dist[premature_layer] += 1
@@ -2886,7 +2889,8 @@ class GenerationMixin:
                     base_logits = base_logits.log_softmax(dim=-1)
                     mask: torch.Tensor = final_logits[0] < -1e3
                     base_logits[0][mask] = -1e3
-                logits: torch.Tensor = final_logits - base_logits
+                logits: torch.Tensor = final_logits
+                # logits: torch.Tensor = final_logits - base_logits
                 next_token_logits: torch.Tensor = logits
             else:
                 div: torch.Tensor = cal_div(dict_outputs,
@@ -2899,13 +2903,21 @@ class GenerationMixin:
                 final_logits = dict_outputs[mature_layer][:, -1, :]
                 if align:
                     base_logits += final_logits.mean() - base_logits.mean()
-                if relative_top > 0.0:
-                    final_logits = self.relative_top_filter(
-                        final_logits, relative_top)
-                    base_logits = base_logits.log_softmax(dim=-1)
-                    mask = final_logits[0] < -1e3
-                    base_logits[0][mask] = -1e3
-                logits = final_logits - base_logits
+                
+                if exit_out:
+                    if relative_top > 0.0:
+                        base_logits = self.relative_top_filter(
+                            base_logits, relative_top)
+                    logits = base_logits
+                else:
+                    if relative_top > 0.0:
+                        final_logits = self.relative_top_filter(
+                            final_logits, relative_top)
+                        base_logits = base_logits.log_softmax(dim=-1)
+                        mask = final_logits[0] < -1e3
+                        base_logits[0][mask] = -1e3
+                    logits = final_logits - base_logits
+
                 next_token_logits = logits
 
             # pre-process distribution
@@ -2939,6 +2951,7 @@ class GenerationMixin:
                 next_tokens = next_tokens * unfinished_sequences + pad_token_id * (
                     1 - unfinished_sequences)
             js_divs.append([next_tokens, div])
+            # print([next_tokens, div])
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
             if streamer is not None:

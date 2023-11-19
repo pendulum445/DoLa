@@ -72,7 +72,7 @@ def get_relative_top_filter(scores: torch.Tensor,
 def plot_colored_table(data: np.ndarray,
                        row_labels: list[str],
                        col_labels: list[str],
-                       fig_name: str = 'jsd_table.png'):
+                       fig_name: str = 'kl_near.png'):
     fig, ax = plt.subplots()
     table_data: list[list[str]] = [['{:.2f}'.format(value) for value in row]
                                    for row in data]

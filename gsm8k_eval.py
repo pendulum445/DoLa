@@ -12,7 +12,7 @@ import urllib.request
 
 import transformers
 from tqdm import tqdm
-
+import torch
 from dola import DoLa
 
 transformers.logging.set_verbosity(40)
@@ -260,6 +260,7 @@ def get_parser_args() -> argparse.Namespace:
                         default="js",
                         choices=["js", "kl"])
     parser.add_argument("--align", action="store_true")
+    parser.add_argument("--exit_out", action="store_true")
     return parser.parse_args()
 
 
@@ -332,6 +333,10 @@ if __name__ == "__main__":
         'model_completion': [],
         'full_input_text': []
     }
+
+    times = torch.zeros(len(list_data_dict))
+    starter,ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
+    idx = 0
     for sample in tqdm(list_data_dict):
         input_text: str = build_prompt(sample['instruction'], N_SHOT, COT_FLAG,
                                        args.do_shuffle)
@@ -350,9 +355,16 @@ if __name__ == "__main__":
             adj_layer_jsd=args.adj_layer_jsd,
             draw_jsd_table=args.draw_jsd_table,
             cal_div_method=args.cal_div_method,
-            align=args.align    
+            align=args.align,
+            exit_out=args.exit_out    
         )
+        starter.record()
         model_completion, c_dist = llm.generate(input_text, **generate_kwargs)
+        ender.record()
+        torch.cuda.synchronize()
+        current_time = starter.elapsed_time(ender)
+        times[idx] = current_time
+        idx += 1
         if mode == "dola":
             for k, v in c_dist.items():
                 premature_layer_dist[k] += v
@@ -365,12 +377,15 @@ if __name__ == "__main__":
         result_dict['full_input_text'].append(input_text)
         if args.debug:
             print(f'Full input_text:\n{input_text}\n\n')
-            print(
+        print(
                 f'Question: {sample["instruction"]}\n\n'
                 f'Answers: {extract_answer_from_output(sample["output"])}\n\n'
                 f'Model Answers: {model_answer}\n\n'
                 f'Model Completion: {model_completion}\n\n'
-                f'Is correct: {is_cor}\n\n')
+                f'Is correct: {is_cor}\n\n'
+                f'inference time: {float(current_time)}')
+    average_time = times.mean().item()
+    Throughput = len(list_data_dict)* args.max_new_tokens*1000/ (times.sum().item())
     print(f'Num of total question: {len(answers)}, '
           f'correct num: {sum(answers)}, '
           f'correct rate: {float(sum(answers))/len(answers)}.')
@@ -386,3 +401,5 @@ if __name__ == "__main__":
     with open(output_file, 'w') as f:
         json.dump(result_dict, f, indent=4)
     print(f"{float(sum(answers))/len(answers)}")
+    print(f'total inferance time: {float(times.sum().item())} '
+          f'thoughput: {Throughput}.')

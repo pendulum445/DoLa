@@ -19,7 +19,9 @@
 # limitations under the License.
 """ PyTorch LLaMA model."""
 import math
+from tokenize import String
 from typing import List, Optional, Tuple, Union
+from sympy import false
 
 import torch
 import torch.utils.checkpoint
@@ -548,6 +550,34 @@ class LlamaModel(LlamaPreTrainedModel):
 
         return combined_attention_mask
 
+    def cal_div(self,current,all_hidden_states,cal_div_method):
+        softmax_p: torch.Tensor = F.softmax(
+                    current[:, -1, :], dim=-1)
+        softmax_q: torch.Tensor = F.softmax(
+                    all_hidden_states[-1][:, -1, :],
+                    dim=-1)
+        m: torch.Tensor = 0.5 * (softmax_p + softmax_q)
+        log_softmax_p: torch.Tensor = F.log_softmax(
+                    current[:, -1, :], dim=-1)
+        log_softmax_q: torch.Tensor = F.log_softmax(
+                    all_hidden_states[-1][:, -1, :],
+                    dim=-1)
+        if cal_div_method == "js":
+            
+            kl_p_m: torch.Tensor = F.kl_div(log_softmax_p[None, :, :],
+                                                    m,
+                                                    reduction='none').mean(-1)
+            kl_q_m: torch.Tensor = F.kl_div(log_softmax_q[None, :, :],
+                                                    m,
+                                                    reduction='none').mean(-1)
+            return  1e5 * 0.5 * (kl_p_m + kl_q_m).mean(-1)
+        elif cal_div_method == "kl":
+            return F.kl_div(log_softmax_p[None, :, :],
+                            log_softmax_q[None, :, :],
+                            reduction='none').mean(-1)
+
+        # return div
+
     @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
     def forward(
         self,
@@ -560,6 +590,8 @@ class LlamaModel(LlamaPreTrainedModel):
         output_attentions: Optional[bool] = None,
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
+        cal_div: Optional[bool] = None,
+        cal_div_method: str = '',
     ) -> Union[Tuple, BaseModelOutputWithPast]:
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (output_hidden_states
@@ -624,6 +656,7 @@ class LlamaModel(LlamaPreTrainedModel):
         all_hidden_states = () if output_hidden_states else None
         all_self_attns = () if output_attentions else None
         next_decoder_cache = () if use_cache else None
+        all_div = [] if cal_div else None 
 
         for idx, decoder_layer in enumerate(self.layers):
             if output_hidden_states:
@@ -660,6 +693,8 @@ class LlamaModel(LlamaPreTrainedModel):
                 )
 
             hidden_states = layer_outputs[0]
+            if cal_div:
+                all_di.append(self.cal_div(hidden_states,all_hidden_states,cal_div_method))
 
             if use_cache:
                 next_decoder_cache += (
