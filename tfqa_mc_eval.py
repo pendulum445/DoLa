@@ -27,7 +27,6 @@ COT_FLAG = True
 DEBUG = False
 ANSWER_TRIGGER = "So the answer is"
 
-
 def split_multi_answer(ans, sep=';', close=True):
     """Splits string of all reference answers into a list of formatted answers"""
 
