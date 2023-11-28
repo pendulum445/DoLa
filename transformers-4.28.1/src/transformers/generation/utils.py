@@ -24,7 +24,7 @@ from typing import (TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple,
 import numpy as np
 import torch
 import torch.distributed as dist
-from torch import nn
+from torch import diff, nn
 from torch.nn import functional as F
 
 from ..deepspeed import is_deepspeed_zero3_enabled
@@ -65,7 +65,8 @@ logger = logging.get_logger(__name__)
 def cal_div(dict_outputs: dict[int, torch.Tensor],
             candidate_premature_layers: list[int],
             mature_layer: int,
-            method: str = 'js') -> torch.Tensor:
+            method: str = 'js',
+            adj_layer: bool = False) -> torch.Tensor:
     # Stacking all premature_layers into a new dimension
     stacked_premature_layers: torch.Tensor = torch.stack(
         [dict_outputs[i][:, -1, :] for i in candidate_premature_layers], dim=0)
@@ -136,6 +137,7 @@ class GreedySearchDecoderOnlyOutput(ModelOutput):
     hidden_states: Optional[Tuple[Tuple[torch.FloatTensor]]] = None
     premature_layer_dist: Optional[Dict[int, int]] = None
     js_divs: Optional[list[tuple[torch.Tensor, torch.Tensor]]] = None
+    diff_record: Optional[dict] = None
 
 
 @dataclass
@@ -1214,11 +1216,13 @@ class GenerationMixin:
         contrastive_decoding: Optional[bool] = None,
         student_model=None,
         streamer: Optional["BaseStreamer"] = None,
-        adj_layer_jsd: Optional[bool] = None,
+        adj_layer: Optional[bool] = None,
         return_jsd: Optional[bool] = None,
         cal_div_method: str = 'js',
         align: Optional[bool] = False,
         exit_out: Optional[bool] = False,
+        drop_layers: Optional[List[int]] = None,
+        diff_token: Optional[bool] = False,
         **kwargs,
     ) -> Union[GenerateOutput, torch.LongTensor]:
         r"""
@@ -1545,11 +1549,13 @@ class GenerationMixin:
                 candidate_premature_layers=candidate_premature_layers,
                 relative_top=relative_top,
                 streamer=streamer,
-                adj_layer_jsd=adj_layer_jsd,
+                adj_layer=adj_layer,
                 return_jsd=return_jsd,
                 cal_div_method=cal_div_method,
                 align=align,
                 exit_out=exit_out,
+                drop_layers=drop_layers,
+                diff_token=diff_token,
                 **model_kwargs,
             )
 
@@ -1597,6 +1603,7 @@ class GenerationMixin:
                 return_dict_in_generate,
                 synced_gpus=synced_gpus,
                 streamer=streamer,
+                drop_layers=drop_layers,
                 **model_kwargs,
             )
 
@@ -2364,6 +2371,7 @@ class GenerationMixin:
         return_dict_in_generate: Optional[bool] = None,
         synced_gpus: Optional[bool] = False,
         streamer: Optional["BaseStreamer"] = None,
+        drop_layers: Optional[List[int]] = None,
         **model_kwargs,
     ) -> Union[GreedySearchOutput, torch.LongTensor]:
         r"""
@@ -2532,6 +2540,7 @@ class GenerationMixin:
                 return_dict=True,
                 output_attentions=output_attentions,
                 output_hidden_states=output_hidden_states,
+                drop_layers=drop_layers,
             )
 
             if synced_gpus and this_peer_finished:
@@ -2651,11 +2660,13 @@ class GenerationMixin:
         return_dict_in_generate: Optional[bool] = None,
         synced_gpus: Optional[bool] = False,
         streamer: Optional["BaseStreamer"] = None,
-        adj_layer_jsd: Optional[bool] = False,
+        adj_layer: Optional[bool] = False,
         return_jsd: Optional[bool] = False,
         cal_div_method: str = 'js',
         align: Optional[bool] = False,
         exit_out: Optional[bool] = False,
+        drop_layers: Optional[List[int]] = None,
+        diff_token: Optional[bool] = False,
         **model_kwargs,
     ) -> Union[GreedySearchOutput, torch.LongTensor]:
         r"""
@@ -2814,6 +2825,9 @@ class GenerationMixin:
                 "You must specify either `base_layer` or `candidate_premature_layers`"
             )
         js_divs: list[tuple[torch.Tensor, torch.Tensor]] = []
+        diff_record = {} if diff_token else None
+        prefix_len = len(input_ids)
+        generate_idx = 0 
         while True:
             if synced_gpus:
                 # Under synced_gpus the `forward` call must continue until all gpus complete their sequence.
@@ -2837,6 +2851,7 @@ class GenerationMixin:
                 output_attentions=output_attentions,
                 output_hidden_states=output_hidden_states,
                 early_exit_layers=early_exit_layers,
+                drop_layers=drop_layers
             )
 
             if synced_gpus and this_peer_finished:
@@ -2852,58 +2867,64 @@ class GenerationMixin:
                     base_logits[0][mask] = -1e3
                 logits = final_logits - base_logits
                 next_token_logits = logits
-            elif adj_layer_jsd:
-                adj_layer_jsd_list: list[torch.Tensor] = []
-                for i in range(1, len(early_exit_layers)):
-                    softmax_p: torch.Tensor = F.softmax(
-                        dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
-                    softmax_q: torch.Tensor = F.softmax(
-                        dict_outputs[early_exit_layers[i - 1]][:, -1, :],
-                        dim=-1)
-                    m: torch.Tensor = 0.5 * (softmax_p + softmax_q)
-                    log_softmax_p: torch.Tensor = F.log_softmax(
-                        dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
-                    log_softmax_q: torch.Tensor = F.log_softmax(
-                        dict_outputs[early_exit_layers[i - 1]][:, -1, :],
-                        dim=-1)
-                    kl_p_m: torch.Tensor = F.kl_div(log_softmax_p[None, :, :],
-                                                    m,
-                                                    reduction='none').mean(-1)
-                    kl_q_m: torch.Tensor = F.kl_div(log_softmax_q[None, :, :],
-                                                    m,
-                                                    reduction='none').mean(-1)
-                    adj_layer_jsd: torch.Tensor = 1e5 * 0.5 * (kl_p_m +
-                                                               kl_q_m).mean(-1)
-                    adj_layer_jsd_list.append(adj_layer_jsd)
-                div = torch.tensor(adj_layer_jsd_list)
-                premature_layer: int = early_exit_layers[int(
-                    div.argmax().cpu().item())]
-                premature_layer_dist[premature_layer] += 1
-                base_logits: torch.Tensor = dict_outputs[
-                    premature_layer][:, -1, :]
-                final_logits: torch.Tensor = dict_outputs[mature_layer][:,
-                                                                        -1, :]
-                if relative_top > 0.0:
-                    final_logits = self.relative_top_filter(
-                        final_logits, relative_top)
-                    base_logits = base_logits.log_softmax(dim=-1)
-                    mask: torch.Tensor = final_logits[0] < -1e3
-                    base_logits[0][mask] = -1e3
-                logits: torch.Tensor = final_logits
-                # logits: torch.Tensor = final_logits - base_logits
-                next_token_logits: torch.Tensor = logits
+            # elif adj_layer_jsd:
+            #     adj_layer_jsd_list: list[torch.Tensor] = []
+            #     for i in range(1, len(early_exit_layers)):
+            #         softmax_p: torch.Tensor = F.softmax(
+            #             dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
+            #         softmax_q: torch.Tensor = F.softmax(
+            #             dict_outputs[early_exit_layers[i - 1]][:, -1, :],
+            #             dim=-1)
+            #         m: torch.Tensor = 0.5 * (softmax_p + softmax_q)
+            #         log_softmax_p: torch.Tensor = F.log_softmax(
+            #             dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
+            #         log_softmax_q: torch.Tensor = F.log_softmax(
+            #             dict_outputs[early_exit_layers[i - 1]][:, -1, :],
+            #             dim=-1)
+            #         kl_p_m: torch.Tensor = F.kl_div(log_softmax_p[None, :, :],
+            #                                         m,
+            #                                         reduction='none').mean(-1)
+            #         kl_q_m: torch.Tensor = F.kl_div(log_softmax_q[None, :, :],
+            #                                         m,
+            #                                         reduction='none').mean(-1)
+            #         adj_layer_jsd: torch.Tensor = 1e5 * 0.5 * (kl_p_m +
+            #                                                    kl_q_m).mean(-1)
+            #         adj_layer_jsd_list.append(adj_layer_jsd)
+            #     div = torch.tensor(adj_layer_jsd_list)
+            #     premature_layer: int = early_exit_layers[int(
+            #         div.argmax().cpu().item())]
+            #     premature_layer_dist[premature_layer] += 1
+            #     base_logits: torch.Tensor = dict_outputs[
+            #         premature_layer][:, -1, :]
+            #     final_logits: torch.Tensor = dict_outputs[mature_layer][:,
+            #                                                             -1, :]
+            #     if relative_top > 0.0:
+            #         final_logits = self.relative_top_filter(
+            #             final_logits, relative_top)
+            #         base_logits = base_logits.log_softmax(dim=-1)
+            #         mask: torch.Tensor = final_logits[0] < -1e3
+            #         base_logits[0][mask] = -1e3
+            #     logits: torch.Tensor = final_logits
+            #     # logits: torch.Tensor = final_logits - base_logits
+            #     next_token_logits: torch.Tensor = logits
             else:
                 div: torch.Tensor = cal_div(dict_outputs,
                                             candidate_premature_layers,
-                                            mature_layer, cal_div_method)
+                                            mature_layer, cal_div_method, adj_layer)
                 premature_layer = candidate_premature_layers[int(
                     div.argmax().cpu().item())]
                 premature_layer_dist[premature_layer] += 1
                 base_logits = dict_outputs[premature_layer][:, -1, :]
                 final_logits = dict_outputs[mature_layer][:, -1, :]
-                if align:
-                    base_logits += final_logits.mean() - base_logits.mean()
                 
+                if align:
+                    # base_logits += final_logits.mean() - base_logits.mean()
+                    hidden_premature = outputs.hidden_states[premature_layer]
+                    hidden_mature = outputs.hidden_states[-1]
+                    hidden_premature += hidden_mature.mean() - hidden_premature.mean()
+                    base_logits = self.lm_head(hidden_premature)[:,-1,:]
+                
+
                 if exit_out:
                     if relative_top > 0.0:
                         base_logits = self.relative_top_filter(
@@ -2915,7 +2936,7 @@ class GenerationMixin:
                             final_logits, relative_top)
                         base_logits = base_logits.log_softmax(dim=-1)
                         mask = final_logits[0] < -1e3
-                        base_logits[0][mask] = -1e3
+                        base_logits[mask] = -1e3
                     logits = final_logits - base_logits
 
                 next_token_logits = logits
@@ -2939,8 +2960,18 @@ class GenerationMixin:
                                               if self.config.is_encoder_decoder
                                               else (outputs.hidden_states, ))
 
+            
             # argmax
             next_tokens = torch.argmax(next_tokens_scores, dim=-1)
+            
+            # origin token 
+            if diff_token:
+                origin_next_token_logits = outputs['logits'][:,-1,:]
+                origin_next_token_scores = logits_processor(input_ids, origin_next_token_logits)
+                origin_next_tokens = torch.argmax(origin_next_token_scores, dim=-1)
+                if next_tokens != origin_next_tokens:
+                    diff_record[generate_idx] = {'origin': origin_next_tokens, 'DoLa': next_tokens, 'hidden_states': dict_outputs}
+
 
             # finished sentences should have their next token be a padding token
             if eos_token_id is not None:
@@ -2954,6 +2985,7 @@ class GenerationMixin:
             # print([next_tokens, div])
             # update generated ids, model inputs, and length for next step
             input_ids = torch.cat([input_ids, next_tokens[:, None]], dim=-1)
+            generate_idx += 1
             if streamer is not None:
                 streamer.put(next_tokens.cpu())
             model_kwargs = self._update_model_kwargs_for_generation(
@@ -2997,6 +3029,7 @@ class GenerationMixin:
                     hidden_states=decoder_hidden_states,
                     premature_layer_dist=premature_layer_dist,
                     js_divs=js_divs if return_jsd else None,
+                    diff_record=diff_record,
                 )
         else:
             return input_ids

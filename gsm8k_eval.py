@@ -2,6 +2,7 @@
 # Ref: https://github.com/alibaba/FederatedScope/blob/dev/llm/federatedscope/llm/eval/eval_for_gsm8k/eval.py
 
 import argparse
+from ast import arg
 import gzip
 import json
 import os
@@ -238,7 +239,11 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument(
         "--early-exit-layers",
         type=str,
-        default="0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32")
+        default="-1")
+    parser.add_argument(
+        "--drop_layers",
+        type=str,
+        default=None)
     parser.add_argument("--parallel", action="store_true")
     parser.add_argument("--total-shard", type=int, default=8)
     parser.add_argument("--shard-id", type=int, default=None)
@@ -253,7 +258,7 @@ def get_parser_args() -> argparse.Namespace:
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--retry", type=int, default=1)
-    parser.add_argument("--adj_layer_jsd", action="store_true")
+    parser.add_argument("--adj_layer", action="store_true")
     parser.add_argument("--draw_jsd_table", action="store_true")
     parser.add_argument("--cal_div_method",
                         type=str,
@@ -261,6 +266,7 @@ def get_parser_args() -> argparse.Namespace:
                         choices=["js", "kl"])
     parser.add_argument("--align", action="store_true")
     parser.add_argument("--exit_out", action="store_true")
+    parser.add_argument("--diff_token", action="store_true")
     return parser.parse_args()
 
 
@@ -337,6 +343,10 @@ if __name__ == "__main__":
     times = torch.zeros(len(list_data_dict))
     starter,ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
     idx = 0
+    drop_layers = [
+        int(x) for x in args.drop_layers.split(',')
+    ] if not args.drop_layers is None else None 
+    print(f"drop_layer: {drop_layers}")
     for sample in tqdm(list_data_dict):
         input_text: str = build_prompt(sample['instruction'], N_SHOT, COT_FLAG,
                                        args.do_shuffle)
@@ -352,11 +362,13 @@ if __name__ == "__main__":
             premature_layer=premature_layer,
             candidate_premature_layers=candidate_premature_layers,
             relative_top=args.relative_top,
-            adj_layer_jsd=args.adj_layer_jsd,
+            adj_layer=args.adj_layer,
             draw_jsd_table=args.draw_jsd_table,
             cal_div_method=args.cal_div_method,
             align=args.align,
-            exit_out=args.exit_out    
+            exit_out=args.exit_out,
+            drop_layers=drop_layers,
+            diff_token=args.diff_token,
         )
         starter.record()
         model_completion, c_dist = llm.generate(input_text, **generate_kwargs)

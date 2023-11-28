@@ -19,6 +19,7 @@
 # limitations under the License.
 """ PyTorch LLaMA model."""
 import math
+import random
 from tokenize import String
 from typing import List, Optional, Tuple, Union
 from sympy import false
@@ -27,6 +28,7 @@ import torch
 import torch.utils.checkpoint
 from torch import nn
 from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss, MSELoss
+from traitlets import Int
 
 from ...activations import ACT2FN
 from ...modeling_outputs import (BaseModelOutputWithPast,
@@ -590,8 +592,7 @@ class LlamaModel(LlamaPreTrainedModel):
         output_attentions: Optional[bool] = None,
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
-        cal_div: Optional[bool] = None,
-        cal_div_method: str = '',
+        drop_layers: Optional[List[int]] = None,
     ) -> Union[Tuple, BaseModelOutputWithPast]:
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (output_hidden_states
@@ -656,14 +657,28 @@ class LlamaModel(LlamaPreTrainedModel):
         all_hidden_states = () if output_hidden_states else None
         all_self_attns = () if output_attentions else None
         next_decoder_cache = () if use_cache else None
-        all_div = [] if cal_div else None 
 
+        exist_layers=[i for i in range(len(self.layers))]
+        if drop_layers is not None:
+            for l in drop_layers:
+                exist_layers.remove(l)
         for idx, decoder_layer in enumerate(self.layers):
+            if not drop_layers is None:
+                if idx in drop_layers :
+                    continue
+
             if output_hidden_states:
                 all_hidden_states += (hidden_states, )
 
-            past_key_value = past_key_values[
-                idx] if past_key_values is not None else None
+            if past_key_values is not None:
+                if drop_layers is not None:
+                    past_key_value = past_key_values[
+                            exist_layers.index(idx) ] if idx in exist_layers else None
+                else:
+                    past_key_value = past_key_values[idx]
+            else:
+                past_key_value = None
+            # past_key_value = None
 
             if self.gradient_checkpointing and self.training:
 
@@ -693,8 +708,7 @@ class LlamaModel(LlamaPreTrainedModel):
                 )
 
             hidden_states = layer_outputs[0]
-            if cal_div:
-                all_di.append(self.cal_div(hidden_states,all_hidden_states,cal_div_method))
+
 
             if use_cache:
                 next_decoder_cache += (
@@ -770,6 +784,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
         early_exit_layers: Optional[List[int]] = None,
+        drop_layers: Optional[List[int]] = None,
     ) -> Union[Tuple[torch.Tensor], CausalLMOutputWithPast]:
         r"""
         Args:
@@ -815,6 +830,7 @@ class LlamaForCausalLM(LlamaPreTrainedModel):
             output_hidden_states=output_hidden_states
             or early_exit_layers is not None,
             return_dict=return_dict,
+            drop_layers=drop_layers
         )
         if early_exit_layers is not None:
             logits_dict = {}
