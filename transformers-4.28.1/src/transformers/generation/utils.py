@@ -67,46 +67,93 @@ def cal_div(dict_outputs: dict[int, torch.Tensor],
             mature_layer: int,
             method: str = 'js',
             adj_layer: bool = False) -> torch.Tensor:
-    # Stacking all premature_layers into a new dimension
-    stacked_premature_layers: torch.Tensor = torch.stack(
-        [dict_outputs[i][:, -1, :] for i in candidate_premature_layers], dim=0)
-    # Calculate the softmax values for mature_layer and all premature_layers
-    softmax_mature_layer: torch.Tensor = F.softmax(
-        dict_outputs[mature_layer][:, -1, :],
-        dim=-1)  # shape: (batch_size, num_features)
-    softmax_premature_layers: torch.Tensor = F.softmax(
-        stacked_premature_layers,
-        dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
-    # Calculate log-softmax for the KL divergence
-    log_softmax_mature_layer: torch.Tensor = F.log_softmax(
-        dict_outputs[mature_layer][:, -1, :],
-        dim=-1)  # shape: (batch_size, num_features)
-    log_softmax_premature_layers: torch.Tensor = F.log_softmax(
-        stacked_premature_layers,
-        dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
-    if method == 'js':
-        # Calculate M, the average distribution
-        M: torch.Tensor = 0.5 * (
-            softmax_mature_layer[None, :, :] + softmax_premature_layers
-        )  # shape: (num_premature_layers, batch_size, num_features)
-        # Calculate the KL divergences and then the JS divergences
-        kl1: torch.Tensor = F.kl_div(
-            log_softmax_mature_layer[None, :, :], M, reduction='none').mean(
-                -1)  # shape: (num_premature_layers, batch_size)
-        kl2: torch.Tensor = F.kl_div(
-            log_softmax_premature_layers, M, reduction='none').mean(
-                -1)  # shape: (num_premature_layers, batch_size)
-        js_div: torch.Tensor = 1e5 * 0.5 * (
-            kl1 + kl2)  # shape: (num_premature_layers, batch_size)
-        # Reduce the batchmean
-        return js_div.mean(-1)
-    elif method == 'kl':
-        kl_div: torch.Tensor = 1e5 * F.kl_div(log_softmax_premature_layers,
-                                              softmax_mature_layer[None, :, :],
-                                              reduction='none').mean(-1)
-        return kl_div.mean(-1)
+    if not adj_layer:
+        # Stacking all premature_layers into a new dimension
+        stacked_premature_layers: torch.Tensor = torch.stack(
+            [dict_outputs[i][:, -1, :] for i in candidate_premature_layers], dim=0)
+        # Calculate the softmax values for mature_layer and all premature_layers
+        softmax_mature_layer: torch.Tensor = F.softmax(
+            dict_outputs[mature_layer][:, -1, :],
+            dim=-1)  # shape: (batch_size, num_features)
+        softmax_premature_layers: torch.Tensor = F.softmax(
+            stacked_premature_layers,
+            dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
+        # Calculate log-softmax for the KL divergence
+        log_softmax_mature_layer: torch.Tensor = F.log_softmax(
+            dict_outputs[mature_layer][:, -1, :],
+            dim=-1)  # shape: (batch_size, num_features)
+        log_softmax_premature_layers: torch.Tensor = F.log_softmax(
+            stacked_premature_layers,
+            dim=-1)  # shape: (num_premature_layers, batch_size, num_features)
+        if method == 'js':
+            # Calculate M, the average distribution
+            M: torch.Tensor = 0.5 * (
+                softmax_mature_layer[None, :, :] + softmax_premature_layers
+            )  # shape: (num_premature_layers, batch_size, num_features)
+            # Calculate the KL divergences and then the JS divergences
+            kl1: torch.Tensor = F.kl_div(
+                log_softmax_mature_layer[None, :, :], M, reduction='none').mean(
+                    -1)  # shape: (num_premature_layers, batch_size)
+            kl2: torch.Tensor = F.kl_div(
+                log_softmax_premature_layers, M, reduction='none').mean(
+                    -1)  # shape: (num_premature_layers, batch_size)
+            js_div: torch.Tensor = 1e5 * 0.5 * (
+                kl1 + kl2)  # shape: (num_premature_layers, batch_size)
+            # Reduce the batchmean
+            return js_div.mean(-1)
+        elif method == 'kl':
+            kl_div: torch.Tensor = 1e5 * F.kl_div(log_softmax_premature_layers,
+                                                  softmax_mature_layer[None, :, :],
+                                                  reduction='none').mean(-1)
+            return kl_div.mean(-1)
+        else:
+            raise ValueError(f"method {method} is not supported")
     else:
-        raise ValueError(f"method {method} is not supported")
+        adj_layer_jsd_list: list[torch.Tensor] = []
+        early_exit_layers = candidate_premature_layers + [mature_layer] 
+        if method == 'js':
+            for i in range(1, len(early_exit_layers)):
+                softmax_p: torch.Tensor = F.softmax(
+                    dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
+                softmax_q: torch.Tensor = F.softmax(
+                    dict_outputs[early_exit_layers[i - 1]][:, -1, :],
+                    dim=-1)
+                m: torch.Tensor = 0.5 * (softmax_p + softmax_q)
+                log_softmax_p: torch.Tensor = F.log_softmax(
+                    dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
+                log_softmax_q: torch.Tensor = F.log_softmax(
+                    dict_outputs[early_exit_layers[i - 1]][:, -1, :],
+                    dim=-1)
+                kl_p_m: torch.Tensor = F.kl_div(log_softmax_p[None, :, :],
+                                                m,
+                                                reduction='none').mean(-1)
+                kl_q_m: torch.Tensor = F.kl_div(log_softmax_q[None, :, :],
+                                                m,
+                                                reduction='none').mean(-1)
+                adj_layer_jsd: torch.Tensor = 1e5 * 0.5 * (kl_p_m +
+                                                           kl_q_m).mean(-1)
+                adj_layer_jsd_list.append(adj_layer_jsd)
+        elif method == 'kl':
+            for i in range(1, len(early_exit_layers)):
+                softmax_p: torch.Tensor = F.softmax(
+                    dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
+                softmax_q: torch.Tensor = F.softmax(
+                    dict_outputs[early_exit_layers[i - 1]][:, -1, :],
+                    dim=-1)
+                m: torch.Tensor = 0.5 * (softmax_p + softmax_q)
+                log_softmax_p: torch.Tensor = F.log_softmax(
+                    dict_outputs[early_exit_layers[i]][:, -1, :], dim=-1)
+                log_softmax_q: torch.Tensor = F.log_softmax(
+                    dict_outputs[early_exit_layers[i - 1]][:, -1, :],
+                    dim=-1)
+                kl_p_m: torch.Tensor = F.kl_div(log_softmax_p[None, :, :],
+                                                softmax_q,
+                                                reduction='none').mean(-1)
+
+                adj_layer_jsd: torch.Tensor = 1e5 * kl_p_m.mean(-1)
+                adj_layer_jsd_list.append(adj_layer_jsd)
+        div = torch.stack(adj_layer_jsd_list)
+        return div
 
 
 @dataclass
@@ -2936,7 +2983,7 @@ class GenerationMixin:
                             final_logits, relative_top)
                         base_logits = base_logits.log_softmax(dim=-1)
                         mask = final_logits[0] < -1e3
-                        base_logits[mask] = -1e3
+                        base_logits[0][mask] = -1e3
                     logits = final_logits - base_logits
 
                 next_token_logits = logits

@@ -396,6 +396,8 @@ if __name__ == "__main__":
                 f'Model Completion: {model_completion}\n\n'
                 f'Is correct: {is_cor}\n\n'
                 f'inference time: {float(current_time)}')
+        if args.diff_token:
+            break
     average_time = times.mean().item()
     Throughput = len(list_data_dict)* args.max_new_tokens*1000/ (times.sum().item())
     print(f'Num of total question: {len(answers)}, '

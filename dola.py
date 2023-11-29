@@ -6,7 +6,7 @@ from transformers.generation.stopping_criteria import (LLamaQaStoppingCriteria,
                                                        StoppingCriteriaList)
 
 from utils import get_relative_top_filter, plot_colored_table
-
+import json
 
 class DoLa:
 
@@ -287,6 +287,7 @@ class DoLa:
                  draw_jsd_table: bool = False,
                  cal_div_method: str = 'js',
                  align: bool = False,
+                 diff_token: bool = False,
                  **kwargs) -> tuple[str, dict | None]:
         if candidate_premature_layers is None:
             candidate_premature_layers: list[int] = []
@@ -346,6 +347,7 @@ class DoLa:
                 return_jsd=draw_jsd_table,
                 cal_div_method=cal_div_method,
                 align=align,
+                diff_token=diff_token,
                 **kwargs,
             )
             premature_layer_dist = outputs.premature_layer_dist
@@ -366,6 +368,14 @@ class DoLa:
                 jsd_list.append(t[1].cpu().numpy())
             plot_colored_table(
                 np.vstack(jsd_list).T[::-1, :], row_labels, col_labels)
+        
+        if diff_token:
+            diff_record = outputs.diff_record
+            for k,v in diff_record.items():    
+                diff_record[k]["origin"] = self.tokenizer.decode(outputs.diff_record[k]['origin'])
+                diff_record[k]["DoLa"] = self.tokenizer.decode(outputs.diff_record[k]['DoLa'])
+            
+            diff_record["model_compeletion"] = gen_sequences
         if verbose:
             print('MODEL OUTPUT: \n{0}'.format(output_str))
         if remove_stop_words:
@@ -376,6 +386,11 @@ class DoLa:
             output_str = output_str.strip()
         if self.device:
             torch.cuda.empty_cache()
+
+        if diff_record:
+            torch.save(diff_record,"/data/mxy/align/test")
+            # with open("/data/mxy/align/test.json",'w') as f:
+            #     json.dump(f,diff_record)
         return output_str, (premature_layer_dist if mode == 'dola' else None)
 
     @torch.no_grad()
